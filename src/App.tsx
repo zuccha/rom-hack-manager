@@ -2,23 +2,32 @@ import { useState } from "react";
 import Button from "./components/Button";
 import PathBrowser from "./components/PathBrowser";
 import TextEditor from "./components/TextEditor";
+import useDownloadHack from "./hooks/useDownloadHack";
 
 function App() {
   const [hackURL, setHackURL] = useState("");
   const [hackDirectory, setHackDirectory] = useState("");
   const [vanillaFile, setVanillaFile] = useState("");
 
+  const { download, error, status } = useDownloadHack({
+    directoryPath: hackDirectory,
+    url: hackURL,
+    vanillaFilePath: vanillaFile,
+  });
+
   const isValid = hackURL !== "" && hackDirectory !== "" && vanillaFile !== "";
 
   return (
     <div className="column" style={styles.container}>
       <TextEditor
+        isDisabled={status === "loading"}
         onChange={setHackURL}
         placeholder="Download URL"
         value={hackURL}
       />
 
       <PathBrowser
+        isDisabled={status === "loading"}
         mode="directory"
         onChange={setHackDirectory}
         placeholder="Directory"
@@ -26,15 +35,20 @@ function App() {
       />
 
       <PathBrowser
+        isDisabled={status === "loading"}
         mode="file"
         onChange={setVanillaFile}
         placeholder="Vanilla File"
         value={vanillaFile}
       />
 
-      <Button isDisabled={!isValid} onClick={() => {}} text="Download" />
+      <Button
+        isDisabled={!isValid || status === "loading"}
+        onClick={download}
+        text="Download"
+      />
 
-      <span className="text-danger">An error occurred</span>
+      {status === "failure" && <span className="text-danger">{error}</span>}
     </div>
   );
 }
