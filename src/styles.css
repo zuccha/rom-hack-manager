@@ -52,8 +52,8 @@ input {
   background-color: var(--color-neutral-1);
   border: 1px solid var(--color-neutral-4);
   border-radius: 0;
-  font-size: 1em;
-  padding: 0.3em 0.5em;
+  font-size: 0.9em;
+  padding: 0.3em 0.6em;
   outline: none;
 }
 

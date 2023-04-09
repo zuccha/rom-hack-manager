@@ -19,12 +19,14 @@ function App() {
       />
 
       <PathBrowser
+        mode="directory"
         onChange={setHackDirectory}
         placeholder="Directory"
         value={hackDirectory}
       />
 
       <PathBrowser
+        mode="file"
         onChange={setVanillaFile}
         placeholder="Vanilla File"
         value={vanillaFile}

@@ -1,3 +1,5 @@
+import * as TauriDialog from "@tauri-apps/api/dialog";
+import * as TauriPath from "@tauri-apps/api/path";
 import { useCallback, useMemo } from "react";
 import TextEditor from "./TextEditor";
 import Button from "./Button";
@@ -5,6 +7,7 @@ import Button from "./Button";
 type PathBrowserProps = {
   className?: string;
   isDisabled?: boolean;
+  mode: "file" | "directory";
   onChange: (value: string) => void;
   placeholder: string;
   value: string;
@@ -13,11 +16,19 @@ type PathBrowserProps = {
 function PathBrowser({
   className,
   isDisabled,
+  mode,
   onChange,
   placeholder,
   value,
 }: PathBrowserProps) {
-  const handleBrowse = useCallback(() => {}, []);
+  const handleBrowse = useCallback(async () => {
+    const path = await TauriDialog.open({
+      defaultPath: await TauriPath.appDataDir(),
+      directory: mode === "directory",
+    });
+
+    if (typeof path === "string") onChange(path);
+  }, []);
 
   const extendedClassName = useMemo(() => {
     const baseClassName = "row";
