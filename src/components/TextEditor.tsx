@@ -1,12 +1,20 @@
 import { useCallback } from "react";
 
 type TextEditorProps = {
+  className?: string;
+  isDisabled?: boolean;
   onChange: (value: string) => void;
   placeholder: string;
   value: string;
 };
 
-function TextEditor({ onChange, placeholder, value }: TextEditorProps) {
+function TextEditor({
+  className,
+  isDisabled,
+  onChange,
+  placeholder,
+  value,
+}: TextEditorProps) {
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       onChange(e.currentTarget.value);
@@ -15,7 +23,13 @@ function TextEditor({ onChange, placeholder, value }: TextEditorProps) {
   );
 
   return (
-    <input value={value} onChange={handleChange} placeholder={placeholder} />
+    <input
+      className={className}
+      disabled={isDisabled}
+      value={value}
+      onChange={handleChange}
+      placeholder={placeholder}
+    />
   );
 }
 

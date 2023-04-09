@@ -1,40 +1,49 @@
 import { useState } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
-import "./App.css";
+import Button from "./components/Button";
+import PathBrowser from "./components/PathBrowser";
+import TextEditor from "./components/TextEditor";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    setGreetMsg(await invoke("greet", { name }));
-  }
-
   const [hackURL, setHackURL] = useState("");
+  const [hackDirectory, setHackDirectory] = useState("");
+  const [vanillaFile, setVanillaFile] = useState("");
+
+  const isValid = hackURL !== "" && hackDirectory !== "" && vanillaFile !== "";
 
   return (
-    <div className="container">
-      <h1>Download a hack from SMW Central</h1>
+    <div className="column" style={styles.container}>
+      <TextEditor
+        onChange={setHackURL}
+        placeholder="Download URL"
+        value={hackURL}
+      />
 
-      <div className="row">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            greet();
-          }}
-        >
-          <input
-            id="greet-input"
-            onChange={(e) => setName(e.currentTarget.value)}
-            placeholder="Enter a name..."
-          />
-          <button type="submit">Greet</button>
-        </form>
-      </div>
-      <p>{greetMsg}</p>
+      <PathBrowser
+        onChange={setHackDirectory}
+        placeholder="Directory"
+        value={hackDirectory}
+      />
+
+      <PathBrowser
+        onChange={setVanillaFile}
+        placeholder="Vanilla File"
+        value={vanillaFile}
+      />
+
+      <Button isDisabled={!isValid} onClick={() => {}} text="Download" />
+
+      <span className="text-danger">An error occurred</span>
     </div>
   );
 }
 
 export default App;
+
+const styles = {
+  container: {
+    margin: "auto",
+    padding: "1em",
+    width: "500px",
+    maxWidth: "600px",
+  },
+};
