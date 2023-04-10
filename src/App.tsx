@@ -3,6 +3,7 @@ import PathBrowser from "./components/PathBrowser";
 import TextEditor from "./components/TextEditor";
 import useDownloadHack, {
   validateDirectoryPath,
+  validateName,
   validateURL,
   validateVanillaFilePath,
 } from "./hooks/useDownloadHack";
@@ -10,12 +11,14 @@ import useFormValue from "./hooks/useFormValue";
 import FormValueControl from "./components/FormValueControl";
 
 function App() {
+  const name = useFormValue<string>("", validateName);
   const url = useFormValue<string>("", validateURL);
   const directoryPath = useFormValue<string>("", validateDirectoryPath);
   const vanillaFilePath = useFormValue<string>("", validateVanillaFilePath);
 
   const { download, error, status } = useDownloadHack({
     directoryPath: directoryPath.value,
+    name: name.value,
     url: url.value,
     vanillaFilePath: vanillaFilePath.value,
   });
@@ -25,6 +28,16 @@ function App() {
 
   return (
     <div className="column" style={styles.container}>
+      <FormValueControl value={name}>
+        <TextEditor
+          isDisabled={status === "loading"}
+          onBlur={name.handleBlur}
+          onChange={name.handleChangeValue}
+          placeholder="Hack name"
+          value={name.value}
+        />
+      </FormValueControl>
+
       <FormValueControl value={url}>
         <TextEditor
           isDisabled={status === "loading"}

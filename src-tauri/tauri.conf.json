@@ -19,6 +19,10 @@
       "fs": {
         "all": true
       },
+      "http": {
+        "scope": ["https://dl.smwcentral.net/*"],
+        "request": true
+      },
       "path": {
         "all": true
       },

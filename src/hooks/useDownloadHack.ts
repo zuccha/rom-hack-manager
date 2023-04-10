@@ -1,4 +1,6 @@
 import * as TauriFS from "@tauri-apps/api/fs";
+import * as TauriHTTP from "@tauri-apps/api/http";
+import * as TauriPath from "@tauri-apps/api/path";
 import { useCallback, useState } from "react";
 
 export type Status = "initial" | "loading" | "failure" | "success";
@@ -32,12 +34,21 @@ export const validateURL = async (url: string): Promise<string | undefined> => {
   return undefined;
 };
 
+export const validateName = async (
+  url: string
+): Promise<string | undefined> => {
+  if (url === "") return "No hack name has been specified";
+  return undefined;
+};
+
 const useDownloadHack = ({
   directoryPath,
+  name,
   url,
   vanillaFilePath,
 }: {
   directoryPath: string;
+  name: string;
   url: string;
   vanillaFilePath: string;
 }) => {
@@ -45,37 +56,63 @@ const useDownloadHack = ({
   const [status, setStatus] = useState<Status>("initial");
 
   const download = useCallback(async () => {
+    const fail = (e: string) => {
+      setError(e);
+      setStatus("failure");
+    };
+
     setError(undefined);
     setStatus("loading");
     let error: string | undefined;
 
     error = await validateDirectoryPath(directoryPath);
     if (error !== undefined) {
-      setError(error);
-      setStatus("failure");
+      fail(error);
       return;
     }
 
     error = await validateVanillaFilePath(vanillaFilePath);
     if (error !== undefined) {
-      setError(error);
-      setStatus("failure");
+      fail(error);
       return;
     }
 
     error = await validateURL(url);
     if (error !== undefined) {
-      setError(error);
-      setStatus("failure");
+      fail(error);
       return;
     }
 
-    // TODO: Download zip.
+    // & Download zip
+    let contents: TauriFS.BinaryFileContents;
+    try {
+      contents = (
+        await TauriHTTP.fetch(url, {
+          method: "GET",
+          responseType: TauriHTTP.ResponseType.Binary,
+        })
+      ).data as TauriFS.BinaryFileContents;
+    } catch {
+      fail("Failed to download zip file");
+      return;
+    }
+
+    // & Write zip
+    const zipFilePath = await TauriPath.join(directoryPath, name + ".zip");
+    try {
+      await TauriFS.writeBinaryFile({
+        contents,
+        path: zipFilePath,
+      });
+    } catch (e) {
+      fail("Failed to write zip file");
+      return;
+    }
+
     // TODO: Unzip.
     // TODO: Remove zip.
     // TODO: Patch files.
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     setStatus("success");
   }, [directoryPath, url, vanillaFilePath]);
 
