@@ -64,6 +64,10 @@ function AppForm({
 
   return (
     <div className="column" style={styles.container}>
+      <div className="header">
+        <span>ROM Hack Downloader</span>
+      </div>
+
       <FormValueControl value={name}>
         <TextEditor
           isDisabled={status === "loading"}
@@ -121,6 +125,13 @@ function AppForm({
       />
 
       {status === "failure" && <span className="text-danger">{error}</span>}
+
+      <div className="row footer">
+        <a href="https://github.com/zuccha/rom-hack-downloader" target="_blank">
+          Website
+        </a>
+        <span>by zuccha</span>
+      </div>
     </div>
   );
 }
