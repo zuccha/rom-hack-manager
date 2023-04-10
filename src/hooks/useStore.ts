@@ -1,6 +1,5 @@
 import * as TauriFS from "@tauri-apps/api/fs";
 import * as TauriPath from "@tauri-apps/api/path";
-import { useCallback, useEffect, useState } from "react";
 
 export type Store = {
   directoryPath: string;
@@ -36,7 +35,6 @@ export const readStore = async (): Promise<Store | undefined> => {
     const maybeStore = JSON.parse(await TauriFS.readTextFile(storePath));
     if (!isStore(maybeStore)) return defaultStore;
 
-    console.log("read", maybeStore);
     return maybeStore;
   } catch (e) {
     console.log(e);
@@ -46,31 +44,14 @@ export const readStore = async (): Promise<Store | undefined> => {
 
 export const writeStore = async (store: Store): Promise<void> => {
   try {
-    console.log("write", store);
-
     const dataDirPath = await TauriPath.appDataDir();
     const storePath = await TauriPath.join(dataDirPath, storeName);
 
-    // await TauriFS.createDir(dataDirPath, { recursive: true });
+    if (!(await TauriFS.exists(dataDirPath)))
+      await TauriFS.createDir(dataDirPath, { recursive: true });
     await TauriFS.writeTextFile(storePath, JSON.stringify(store));
   } catch (e) {
     console.log(e);
     // Ignore.
   }
 };
-
-// const useStore = () => {
-//   const [store, setStore] = useState<Store | undefined>(undefined);
-
-//   useEffect(() => {
-//     readStore().then(setStore);
-//   }, []);
-
-//   const setAndWriteStore = useCallback((newStore: Store) => {
-//     setStore(store);
-//   }, []);
-
-//   return [store];
-// };
-
-// export default useStore;

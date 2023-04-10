@@ -53,6 +53,7 @@ input {
   border: 1px solid var(--color-neutral-4);
   border-radius: 0;
   font-size: 0.9em;
+  margin: 0;
   padding: 0.3em 0.6em;
   outline: none;
 }
@@ -111,6 +112,14 @@ input:disabled {
 
 .justify-center {
   justify-content: center;
+}
+
+.h-spacer {
+  width: 0.3em;
+}
+
+.v-spacer {
+  height: 0.4em;
 }
 
 /** Typography */

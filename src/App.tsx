@@ -6,7 +6,6 @@ function App() {
   const [store, setStore] = useState<Store | undefined>(undefined);
 
   useEffect(() => {
-    console.log("start");
     readStore().then(setStore);
   }, []);
 

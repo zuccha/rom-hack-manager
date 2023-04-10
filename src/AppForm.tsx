@@ -74,6 +74,8 @@ function AppForm({
         />
       </FormValueControl>
 
+      <div className="v-spacer" />
+
       <FormValueControl value={url}>
         <TextEditor
           isDisabled={status === "loading"}
@@ -83,6 +85,8 @@ function AppForm({
           value={url.value}
         />
       </FormValueControl>
+
+      <div className="v-spacer" />
 
       <FormValueControl value={directoryPath}>
         <PathBrowser
@@ -95,6 +99,8 @@ function AppForm({
         />
       </FormValueControl>
 
+      <div className="v-spacer" />
+
       <FormValueControl value={vanillaROMPath}>
         <PathBrowser
           isDisabled={status === "loading"}
@@ -105,6 +111,8 @@ function AppForm({
           value={vanillaROMPath.value}
         />
       </FormValueControl>
+
+      <div className="v-spacer" />
 
       <Button
         isDisabled={!isValid || status === "loading"}

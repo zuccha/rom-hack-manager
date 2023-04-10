@@ -52,6 +52,9 @@ function PathBrowser({
         placeholder={placeholder}
         value={value}
       />
+
+      <div className="h-spacer" />
+
       <Button onClick={handleBrowse} text="..." isDisabled={isDisabled} />
     </div>
   );

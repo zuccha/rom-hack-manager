@@ -21,5 +21,5 @@ function FormValueControl<T>({ children, value }: FormValueProps<T>) {
 export default FormValueControl;
 
 const styles = {
-  error: { fontSize: "0.8em", paddingLeft: "1em" },
+  error: { fontSize: "0.8em" },
 };
