@@ -56,8 +56,6 @@ async fn download_hack(name: &str, directory_path: &str, url: &str, vanilla_rom_
 
   // Build paths
   let hack_directory_path = PathBuf::from(directory_path).join(name);
-  let mut hack_zip_path = PathBuf::from(hack_directory_path);
-  hack_zip_path.set_extension("zip");
 
   // Download
   let response = match reqwest::get(url).await {
@@ -65,24 +63,27 @@ async fn download_hack(name: &str, directory_path: &str, url: &str, vanilla_rom_
     Ok(r) => r,
   };
 
-  let mut content = match response.bytes().await {
+  let content = match response.bytes().await {
     Err(_) => return Err("Failed to download zip".into()),
     Ok(r) => std::io::Cursor::new(r)
   };
 
-  let mut hack_zip_file = match std::fs::File::create(hack_zip_path) {
-    Err(_) => return Err("Failed to create zip".into()),
-    Ok(r) => r
-  };
-
-  match std::io::copy(&mut content, &mut hack_zip_file) {
-    Err(_) => return Err("Failed to create zip".into()),
-    Ok(r) => r
-  };
-
   // Unzip
-  // Remove zip
+  match zip_extract::extract(content, hack_directory_path.as_path(), true) {
+    Err(_) => return Err("Failed to extract zip".into()),
+    Ok(r) => r
+  };
+
   // Patch
+  // let os = env::consts::OS;
+
+  let open_command = match std::env::consts::OS {
+    "macos" => "open",
+    "windows" => "explorer",
+    _ => ""
+  };
+  if open_command.is_empty() { return Ok(()) }
+  std::process::Command::new(open_command).arg(hack_directory_path).spawn().unwrap();
 
   // Return
   Ok(())
