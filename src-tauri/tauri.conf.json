@@ -41,6 +41,7 @@
         "icons/icon.ico"
       ],
       "identifier": "com.tauri.dev",
+      "resources": ["resources/*"],
       "targets": "all"
     },
     "security": {
