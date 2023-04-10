@@ -1,7 +1,36 @@
 import * as TauriFS from "@tauri-apps/api/fs";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 
 export type Status = "initial" | "loading" | "failure" | "success";
+
+export const validateDirectoryPath = async (
+  directoryPath: string
+): Promise<string | undefined> => {
+  if (directoryPath === "") return "No directory has been specified";
+  try {
+    const directoryExists = await TauriFS.exists(directoryPath);
+    return directoryExists ? undefined : "Directory does not exist";
+  } catch {
+    return "Directory does not exist";
+  }
+};
+
+export const validateVanillaFilePath = async (
+  vanillaFilePath: string
+): Promise<string | undefined> => {
+  if (vanillaFilePath === "") return "No Vanilla ROM has been specified";
+  try {
+    const vanillaFileExists = await TauriFS.exists(vanillaFilePath);
+    return vanillaFileExists ? undefined : "Vanilla ROM does not exist";
+  } catch {
+    return "Vanilla ROM does not exist";
+  }
+};
+
+export const validateURL = async (url: string): Promise<string | undefined> => {
+  if (url === "") return "No download URL has been specified";
+  return undefined;
+};
 
 const useDownloadHack = ({
   directoryPath,
@@ -12,34 +41,31 @@ const useDownloadHack = ({
   url: string;
   vanillaFilePath: string;
 }) => {
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | undefined>(undefined);
   const [status, setStatus] = useState<Status>("initial");
 
   const download = useCallback(async () => {
-    setError("");
+    setError(undefined);
     setStatus("loading");
+    let error: string | undefined;
 
-    const directoryExists = await TauriFS.exists(directoryPath).catch(
-      () => false
-    );
-    if (!directoryExists) {
-      setError("Target directory does not exist");
+    error = await validateDirectoryPath(directoryPath);
+    if (error !== undefined) {
+      setError(error);
       setStatus("failure");
       return;
     }
 
-    const vanillaFileExists = await TauriFS.exists(vanillaFilePath).catch(
-      () => false
-    );
-    if (!vanillaFileExists) {
-      setError("Vanilla ROM does not exist");
+    error = await validateVanillaFilePath(vanillaFilePath);
+    if (error !== undefined) {
+      setError(error);
       setStatus("failure");
       return;
     }
 
-    const urlIsValid = url !== "";
-    if (!urlIsValid) {
-      setError("The download URL is not valid");
+    error = await validateURL(url);
+    if (error !== undefined) {
+      setError(error);
       setStatus("failure");
       return;
     }

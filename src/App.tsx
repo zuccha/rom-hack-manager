@@ -1,46 +1,61 @@
-import { useState } from "react";
 import Button from "./components/Button";
 import PathBrowser from "./components/PathBrowser";
 import TextEditor from "./components/TextEditor";
-import useDownloadHack from "./hooks/useDownloadHack";
+import useDownloadHack, {
+  validateDirectoryPath,
+  validateURL,
+  validateVanillaFilePath,
+} from "./hooks/useDownloadHack";
+import useFormValue from "./hooks/useFormValue";
+import FormValueControl from "./components/FormValueControl";
 
 function App() {
-  const [hackURL, setHackURL] = useState("");
-  const [hackDirectory, setHackDirectory] = useState("");
-  const [vanillaFile, setVanillaFile] = useState("");
+  const url = useFormValue<string>("", validateURL);
+  const directoryPath = useFormValue<string>("", validateDirectoryPath);
+  const vanillaFilePath = useFormValue<string>("", validateVanillaFilePath);
 
   const { download, error, status } = useDownloadHack({
-    directoryPath: hackDirectory,
-    url: hackURL,
-    vanillaFilePath: vanillaFile,
+    directoryPath: directoryPath.value,
+    url: url.value,
+    vanillaFilePath: vanillaFilePath.value,
   });
 
-  const isValid = hackURL !== "" && hackDirectory !== "" && vanillaFile !== "";
+  const isValid =
+    url.isValid && directoryPath.isValid && vanillaFilePath.isValid;
 
   return (
     <div className="column" style={styles.container}>
-      <TextEditor
-        isDisabled={status === "loading"}
-        onChange={setHackURL}
-        placeholder="Download URL"
-        value={hackURL}
-      />
+      <FormValueControl value={url}>
+        <TextEditor
+          isDisabled={status === "loading"}
+          onBlur={url.handleBlur}
+          onChange={url.handleChangeValue}
+          placeholder="Download URL"
+          value={url.value}
+        />
+      </FormValueControl>
 
-      <PathBrowser
-        isDisabled={status === "loading"}
-        mode="directory"
-        onChange={setHackDirectory}
-        placeholder="Directory"
-        value={hackDirectory}
-      />
+      <FormValueControl value={directoryPath}>
+        <PathBrowser
+          isDisabled={status === "loading"}
+          mode="directory"
+          onBlur={directoryPath.handleBlur}
+          onChange={directoryPath.handleChangeValue}
+          placeholder="Directory"
+          value={directoryPath.value}
+        />
+      </FormValueControl>
 
-      <PathBrowser
-        isDisabled={status === "loading"}
-        mode="file"
-        onChange={setVanillaFile}
-        placeholder="Vanilla File"
-        value={vanillaFile}
-      />
+      <FormValueControl value={vanillaFilePath}>
+        <PathBrowser
+          isDisabled={status === "loading"}
+          mode="file"
+          onBlur={vanillaFilePath.handleBlur}
+          onChange={vanillaFilePath.handleChangeValue}
+          placeholder="Vanilla File"
+          value={vanillaFilePath.value}
+        />
+      </FormValueControl>
 
       <Button
         isDisabled={!isValid || status === "loading"}

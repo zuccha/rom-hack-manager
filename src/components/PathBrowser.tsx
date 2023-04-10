@@ -8,6 +8,7 @@ type PathBrowserProps = {
   className?: string;
   isDisabled?: boolean;
   mode: "file" | "directory";
+  onBlur?: () => void;
   onChange: (value: string) => void;
   placeholder: string;
   value: string;
@@ -17,6 +18,7 @@ function PathBrowser({
   className,
   isDisabled,
   mode,
+  onBlur,
   onChange,
   placeholder,
   value,
@@ -40,6 +42,7 @@ function PathBrowser({
       <TextEditor
         className="flex-1"
         isDisabled={isDisabled}
+        onBlur={onBlur}
         onChange={onChange}
         placeholder={placeholder}
         value={value}

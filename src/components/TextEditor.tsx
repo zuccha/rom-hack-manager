@@ -3,6 +3,7 @@ import { useCallback } from "react";
 type TextEditorProps = {
   className?: string;
   isDisabled?: boolean;
+  onBlur?: () => void;
   onChange: (value: string) => void;
   placeholder: string;
   value: string;
@@ -11,6 +12,7 @@ type TextEditorProps = {
 function TextEditor({
   className,
   isDisabled,
+  onBlur,
   onChange,
   placeholder,
   value,
@@ -27,6 +29,7 @@ function TextEditor({
       className={className}
       disabled={isDisabled}
       value={value}
+      onBlur={onBlur}
       onChange={handleChange}
       placeholder={placeholder}
     />
