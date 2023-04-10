@@ -11,7 +11,8 @@ export type FormValue<T> = {
 
 const useFormValue = <T>(
   defaultValue: T,
-  validate?: (value: T) => (string | undefined) | Promise<string | undefined>
+  validate?: (value: T) => (string | undefined) | Promise<string | undefined>,
+  onBlur?: () => void
 ): FormValue<T> => {
   const [value, setValue] = useState<T>(defaultValue);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -47,6 +48,7 @@ const useFormValue = <T>(
 
   const handleBlur = useCallback(() => {
     setIsPristine(false);
+    onBlur?.();
   }, []);
 
   useEffect(() => {

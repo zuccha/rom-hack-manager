@@ -17,17 +17,17 @@
         "open": true
       },
       "fs": {
-        "all": true
+        "all": true,
+        "scope": ["$APPDATA", "$APPDATA/settings.json"]
       },
       "http": {
-        "scope": ["https://dl.smwcentral.net/*"],
-        "request": true
+        "request": true,
+        "scope": ["https://dl.smwcentral.net/*"]
       },
       "path": {
         "all": true
       },
       "shell": {
-        "all": false,
         "open": true
       }
     },

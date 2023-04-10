@@ -1,5 +1,6 @@
 import * as TauriDialog from "@tauri-apps/api/dialog";
 import * as TauriPath from "@tauri-apps/api/path";
+import * as Tauri from "@tauri-apps/api/tauri";
 import { useCallback, useMemo } from "react";
 import TextEditor from "./TextEditor";
 import Button from "./Button";
@@ -24,13 +25,17 @@ function PathBrowser({
   value,
 }: PathBrowserProps) {
   const handleBrowse = useCallback(async () => {
+    const defaultPath = (await Tauri.invoke("path_exists", { path: value }))
+      ? value
+      : await TauriPath.downloadDir();
+
     const path = await TauriDialog.open({
-      defaultPath: await TauriPath.appDataDir(),
+      defaultPath,
       directory: mode === "directory",
     });
 
     if (typeof path === "string") onChange(path);
-  }, []);
+  }, [value]);
 
   const extendedClassName = useMemo(() => {
     const baseClassName = "row";

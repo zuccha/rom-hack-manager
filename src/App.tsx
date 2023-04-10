@@ -1,84 +1,21 @@
-import Button from "./components/Button";
-import PathBrowser from "./components/PathBrowser";
-import TextEditor from "./components/TextEditor";
-import useDownloadHack, {
-  validateDirectoryPath,
-  validateName,
-  validateURL,
-  validateVanillaFilePath,
-} from "./hooks/useDownloadHack";
-import useFormValue from "./hooks/useFormValue";
-import FormValueControl from "./components/FormValueControl";
+import { useEffect, useState } from "react";
+import { Store, readStore } from "./hooks/useStore";
+import AppForm from "./AppForm";
 
 function App() {
-  const name = useFormValue<string>("", validateName);
-  const url = useFormValue<string>("", validateURL);
-  const directoryPath = useFormValue<string>("", validateDirectoryPath);
-  const vanillaFilePath = useFormValue<string>("", validateVanillaFilePath);
+  const [store, setStore] = useState<Store | undefined>(undefined);
 
-  const { download, error, status } = useDownloadHack({
-    directoryPath: directoryPath.value,
-    name: name.value,
-    url: url.value,
-    vanillaFilePath: vanillaFilePath.value,
-  });
+  useEffect(() => {
+    console.log("start");
+    readStore().then(setStore);
+  }, []);
 
-  const isValid =
-    url.isValid && directoryPath.isValid && vanillaFilePath.isValid;
-
-  return (
-    <div className="column" style={styles.container}>
-      <FormValueControl value={name}>
-        <TextEditor
-          isDisabled={status === "loading"}
-          onBlur={name.handleBlur}
-          onChange={name.handleChangeValue}
-          placeholder="Hack name"
-          value={name.value}
-        />
-      </FormValueControl>
-
-      <FormValueControl value={url}>
-        <TextEditor
-          isDisabled={status === "loading"}
-          onBlur={url.handleBlur}
-          onChange={url.handleChangeValue}
-          placeholder="Download URL"
-          value={url.value}
-        />
-      </FormValueControl>
-
-      <FormValueControl value={directoryPath}>
-        <PathBrowser
-          isDisabled={status === "loading"}
-          mode="directory"
-          onBlur={directoryPath.handleBlur}
-          onChange={directoryPath.handleChangeValue}
-          placeholder="Directory"
-          value={directoryPath.value}
-        />
-      </FormValueControl>
-
-      <FormValueControl value={vanillaFilePath}>
-        <PathBrowser
-          isDisabled={status === "loading"}
-          mode="file"
-          onBlur={vanillaFilePath.handleBlur}
-          onChange={vanillaFilePath.handleChangeValue}
-          placeholder="Vanilla File"
-          value={vanillaFilePath.value}
-        />
-      </FormValueControl>
-
-      <Button
-        isDisabled={!isValid || status === "loading"}
-        onClick={download}
-        text="Download"
-      />
-
-      {status === "failure" && <span className="text-danger">{error}</span>}
-    </div>
-  );
+  return store ? (
+    <AppForm
+      defaultDirectoryPath={store.directoryPath}
+      defaultVanillaROMPath={store.vanillaROMPath}
+    />
+  ) : null;
 }
 
 export default App;
