@@ -7,8 +7,8 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "smwc-hacks",
-    "version": "0.0.0"
+    "productName": "ROM Hack Downloader",
+    "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
@@ -40,7 +40,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "io.zuccha",
       "resources": ["resources/*"],
       "targets": "all"
     },
