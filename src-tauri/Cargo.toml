@@ -1,5 +1,5 @@
 [package]
-name = "smwc-hacks"
+name = "rom-hack-downloader"
 version = "0.0.0"
 description = "A Tauri App"
 authors = ["you"]
