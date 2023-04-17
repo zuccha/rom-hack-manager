@@ -2,7 +2,7 @@
 
 Download, unzip, and patch ROM hacks all in one go.
 
-<img src="docs/tool-5.png" width="400px" />
+<img src="docs/tool-filled.png" width="400px" />
 
 ## Downloads
 
@@ -12,22 +12,31 @@ The tool is available for:
 
 ## Instructions
 
-1. Choose the hack name
-  <img src="docs/tool-2.png" width="300px" />
-2. Copy the download URL
-  <img src="docs/link.png" width="500px" />
-3. Paste the URL
-  <img src="docs/tool-3.png" width="300px" />
-4. Pick the base folder where you want the hack to be saved (in the example, the tool will create a "Luminescent" folder inside "hacks")
-  <img src="docs/tool-4.png" width="300px" />
-5. Select an original, untouched ROM of the game
-  <img src="docs/tool-5.png" width="300px" />
-6. Click "Download" and wait for the program to finish
-  <img src="docs/tool-6.png" width="300px" />
-  The tool will:
-    1. Download, extract, and remove the zip file inside a folder name after the hack, within the chosen base folder
-    2. Identify any `bps` file and patch it onto the original vanilla ROM using Flips, creating an equivalent `sfc` file
-    3. Remember the base directory and vanilla ROM location for future use
+Copy the URL for downloading the game zip file:
+
+|<img src="docs/link.png" width="400px" />|
+|:-:|
+|Download URL on SMW Central|
+
+Fill the required fields:
+
+1. **Hack Name:** The hack will be downloaded in a folder with the chosen name
+2. **Download URL:** URL for downloading the hack zip (e.g., the download link found on SMW Central for each hack)
+3. **Directory:** Folder containing all your ROM hacks
+4. **Vanilla File:** An original, untouched ROM of the game
+
+|<img src="docs/tool-empty.png" width="400px" />|<img src="docs/tool-filled.png" width="400px" />|
+|:-:|:-:|
+|Empty form|Filled form|
+
+Press **Download**. The tool will:
+1. Download, extract, and remove the zip file inside a folder name after the hack, within the chosen base folder
+2. Identify any `bps` file and patch it onto the original vanilla ROM using Flips, creating an equivalent `sfc` file
+3. Remember the base directory and vanilla ROM location for future use
+
+|<img src="docs/file-explorer-before.png" width="400px" />|<img src="docs/file-explorer-after.png" width="400px" />|
+|:-:|:-:|
+|Folder before download|Folder after download|
 
 ## Credits
 
