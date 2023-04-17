@@ -3,6 +3,50 @@
 
 use std::path::{Path, PathBuf};
 
+fn flatten_directory(dir_path: &Path) -> Result<(), String> {
+  let mut dir = match dir_path.read_dir() {
+    Err(_) => return Err("Failed to read directory".into()),
+    Ok(o) => o
+  };
+
+  // If directory is empty, do nothing.
+  let entry = match dir.next() {
+    None => return Ok(()),
+    Some(Err(_)) => return Err("Failed to read directory".into()),
+    Some(Ok(o)) => o
+  };
+
+  // If directory contains more than one entry, do nothing.
+  if dir.count() > 1 { return Ok(()) }
+
+  // If the only entry is not a directory, do nothing.
+  match entry.metadata() {
+    Err(_) => return Err("Failed to read entry metadata".into()),
+    Ok(o) => if !o.is_dir() { return Ok(()) }
+  };
+
+  // If the only entry is a directory, move all it's entries up by one level.
+  let mut temp_dir_path = PathBuf::from(dir_path);
+  temp_dir_path.set_file_name(dir_path.file_name().unwrap().to_str().unwrap().to_owned() + "_tmp");
+
+  match std::fs::rename(entry.path(), &temp_dir_path) {
+    Err(_) => return Err("Failed to move single sub directory to temp directory".into()),
+    _s => ()
+  };
+
+  match std::fs::remove_dir(dir_path) {
+    Err(_) => return Err("Failed to removes directory".into()),
+    _s => ()
+  };
+
+  match std::fs::rename(&temp_dir_path, dir_path) {
+    Err(_) => return Err("Failed to move temp directory to directory".into()),
+    _s => ()
+  };
+
+  Ok(())
+}
+
 #[tauri::command]
 fn path_exists(path: &str) -> bool {
   Path::new(path).exists()
@@ -74,9 +118,15 @@ async fn download_hack(
   };
 
   // Unzip
-  match zip_extract::extract(content, hack_directory_path.as_path(), true) {
+  match zip_extract::extract(content, hack_directory_path.as_path(), false) {
     Err(_) => return Err("Failed to extract zip".into()),
-    Ok(r) => r
+    _ => ()
+  };
+
+  // Flatten directory if necessary
+  match flatten_directory(&hack_directory_path) {
+    Err(e) => return Err("Failed to flatten hack directory: ".to_string() + &e),
+    _ => ()
   };
 
   // Retrieve Flips
