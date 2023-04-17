@@ -13,31 +13,31 @@ The tool is available for:
 
 ## Instructions
 
-Copy the URL for downloading the game zip file:
+1. Copy the URL for downloading the game zip file:
 
-|<img src="docs/link.png" width="400px" />|
-|:-:|
-|Download URL on SMW Central|
+    |<img src="docs/link.png" width="800px" />|
+    |:-:|
+    |Download URL on SMW Central|
 
-Fill the required fields:
+2. Fill the required fields:
 
-1. **Hack Name:** The hack will be downloaded in a folder with the chosen name
-2. **Download URL:** URL for downloading the hack zip (e.g., the download link found on SMW Central for each hack)
-3. **Directory:** Folder containing all your ROM hacks
-4. **Vanilla File:** An original, untouched ROM of the game
+    1. **Hack Name:** The hack will be downloaded in a folder with the chosen name
+    2. **Download URL:** URL for downloading the hack zip (e.g., the download link found on SMW Central for each hack)
+    3. **Directory:** Folder containing all your ROM hacks
+    4. **Vanilla File:** An original, untouched ROM of the game
 
-|<img src="docs/tool-empty.png" width="400px" />|<img src="docs/tool-filled.png" width="400px" />|
-|:-:|:-:|
-|Empty form|Filled form|
+    |<img src="docs/tool-empty.png" width="400px" />|<img src="docs/tool-filled.png" width="400px" />|
+    |:-:|:-:|
+    |Empty form|Filled form|
 
-Press **Download**. The tool will:
-1. Download, extract, and remove the zip file inside a folder name after the hack, within the chosen base folder
-2. Identify any `bps` file and patch it onto the original vanilla ROM using Flips, creating an equivalent `sfc` file
-3. Remember the base directory and vanilla ROM location for future use
+3. Press **Download**. The tool will:
+    1. Download, extract, and remove the zip file inside a folder name after the hack, within the chosen base folder
+    2. Identify any `bps` file and patch it onto the original vanilla ROM using Flips, creating an equivalent `sfc` file
+    3. Remember the base directory and vanilla ROM location for future use
 
-|<img src="docs/file-explorer-before.png" width="400px" />|<img src="docs/file-explorer-after.png" width="400px" />|
-|:-:|:-:|
-|Folder before download|Folder after download|
+    |<img src="docs/file-explorer-before.png" width="400px" />|<img src="docs/file-explorer-after.png" width="400px" />|
+    |:-:|:-:|
+    |Folder before download|Folder after download|
 
 ## Credits
 
@@ -45,7 +45,7 @@ The tool has been developed by zuccha using:
 
 - [Flips](https://github.com/Alcaro/Flips) by Alcaro, for patching on Windows
 - [MultiPatch](https://projects.sappharad.com/multipatch/) by Paul Kratt, for patching on macOS
-- [Tauri](https://tauri.app/), as a developing framwork
+- [Tauri](https://tauri.app/), development framework
 
 ## Run Locally
 
