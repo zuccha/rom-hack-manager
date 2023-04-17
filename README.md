@@ -7,8 +7,9 @@ Download, unzip, and patch ROM hacks all in one go.
 ## Downloads
 
 The tool is available for:
-- macOS
-- Windows
+- [Windows](https://github.com/zuccha/rom-hack-downloader/releases/download/1.0.0/ROM.Hack.Downloader_1.0.0_win.zip): Package containing the executable and Flips. **N.B.: Flips needs to stay in the _resources_ folder.**
+- [Windows (installer)](https://github.com/zuccha/rom-hack-downloader/releases/download/1.0.0/ROM.Hack.Downloader_1.0.0_win_installer.zip): Automatically install the application on your PC.
+- [macOS](https://github.com/zuccha/rom-hack-downloader/releases/download/1.0.0/ROM.Hack.Downloader_1.0.0.macos.zip): Since I'm not a certified Apple developer, newer versions of macOS won't let you open the application (saying it's broken). To use it, you have to disable Gatekeeper for the application: `xattr -cr "/path/to/ROM Hack Downloader.app"` ([instructions](https://osxdaily.com/2019/02/13/fix-app-damaged-cant-be-opened-trash-error-mac)). **N.B.: Do this only if you trust me :).**
 
 ## Instructions
 
