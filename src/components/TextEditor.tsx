@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { KeyboardEvent, useCallback, useMemo } from "react";
 
 type TextEditorProps = {
   autoFocus?: boolean;
@@ -8,6 +8,7 @@ type TextEditorProps = {
   isFullWidth?: boolean;
   onBlur?: () => void;
   onChange: (value: string) => void;
+  onSubmit?: () => void;
   placeholder: string;
   value: string;
 };
@@ -20,6 +21,7 @@ function TextEditor({
   isFullWidth,
   onBlur,
   onChange,
+  onSubmit,
   placeholder,
   value,
 }: TextEditorProps) {
@@ -28,6 +30,15 @@ function TextEditor({
       onChange(e.currentTarget.value);
     },
     [onChange]
+  );
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        onSubmit?.();
+      }
+    },
+    [onSubmit]
   );
 
   const extendedClassName = useMemo(() => {
@@ -46,6 +57,7 @@ function TextEditor({
         value={value}
         onBlur={onBlur}
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
         placeholder={placeholder}
       />
       {error && (

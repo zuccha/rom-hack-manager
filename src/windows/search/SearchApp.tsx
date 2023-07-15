@@ -46,6 +46,8 @@ function SearchApp() {
   );
 
   const search = useCallback(async () => {
+    if (isSearching) return;
+
     setIsSearching(true);
     const url = new URL("https://www.smwcentral.net/");
     url.searchParams.set("p", "section");
@@ -63,7 +65,6 @@ function SearchApp() {
         url.searchParams.append("f[difficulty][]", `${difficulty.code}`);
     });
     try {
-      console.log(url.toString());
       const client = await getClient();
       const responseType = ResponseType.Text;
       const { data } = await client.get(url.toString(), { responseType });
@@ -95,13 +96,16 @@ function SearchApp() {
         const hack = HackSchema.parse(maybeHack);
         hacks.push(hack);
       }
-      setSetSearchResult({ hacks, hasMore: false });
+      setSetSearchResult({
+        hacks,
+        hasMore: html.querySelectorAll(".page-list").length > 0,
+      });
     } catch {
       setSetSearchResult("An error occurred");
     } finally {
       setIsSearching(false);
     }
-  }, [author, description, isDifficultySelected, name]);
+  }, [author, description, isDifficultySelected, isSearching, name]);
 
   return (
     <div className="container column">
@@ -114,6 +118,7 @@ function SearchApp() {
         autoFocus
         isFullWidth
         onChange={setName}
+        onSubmit={search}
         placeholder="Name"
         value={name}
       />
@@ -124,6 +129,7 @@ function SearchApp() {
         isDisabled={isSearching}
         isFullWidth
         onChange={setAuthor}
+        onSubmit={search}
         placeholder="Author"
         value={author}
       />
@@ -134,6 +140,7 @@ function SearchApp() {
         isDisabled={isSearching}
         isFullWidth
         onChange={setDescription}
+        onSubmit={search}
         placeholder="Description"
         value={description}
       />

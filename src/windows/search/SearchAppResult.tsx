@@ -63,18 +63,34 @@ function SearchAppResult({ result }: SearchAppResultProps) {
         <span>Results</span>
       </div>
       {result.hacks.length > 0 ? (
-        <div className="list">
-          {result.hacks.map((hack) => (
-            <div key={hack.name} className="row" onClick={() => select(hack)}>
-              <span className="hack-name">{hack.name}</span>
-              {hack.authors.length > 0 && (
-                <span className="hack-authors">{`[${hack.authors.join(
-                  ", "
-                )}]`}</span>
-              )}
-              {hack.type && <span className="hack-type">{hack.type}</span>}
-            </div>
-          ))}
+        <div className="column">
+          <table className="results">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Authors</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              {result.hacks.map((hack) => (
+                <tr key={hack.name} onClick={() => select(hack)}>
+                  <td>{hack.name}</td>
+                  <td>{hack.authors.join(", ") || "-"}</td>
+                  <td>{hack.type ?? "-"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {result.hasMore && (
+            <>
+              <div className="v-spacer" />
+              <div className="v-spacer" />
+              <div className="text-center">
+                There are more than 50 results, please refine your search.
+              </div>
+            </>
+          )}
         </div>
       ) : (
         <div>Nothing</div>

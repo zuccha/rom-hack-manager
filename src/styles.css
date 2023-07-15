@@ -190,6 +190,10 @@ input[type="checkbox"] + label {
   width: 100%;
 }
 
+.text-center {
+  text-align: center;
+}
+
 /** Typography */
 
 .text-danger {
@@ -253,35 +257,37 @@ input[type="checkbox"] + label {
   visibility: visible;
 }
 
-.list {
+table.results {
   background-color: var(--color-neutral-1);
   border: 1px solid var(--color-neutral-4);
+  table-layout: fixed;
+  border-collapse: collapse;
+  width: 100%;
 }
 
-.list > * {
-  padding: 0.3em 1em;
+table.results thead tr {
+  border-bottom: 1px solid var(--color-neutral-4);
 }
 
-.list > *:nth-child(even) {
+table.results tbody tr:nth-child(odd) {
   background-color: var(--color-neutral-3);
 }
 
-.list > *:hover {
+table.results tr {
+  padding: 0.4em 1em;
+}
+
+table.results tbody tr:hover {
   cursor: pointer;
   background-color: var(--color-primary-1);
   color: var(--color-neutral-1);
 }
 
-.hack-authors {
-  font-weight: bold;
-  margin-left: 0.5em;
-}
-
-/* .hack-name {
-
-} */
-
-.hack-type {
-  margin-left: 0.5em;
-  font-style: italic;
+table.results td,
+table.results th {
+  width: 33%;
+  padding: 0.3em 1em;
+  border: 1px solid var(--color-neutral-4);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

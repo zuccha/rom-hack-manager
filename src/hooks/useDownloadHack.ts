@@ -63,12 +63,14 @@ const useDownloadHack = ({
   }, []);
 
   const download = useCallback(() => {
+    if (status === "loading") return;
+
     load();
 
     Tauri.invoke("download_hack", { directoryPath, name, url, vanillaRomPath })
       .then(succeed)
       .catch(fail);
-  }, [directoryPath, fail, load, succeed, url, vanillaRomPath]);
+  }, [directoryPath, fail, load, status, succeed, url, vanillaRomPath]);
 
   return { download, error, status };
 };

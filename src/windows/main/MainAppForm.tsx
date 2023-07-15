@@ -1,6 +1,6 @@
 import { UnlistenFn, listen } from "@tauri-apps/api/event";
 import { WebviewWindow } from "@tauri-apps/api/window";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import Button from "../../components/Button";
 import PathBrowser from "../../components/PathBrowser";
 import TextEditor from "../../components/TextEditor";
@@ -26,7 +26,7 @@ const openSearchWindow = () => {
     resizable: true,
     title: "Search",
     width: 500,
-    height: 400,
+    height: 600,
     url: "src/windows/search/Search.html",
   });
 };
@@ -78,7 +78,14 @@ function MainAppForm({
   }, [name.handleChangeValue, url.handleChangeValue]);
 
   const isValid =
-    url.isValid && directoryPath.isValid && vanillaROMPath.isValid;
+    name.isValid &&
+    url.isValid &&
+    directoryPath.isValid &&
+    vanillaROMPath.isValid;
+
+  const downloadIfValid = useCallback(() => {
+    if (isValid) download();
+  }, [download, isValid]);
 
   return (
     <div className="column">
@@ -102,6 +109,7 @@ function MainAppForm({
         isFullWidth
         onBlur={name.handleBlur}
         onChange={name.handleChangeValue}
+        onSubmit={downloadIfValid}
         placeholder="Name"
         value={name.value}
       />
@@ -114,6 +122,7 @@ function MainAppForm({
         isFullWidth
         onBlur={url.handleBlur}
         onChange={url.handleChangeValue}
+        onSubmit={downloadIfValid}
         placeholder="Download URL"
         value={url.value}
       />
@@ -127,6 +136,7 @@ function MainAppForm({
         mode="directory"
         onBlur={directoryPath.handleBlur}
         onChange={directoryPath.handleChangeValue}
+        onSubmit={downloadIfValid}
         placeholder="Folder"
         value={directoryPath.value}
       />
@@ -140,6 +150,7 @@ function MainAppForm({
         mode="file"
         onBlur={vanillaROMPath.handleBlur}
         onChange={vanillaROMPath.handleChangeValue}
+        onSubmit={downloadIfValid}
         placeholder="Original File"
         value={vanillaROMPath.value}
       />
@@ -149,7 +160,7 @@ function MainAppForm({
       <Button
         className="flex-1"
         isDisabled={!isValid || status === "loading"}
-        onClick={download}
+        onClick={downloadIfValid}
         text="Download"
       />
 

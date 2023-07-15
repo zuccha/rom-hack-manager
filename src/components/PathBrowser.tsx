@@ -13,6 +13,7 @@ type PathBrowserProps = {
   mode: "file" | "directory";
   onBlur?: () => void;
   onChange: (value: string) => void;
+  onSubmit?: () => void;
   placeholder: string;
   value: string;
 };
@@ -25,6 +26,7 @@ function PathBrowser({
   mode,
   onBlur,
   onChange,
+  onSubmit,
   placeholder,
   value,
 }: PathBrowserProps) {
@@ -54,6 +56,7 @@ function PathBrowser({
         isFullWidth={isFullWidth}
         onBlur={onBlur}
         onChange={onChange}
+        onSubmit={onSubmit}
         placeholder={placeholder}
         value={value}
       />
