@@ -7,7 +7,7 @@ import { WebviewWindow } from "@tauri-apps/api/window";
 export const HackSchema = z.object({
   authors: z.array(z.string()),
   date: z.union([z.date(), z.undefined()]),
-  downloadUrl: z.string(),
+  downloadUrl: z.string().transform((value) => `https:${value}`),
   downloads: z.union([z.string(), z.undefined()]),
   length: z.union([z.string(), z.undefined()]),
   name: z.string().transform((value) => value.replace(/&amp;/g, "&")),

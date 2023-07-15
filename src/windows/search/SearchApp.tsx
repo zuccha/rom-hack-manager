@@ -85,7 +85,7 @@ function SearchApp() {
               "datetime"
             ) ?? ""
           ),
-          downloadUrl: (row.children[8]?.children[0] as HTMLAnchorElement).href,
+          downloadUrl: row.children[8]?.children[0]?.getAttribute("href"),
           downloads: row.children[8]?.children[2]?.innerHTML,
           length: row.children[3]?.innerHTML,
           name: row.children[0]?.children[0]?.innerHTML,
@@ -96,9 +96,8 @@ function SearchApp() {
         hacks.push(hack);
       }
       setSetSearchResult({ hacks, hasMore: false });
-    } catch (e) {
-      setSetSearchResult("Failed to look for hacks");
-      console.log(e);
+    } catch {
+      setSetSearchResult("An error occurred");
     } finally {
       setIsSearching(false);
     }
