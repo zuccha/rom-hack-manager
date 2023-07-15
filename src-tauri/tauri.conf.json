@@ -29,6 +29,9 @@
       },
       "shell": {
         "open": true
+      },
+      "window": {
+        "show": true
       }
     },
     "bundle": {
@@ -52,11 +55,24 @@
     },
     "windows": [
       {
+        "label": "main",
         "fullscreen": false,
         "resizable": true,
         "title": "ROM Hack Downloader",
         "width": 400,
-        "height": 300
+        "height": 300,
+        "url": "src/windows/main/Main.html"
+      },
+      {
+        "alwaysOnTop": true,
+        "label": "search",
+        "fullscreen": false,
+        "resizable": true,
+        "title": "Search",
+        "width": 400,
+        "height": 300,
+        "url": "src/windows/search/Search.html",
+        "visible": false
       }
     ]
   }

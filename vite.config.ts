@@ -1,5 +1,6 @@
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+import { resolve } from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
@@ -21,6 +22,12 @@ export default defineConfig(async () => ({
     target: process.env.TAURI_PLATFORM == "windows" ? "chrome105" : "safari13",
     // don't minify for debug builds
     minify: !process.env.TAURI_DEBUG ? "esbuild" : false,
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "src/windows/main/Main.html"),
+        search: resolve(__dirname, "src/windows/search/Search.html"),
+      },
+    },
     // produce sourcemaps for debug builds
     sourcemap: !!process.env.TAURI_DEBUG,
   },

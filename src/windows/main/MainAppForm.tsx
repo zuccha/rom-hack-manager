@@ -1,39 +1,26 @@
-import Button from "./components/Button";
-import PathBrowser from "./components/PathBrowser";
-import TextEditor from "./components/TextEditor";
+import { WebviewWindow } from "@tauri-apps/api/window";
+import { useEffect } from "react";
+import Button from "../../components/Button";
+import PathBrowser from "../../components/PathBrowser";
+import TextEditor from "../../components/TextEditor";
 import useDownloadHack, {
   validateDirectoryPath,
   validateName,
   validateURL,
   validateVanillaROMPath,
-} from "./hooks/useDownloadHack";
-import useFormValue from "./hooks/useFormValue";
-import FormValueControl from "./components/FormValueControl";
-import { useEffect } from "react";
-import { writeStore } from "./hooks/useStore";
+} from "../../hooks/useDownloadHack";
+import useFormValue from "../../hooks/useFormValue";
+import { writeStore } from "../../hooks/useStore";
 
-type AppFormProps = {
+type MainAppFormProps = {
   defaultDirectoryPath: string;
   defaultVanillaROMPath: string;
 };
 
-function debounce<Args extends unknown[]>(
-  callback: (...args: Args) => void,
-  ms: number
-) {
-  let id: NodeJS.Timeout;
-  return (...args: Args) => {
-    clearTimeout(id);
-    id = setTimeout(() => callback(...args), ms);
-  };
-}
-
-const writeStoreDebounced = debounce(writeStore, 1000);
-
-function AppForm({
+function MainAppForm({
   defaultDirectoryPath,
   defaultVanillaROMPath,
-}: AppFormProps) {
+}: MainAppFormProps) {
   const name = useFormValue<string>("", { validate: validateName });
   const url = useFormValue<string>("", { validate: validateURL });
   const directoryPath = useFormValue(defaultDirectoryPath, {
@@ -63,9 +50,21 @@ function AppForm({
     url.isValid && directoryPath.isValid && vanillaROMPath.isValid;
 
   return (
-    <div className="column" style={styles.container}>
-      <div className="header">
-        <span>ROM Hack Downloader</span>
+    <div className="container column">
+      <div className="row justify-space-between">
+        <div className="header">
+          <span>Download a hack</span>
+        </div>
+        <div>
+          <Button
+            isDisabled={status === "loading"}
+            onClick={() => {
+              const searchWindow = WebviewWindow.getByLabel("search");
+              searchWindow?.show();
+            }}
+            text="Search →"
+          />
+        </div>
       </div>
 
       <TextEditor
@@ -119,6 +118,7 @@ function AppForm({
       <div className="v-spacer" />
 
       <Button
+        className="flex-1"
         isDisabled={!isValid || status === "loading"}
         onClick={download}
         text="Download"
@@ -151,19 +151,9 @@ function AppForm({
             Yoshi Island Hacks
           </a>
         </div>
-        {/* <span>by zuccha</span> */}
       </div>
     </div>
   );
 }
 
-export default AppForm;
-
-const styles = {
-  container: {
-    margin: "auto",
-    padding: "1em",
-    width: "500px",
-    maxWidth: "600px",
-  },
-};
+export default MainAppForm;
