@@ -31,6 +31,7 @@
         "open": true
       },
       "window": {
+        "create": true,
         "show": true
       }
     },
@@ -62,17 +63,6 @@
         "width": 400,
         "height": 300,
         "url": "src/windows/main/Main.html"
-      },
-      {
-        "alwaysOnTop": true,
-        "label": "search",
-        "fullscreen": false,
-        "resizable": true,
-        "title": "Search",
-        "width": 400,
-        "height": 300,
-        "url": "src/windows/search/Search.html",
-        "visible": false
       }
     ]
   }

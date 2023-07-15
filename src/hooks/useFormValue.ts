@@ -17,7 +17,7 @@ export type FormValue<T> = {
 
 const useFormValue = <T>(
   defaultValue: T,
-  options: FormValueOptions<T>
+  options: FormValueOptions<T> = {}
 ): FormValue<T> => {
   const [value, setValue] = useState<T>(defaultValue);
   const [error, setError] = useState<string | undefined>(undefined);

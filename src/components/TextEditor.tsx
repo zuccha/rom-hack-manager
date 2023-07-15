@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from "react";
 
 type TextEditorProps = {
+  autoFocus?: boolean;
   className?: string;
   error?: string;
   isDisabled?: boolean;
@@ -12,6 +13,7 @@ type TextEditorProps = {
 };
 
 function TextEditor({
+  autoFocus,
   className,
   error,
   isDisabled,
@@ -38,6 +40,7 @@ function TextEditor({
   return (
     <div className={extendedClassName}>
       <input
+        autoFocus={autoFocus}
         className={error ? "flex-1 error" : "flex-1"}
         disabled={isDisabled}
         value={value}

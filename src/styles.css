@@ -14,7 +14,12 @@ body {
   width: 100%;
 
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  /* align-items: flex-start; */
+}
+
+#root > * {
+  width: 100%;
 }
 
 :root {
@@ -95,10 +100,21 @@ input.error {
   border-color: var(--color-failure);
 }
 
+/** Checkbox */
+
+input[type="checkbox"] {
+  margin-right: 5px;
+  accent-color: var(--color-primary-1);
+}
+
+input[type="checkbox"] + label {
+  font-size: 0.9em;
+}
+
 /** Layout */
 
 .container {
-  margin: auto;
+  margin: 1em auto;
   padding: 1em;
   width: 500px;
   max-width: 600px;
@@ -135,6 +151,10 @@ input.error {
   justify-content: center;
 }
 
+.self-center {
+  align-self: center;
+}
+
 .align-center {
   align-items: center;
 }
@@ -147,12 +167,23 @@ input.error {
   justify-content: space-between;
 }
 
+.grid {
+  display: grid;
+  grid-row-gap: 5px;
+  grid-column-gap: 10px;
+  grid-template-columns: repeat(auto-fill, 140px);
+}
+
 .h-spacer {
   width: 0.3em;
 }
 
 .v-spacer {
   height: 0.4em;
+}
+
+.full-h {
+  height: 100%;
 }
 
 /** Typography */
@@ -164,7 +195,6 @@ input.error {
 .header {
   display: flex;
   flex-direction: row;
-  /* justify-content: center; */
   font-size: 1.2em;
   margin-bottom: 1em;
 }

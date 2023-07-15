@@ -1,5 +1,5 @@
 import { WebviewWindow } from "@tauri-apps/api/window";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import Button from "../../components/Button";
 import PathBrowser from "../../components/PathBrowser";
 import TextEditor from "../../components/TextEditor";
@@ -15,6 +15,18 @@ import { writeStore } from "../../hooks/useStore";
 type MainAppFormProps = {
   defaultDirectoryPath: string;
   defaultVanillaROMPath: string;
+};
+
+const openSearchWindow = () => {
+  new WebviewWindow("search", {
+    alwaysOnTop: true,
+    fullscreen: false,
+    resizable: true,
+    title: "Search",
+    width: 500,
+    height: 400,
+    url: "src/windows/search/Search.html",
+  });
 };
 
 function MainAppForm({
@@ -50,7 +62,7 @@ function MainAppForm({
     url.isValid && directoryPath.isValid && vanillaROMPath.isValid;
 
   return (
-    <div className="container column">
+    <div className="column">
       <div className="row justify-space-between">
         <div className="header">
           <span>Download a hack</span>
@@ -58,22 +70,20 @@ function MainAppForm({
         <div>
           <Button
             isDisabled={status === "loading"}
-            onClick={() => {
-              const searchWindow = WebviewWindow.getByLabel("search");
-              searchWindow?.show();
-            }}
+            onClick={openSearchWindow}
             text="Search →"
           />
         </div>
       </div>
 
       <TextEditor
+        autoFocus
         error={name.isPristine ? undefined : name.error}
         isDisabled={status === "loading"}
         isFullWidth
         onBlur={name.handleBlur}
         onChange={name.handleChangeValue}
-        placeholder="Hack name"
+        placeholder="Name"
         value={name.value}
       />
 
@@ -98,7 +108,7 @@ function MainAppForm({
         mode="directory"
         onBlur={directoryPath.handleBlur}
         onChange={directoryPath.handleChangeValue}
-        placeholder="Directory"
+        placeholder="Folder"
         value={directoryPath.value}
       />
 
@@ -111,7 +121,7 @@ function MainAppForm({
         mode="file"
         onBlur={vanillaROMPath.handleBlur}
         onChange={vanillaROMPath.handleChangeValue}
-        placeholder="Vanilla File"
+        placeholder="Original File"
         value={vanillaROMPath.value}
       />
 
@@ -127,31 +137,6 @@ function MainAppForm({
       <div className="v-spacer" />
 
       <span className="text-danger">{error ?? "\u00a0"}</span>
-
-      <div className="row footer">
-        <div className="row">
-          <a
-            href="https://github.com/zuccha/rom-hack-downloader"
-            target="_blank"
-          >
-            Documentation
-          </a>
-          &nbsp;{" | "}&nbsp;
-          <a
-            href="https://github.com/zuccha/rom-hack-downloader"
-            target="_blank"
-          >
-            SMW Hacks
-          </a>
-          &nbsp;{" | "}&nbsp;
-          <a
-            href="https://github.com/zuccha/rom-hack-downloader"
-            target="_blank"
-          >
-            Yoshi Island Hacks
-          </a>
-        </div>
-      </div>
     </div>
   );
 }
