@@ -22,7 +22,7 @@
       },
       "http": {
         "request": true,
-        "scope": ["https://dl.smwcentral.net/*"]
+        "scope": ["https://dl.smwcentral.net/*", "https://www.smwcentral.net/*"]
       },
       "path": {
         "all": true
@@ -31,6 +31,7 @@
         "open": true
       },
       "window": {
+        "close": true,
         "create": true,
         "show": true
       }
@@ -61,7 +62,7 @@
         "resizable": true,
         "title": "ROM Hack Downloader",
         "width": 400,
-        "height": 300,
+        "height": 350,
         "url": "src/windows/main/Main.html"
       }
     ]

@@ -186,6 +186,10 @@ input[type="checkbox"] + label {
   height: 100%;
 }
 
+.full-w {
+  width: 100%;
+}
+
 /** Typography */
 
 .text-danger {
@@ -204,7 +208,6 @@ input[type="checkbox"] + label {
   flex-direction: row;
   justify-content: space-between;
   font-size: 0.9em;
-  margin-top: 2em;
 }
 
 /** Components */
@@ -248,4 +251,23 @@ input[type="checkbox"] + label {
 
 .tooltip:hover .tooltip-text {
   visibility: visible;
+}
+
+.list {
+  background-color: var(--color-neutral-1);
+  border: 1px solid var(--color-neutral-4);
+}
+
+.list > * {
+  padding: 0.3em 1em;
+}
+
+.list > *:nth-child(even) {
+  background-color: var(--color-neutral-3);
+}
+
+.list > *:hover {
+  cursor: pointer;
+  background-color: var(--color-primary-1);
+  color: var(--color-neutral-1);
 }

@@ -22,9 +22,14 @@ function Checkbox({
   }, [className]);
 
   return (
-    <div className={extendedClassName} onChange={onToggle}>
-      <input type="checkbox" checked={value} disabled={isDisabled} />
-      <label className="">{label}</label>
+    <div className={extendedClassName}>
+      <input
+        type="checkbox"
+        checked={value}
+        disabled={isDisabled}
+        onChange={onToggle}
+      />
+      <label onClick={onToggle}>{label}</label>
     </div>
   );
 }

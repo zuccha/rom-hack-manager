@@ -1,5 +1,6 @@
+import { UnlistenFn, listen } from "@tauri-apps/api/event";
 import { WebviewWindow } from "@tauri-apps/api/window";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import Button from "../../components/Button";
 import PathBrowser from "../../components/PathBrowser";
 import TextEditor from "../../components/TextEditor";
@@ -11,6 +12,7 @@ import useDownloadHack, {
 } from "../../hooks/useDownloadHack";
 import useFormValue from "../../hooks/useFormValue";
 import { writeStore } from "../../hooks/useStore";
+import { SelectHackPayloadSchema } from "../events";
 
 type MainAppFormProps = {
   defaultDirectoryPath: string;
@@ -58,6 +60,23 @@ function MainAppForm({
     });
   }, [directoryPath.value, vanillaROMPath.value]);
 
+  useEffect(() => {
+    let unlisten: UnlistenFn = () => {};
+    listen("select-hack", (event) => {
+      try {
+        const payload = SelectHackPayloadSchema.parse(event.payload);
+        name.handleChangeValue(payload.name);
+        url.handleChangeValue(payload.downloadUrl);
+      } catch (e) {
+        console.log(e);
+        // TODO: Set generic error.
+      }
+    }).then((u) => {
+      unlisten = u;
+    });
+    return unlisten;
+  }, [name.handleChangeValue, url.handleChangeValue]);
+
   const isValid =
     url.isValid && directoryPath.isValid && vanillaROMPath.isValid;
 
@@ -71,7 +90,7 @@ function MainAppForm({
           <Button
             isDisabled={status === "loading"}
             onClick={openSearchWindow}
-            text="Search →"
+            text="Search 🔎"
           />
         </div>
       </div>
