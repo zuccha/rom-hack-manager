@@ -1,8 +1,10 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 type TextEditorProps = {
   className?: string;
+  error?: string;
   isDisabled?: boolean;
+  isFullWidth?: boolean;
   onBlur?: () => void;
   onChange: (value: string) => void;
   placeholder: string;
@@ -11,7 +13,9 @@ type TextEditorProps = {
 
 function TextEditor({
   className,
+  error,
   isDisabled,
+  isFullWidth,
   onBlur,
   onChange,
   placeholder,
@@ -24,15 +28,29 @@ function TextEditor({
     [onChange]
   );
 
+  const extendedClassName = useMemo(() => {
+    const classNames = ["relative flex"];
+    if (className) classNames.push(className);
+    if (isFullWidth) classNames.push("flex-1");
+    return classNames.join(" ");
+  }, [className, isFullWidth]);
+
   return (
-    <input
-      className={className}
-      disabled={isDisabled}
-      value={value}
-      onBlur={onBlur}
-      onChange={handleChange}
-      placeholder={placeholder}
-    />
+    <div className={extendedClassName}>
+      <input
+        className={error ? "flex-1 error" : "flex-1"}
+        disabled={isDisabled}
+        value={value}
+        onBlur={onBlur}
+        onChange={handleChange}
+        placeholder={placeholder}
+      />
+      {error && (
+        <div className="absolute error-icon tooltip">
+          !<div className="tooltip-text">{error}</div>
+        </div>
+      )}
+    </div>
   );
 }
 

@@ -34,16 +34,16 @@ function AppForm({
   defaultDirectoryPath,
   defaultVanillaROMPath,
 }: AppFormProps) {
-  const name = useFormValue<string>("", validateName);
-  const url = useFormValue<string>("", validateURL);
-  const directoryPath = useFormValue(
-    defaultDirectoryPath,
-    validateDirectoryPath
-  );
-  const vanillaROMPath = useFormValue(
-    defaultVanillaROMPath,
-    validateVanillaROMPath
-  );
+  const name = useFormValue<string>("", { validate: validateName });
+  const url = useFormValue<string>("", { validate: validateURL });
+  const directoryPath = useFormValue(defaultDirectoryPath, {
+    isDirty: defaultDirectoryPath !== "",
+    validate: validateDirectoryPath,
+  });
+  const vanillaROMPath = useFormValue(defaultVanillaROMPath, {
+    isDirty: defaultVanillaROMPath !== "",
+    validate: validateVanillaROMPath,
+  });
 
   const { download, error, status } = useDownloadHack({
     directoryPath: directoryPath.value,
@@ -68,53 +68,53 @@ function AppForm({
         <span>ROM Hack Downloader</span>
       </div>
 
-      <FormValueControl value={name}>
-        <TextEditor
-          isDisabled={status === "loading"}
-          onBlur={name.handleBlur}
-          onChange={name.handleChangeValue}
-          placeholder="Hack name"
-          value={name.value}
-        />
-      </FormValueControl>
+      <TextEditor
+        error={name.isPristine ? undefined : name.error}
+        isDisabled={status === "loading"}
+        isFullWidth
+        onBlur={name.handleBlur}
+        onChange={name.handleChangeValue}
+        placeholder="Hack name"
+        value={name.value}
+      />
 
       <div className="v-spacer" />
 
-      <FormValueControl value={url}>
-        <TextEditor
-          isDisabled={status === "loading"}
-          onBlur={url.handleBlur}
-          onChange={url.handleChangeValue}
-          placeholder="Download URL"
-          value={url.value}
-        />
-      </FormValueControl>
+      <TextEditor
+        error={url.isPristine ? undefined : url.error}
+        isDisabled={status === "loading"}
+        isFullWidth
+        onBlur={url.handleBlur}
+        onChange={url.handleChangeValue}
+        placeholder="Download URL"
+        value={url.value}
+      />
 
       <div className="v-spacer" />
 
-      <FormValueControl value={directoryPath}>
-        <PathBrowser
-          isDisabled={status === "loading"}
-          mode="directory"
-          onBlur={directoryPath.handleBlur}
-          onChange={directoryPath.handleChangeValue}
-          placeholder="Directory"
-          value={directoryPath.value}
-        />
-      </FormValueControl>
+      <PathBrowser
+        error={directoryPath.isPristine ? undefined : directoryPath.error}
+        isDisabled={status === "loading"}
+        isFullWidth
+        mode="directory"
+        onBlur={directoryPath.handleBlur}
+        onChange={directoryPath.handleChangeValue}
+        placeholder="Directory"
+        value={directoryPath.value}
+      />
 
       <div className="v-spacer" />
 
-      <FormValueControl value={vanillaROMPath}>
-        <PathBrowser
-          isDisabled={status === "loading"}
-          mode="file"
-          onBlur={vanillaROMPath.handleBlur}
-          onChange={vanillaROMPath.handleChangeValue}
-          placeholder="Vanilla File"
-          value={vanillaROMPath.value}
-        />
-      </FormValueControl>
+      <PathBrowser
+        error={vanillaROMPath.isPristine ? undefined : vanillaROMPath.error}
+        isDisabled={status === "loading"}
+        isFullWidth
+        mode="file"
+        onBlur={vanillaROMPath.handleBlur}
+        onChange={vanillaROMPath.handleChangeValue}
+        placeholder="Vanilla File"
+        value={vanillaROMPath.value}
+      />
 
       <div className="v-spacer" />
 
@@ -124,13 +124,34 @@ function AppForm({
         text="Download"
       />
 
-      {status === "failure" && <span className="text-danger">{error}</span>}
+      <div className="v-spacer" />
+
+      <span className="text-danger">{error ?? "\u00a0"}</span>
 
       <div className="row footer">
-        <a href="https://github.com/zuccha/rom-hack-downloader" target="_blank">
-          Website
-        </a>
-        <span>by zuccha</span>
+        <div className="row">
+          <a
+            href="https://github.com/zuccha/rom-hack-downloader"
+            target="_blank"
+          >
+            Documentation
+          </a>
+          &nbsp;{" | "}&nbsp;
+          <a
+            href="https://github.com/zuccha/rom-hack-downloader"
+            target="_blank"
+          >
+            SMW Hacks
+          </a>
+          &nbsp;{" | "}&nbsp;
+          <a
+            href="https://github.com/zuccha/rom-hack-downloader"
+            target="_blank"
+          >
+            Yoshi Island Hacks
+          </a>
+        </div>
+        {/* <span>by zuccha</span> */}
       </div>
     </div>
   );

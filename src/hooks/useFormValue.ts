@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 
+export type FormValueOptions<T> = {
+  isDirty?: boolean;
+  onBlur?: () => void;
+  validate?: (value: T) => (string | undefined) | Promise<string | undefined>;
+};
+
 export type FormValue<T> = {
   error: string | undefined;
   handleBlur: () => void;
@@ -11,20 +17,19 @@ export type FormValue<T> = {
 
 const useFormValue = <T>(
   defaultValue: T,
-  validate?: (value: T) => (string | undefined) | Promise<string | undefined>,
-  onBlur?: () => void
+  options: FormValueOptions<T>
 ): FormValue<T> => {
   const [value, setValue] = useState<T>(defaultValue);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [isPristine, setIsPristine] = useState(true);
+  const [isPristine, setIsPristine] = useState(!options.isDirty);
 
   const handleValidate = useCallback(
     (newValue: T) => {
-      if (!validate) {
+      if (!options.validate) {
         setError(undefined);
         return;
       }
-      const errorOrPromise = validate(newValue);
+      const errorOrPromise = options.validate(newValue);
       if (errorOrPromise === undefined) {
         setError(undefined);
         return;
@@ -38,17 +43,20 @@ const useFormValue = <T>(
         setError(newError);
       });
     },
-    [validate]
+    [options.validate]
   );
 
-  const handleChangeValue = useCallback((newValue: T) => {
-    setValue(newValue);
-    handleValidate(newValue);
-  }, []);
+  const handleChangeValue = useCallback(
+    (newValue: T) => {
+      setValue(newValue);
+      handleValidate(newValue);
+    },
+    [handleValidate]
+  );
 
   const handleBlur = useCallback(() => {
     setIsPristine(false);
-    onBlur?.();
+    options.onBlur?.();
   }, []);
 
   useEffect(() => {

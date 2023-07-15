@@ -7,7 +7,9 @@ import Button from "./Button";
 
 type PathBrowserProps = {
   className?: string;
+  error?: string;
   isDisabled?: boolean;
+  isFullWidth?: boolean;
   mode: "file" | "directory";
   onBlur?: () => void;
   onChange: (value: string) => void;
@@ -17,7 +19,9 @@ type PathBrowserProps = {
 
 function PathBrowser({
   className,
+  error,
   isDisabled,
+  isFullWidth,
   mode,
   onBlur,
   onChange,
@@ -45,8 +49,9 @@ function PathBrowser({
   return (
     <div className={extendedClassName}>
       <TextEditor
-        className="flex-1"
+        error={error}
         isDisabled={isDisabled}
+        isFullWidth={isFullWidth}
         onBlur={onBlur}
         onChange={onChange}
         placeholder={placeholder}
