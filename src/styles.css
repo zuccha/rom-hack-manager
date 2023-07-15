@@ -271,3 +271,17 @@ input[type="checkbox"] + label {
   background-color: var(--color-primary-1);
   color: var(--color-neutral-1);
 }
+
+.hack-authors {
+  font-weight: bold;
+  margin-left: 0.5em;
+}
+
+/* .hack-name {
+
+} */
+
+.hack-type {
+  margin-left: 0.5em;
+  font-style: italic;
+}

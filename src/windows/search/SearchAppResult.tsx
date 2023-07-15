@@ -66,7 +66,13 @@ function SearchAppResult({ result }: SearchAppResultProps) {
         <div className="list">
           {result.hacks.map((hack) => (
             <div key={hack.name} className="row" onClick={() => select(hack)}>
-              {hack.name}
+              <span className="hack-name">{hack.name}</span>
+              {hack.authors.length > 0 && (
+                <span className="hack-authors">{`[${hack.authors.join(
+                  ", "
+                )}]`}</span>
+              )}
+              {hack.type && <span className="hack-type">{hack.type}</span>}
             </div>
           ))}
         </div>
