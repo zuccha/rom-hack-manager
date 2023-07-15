@@ -40,7 +40,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "io.zuccha",
+      "identifier": "io.zuccha.rom-hack-downloader",
       "resources": ["resources/*"],
       "targets": "all"
     },
@@ -54,7 +54,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "Download Hack",
+        "title": "ROM Hack Downloader",
         "width": 400,
         "height": 300
       }
