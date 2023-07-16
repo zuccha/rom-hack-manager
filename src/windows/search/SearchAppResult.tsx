@@ -1,8 +1,11 @@
 import { z } from "zod";
 import Button from "../../components/Button";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { emit } from "@tauri-apps/api/event";
 import { WebviewWindow } from "@tauri-apps/api/window";
+import { Flex, Heading, Text } from "@chakra-ui/react";
+import Alert from "../../components/Alert";
+import Table, { Column } from "../../components/Table";
 
 export const HackSchema = z.object({
   authors: z.array(z.string()),
@@ -29,6 +32,12 @@ type SearchAppResultProps = {
   result: SearchResult;
 };
 
+const resultsTableColumns: Column<Hack>[] = [
+  { header: "Name", key: "name" },
+  { header: "Authors", format: (hack: Hack) => hack.authors.join(", ") },
+  { header: "Type", format: (hack: Hack) => hack.type ?? "-" },
+];
+
 function SearchAppResult({ result }: SearchAppResultProps) {
   const select = useCallback(async (hack: Hack) => {
     try {
@@ -45,57 +54,34 @@ function SearchAppResult({ result }: SearchAppResultProps) {
 
   if (typeof result === "string") {
     return (
-      <div className="column">
-        <div className="v-spacer" />
-        <div className="v-spacer" />
-
-        <div className="text-danger">{result}</div>
-      </div>
+      <Flex direction="column" gap={2} mt={2}>
+        <Alert description={result} status="error" />
+      </Flex>
     );
   }
 
   return (
-    <div className="column justify-stretch">
-      <div className="v-spacer" />
-      <div className="v-spacer" />
+    <Flex direction="column" gap={2} mt={2}>
+      <Heading size="sm">
+        Results ({result.hacks.length}
+        {result.hasMore ? "+" : ""})
+      </Heading>
 
-      <div className="header">
-        <span>Results</span>
-      </div>
       {result.hacks.length > 0 ? (
-        <div className="column">
-          <table className="results">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Authors</th>
-                <th>Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              {result.hacks.map((hack) => (
-                <tr key={hack.name} onClick={() => select(hack)}>
-                  <td>{hack.name}</td>
-                  <td>{hack.authors.join(", ") || "-"}</td>
-                  <td>{hack.type ?? "-"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {result.hasMore && (
-            <>
-              <div className="v-spacer" />
-              <div className="v-spacer" />
-              <div className="text-center">
-                There are more than 50 results, please refine your search.
-              </div>
-            </>
-          )}
-        </div>
+        <Table
+          caption={
+            result.hasMore
+              ? "There are more than 50 results, please refine your search."
+              : undefined
+          }
+          columns={resultsTableColumns}
+          data={result.hacks}
+          onClickRow={select}
+        />
       ) : (
-        <div>Nothing</div>
+        <Text>Nothing</Text>
       )}
-    </div>
+    </Flex>
   );
 }
 

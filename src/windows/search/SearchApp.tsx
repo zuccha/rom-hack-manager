@@ -1,7 +1,9 @@
+import { Heading, SimpleGrid } from "@chakra-ui/react";
 import { getClient, ResponseType } from "@tauri-apps/api/http";
 import { useCallback, useState } from "react";
 import Button from "../../components/Button";
 import Checkbox from "../../components/Checkbox";
+import Container from "../../components/Container";
 import TextEditor from "../../components/TextEditor";
 import SearchAppResult, {
   Hack,
@@ -108,47 +110,41 @@ function SearchApp() {
   }, [author, description, isDifficultySelected, isSearching, name]);
 
   return (
-    <div className="container column">
-      <div className="header">
-        <span>Search hack</span>
-      </div>
+    <Container>
+      <Heading size="md">Search hack</Heading>
 
       <TextEditor
         isDisabled={isSearching}
         autoFocus
-        isFullWidth
         onChange={setName}
         onSubmit={search}
         placeholder="Name"
         value={name}
       />
 
-      <div className="v-spacer" />
-
       <TextEditor
         isDisabled={isSearching}
-        isFullWidth
         onChange={setAuthor}
         onSubmit={search}
         placeholder="Author"
         value={author}
       />
 
-      <div className="v-spacer" />
-
       <TextEditor
         isDisabled={isSearching}
-        isFullWidth
         onChange={setDescription}
         onSubmit={search}
         placeholder="Description"
         value={description}
       />
 
-      <div className="v-spacer" />
-      <div className="v-spacer" />
-
-      <div className="grid">
+      <SimpleGrid
+        bg="white"
+        borderWidth={1}
+        columnGap={1}
+        minChildWidth={160}
+        p={2}
+      >
         {difficulties.map((difficulty) => (
           <Checkbox
             key={difficulty.label}
@@ -158,23 +154,17 @@ function SearchApp() {
             value={!!isDifficultySelected[difficulty.label]}
           />
         ))}
-      </div>
-
-      <div className="v-spacer" />
-      <div className="v-spacer" />
+      </SimpleGrid>
 
       <Button
-        className="flex-1"
         isDisabled={isSearching}
+        isLoading={isSearching}
         onClick={search}
         text="Search"
       />
 
-      <div className="v-spacer" />
-      <div className="v-spacer" />
-
       <SearchAppResult result={searchResult} />
-    </div>
+    </Container>
   );
 }
 

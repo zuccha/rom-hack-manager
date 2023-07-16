@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { Checkbox as CCheckbox, Text } from "@chakra-ui/react";
 
 export type CheckboxProps = {
   className?: string;
@@ -8,28 +8,17 @@ export type CheckboxProps = {
   value: boolean;
 };
 
-function Checkbox({
-  className,
-  isDisabled,
-  label,
-  onToggle,
-  value,
-}: CheckboxProps) {
-  const extendedClassName = useMemo(() => {
-    const classNames = ["row align-center"];
-    if (className) classNames.push(className);
-    return classNames.join(" ");
-  }, [className]);
-
+function Checkbox({ isDisabled, label, onToggle, value }: CheckboxProps) {
   return (
-    <div className={extendedClassName}>
-      <input
+    <div>
+      <CCheckbox
         type="checkbox"
         checked={value}
         disabled={isDisabled}
         onChange={onToggle}
-      />
-      <label onClick={onToggle}>{label}</label>
+      >
+        <Text fontSize="sm">{label}</Text>
+      </CCheckbox>
     </div>
   );
 }

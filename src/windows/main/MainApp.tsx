@@ -1,6 +1,9 @@
+import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import MainAppForm from "./MainAppForm";
 import { Store, readStore } from "../../hooks/useStore";
+import MainAppForm from "./MainAppForm";
+import Container from "../../components/Container";
+import Website from "../../components/Website";
 
 function MainApp() {
   const [store, setStore] = useState<Store | undefined>(undefined);
@@ -14,22 +17,18 @@ function MainApp() {
   }
 
   return (
-    <div className="container column justify-space-between flex-1">
+    <Container justifyContent="space-between">
       <MainAppForm
         defaultDirectoryPath={store.directoryPath}
         defaultVanillaROMPath={store.vanillaROMPath}
       />
-      <div className="row footer">
-        <div className="row">
-          <a
-            href="https://github.com/zuccha/rom-hack-downloader"
-            target="_blank"
-          >
-            Documentation
-          </a>
-        </div>
-      </div>
-    </div>
+      <Flex>
+        <Website
+          href="https://github.com/zuccha/rom-hack-downloader"
+          label="Documentation"
+        />
+      </Flex>
+    </Container>
   );
 }
 

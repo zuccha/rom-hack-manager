@@ -1,3 +1,5 @@
+import { SearchIcon, WarningIcon } from "@chakra-ui/icons";
+import { Flex, FormErrorMessage, Heading, Text } from "@chakra-ui/react";
 import { UnlistenFn, listen } from "@tauri-apps/api/event";
 import { WebviewWindow } from "@tauri-apps/api/window";
 import { useCallback, useEffect } from "react";
@@ -13,6 +15,7 @@ import useDownloadHack, {
 import useFormValue from "../../hooks/useFormValue";
 import { writeStore } from "../../hooks/useStore";
 import { SelectHackPayloadSchema } from "../events";
+import Alert from "../../components/Alert";
 
 type MainAppFormProps = {
   defaultDirectoryPath: string;
@@ -25,7 +28,7 @@ const openSearchWindow = () => {
     fullscreen: false,
     resizable: true,
     title: "Search",
-    width: 500,
+    width: 550,
     height: 600,
     url: "src/windows/search/Search.html",
   });
@@ -88,65 +91,49 @@ function MainAppForm({
   }, [download, isValid]);
 
   return (
-    <div className="column">
-      <div className="row justify-space-between">
-        <div className="header">
-          <span>Download a hack</span>
-        </div>
-        <div>
-          <Button
-            isDisabled={status === "loading"}
-            onClick={openSearchWindow}
-            text="Search 🔎"
-          />
-        </div>
-      </div>
+    <Flex direction="column" gap={3}>
+      <Flex justifyContent="space-between">
+        <Heading size="md">Download a hack</Heading>
 
+        <Button
+          isDisabled={status === "loading"}
+          leftIcon={<SearchIcon />}
+          onClick={openSearchWindow}
+          text="Search"
+        />
+      </Flex>
       <TextEditor
         autoFocus
         error={name.isPristine ? undefined : name.error}
         isDisabled={status === "loading"}
-        isFullWidth
         onBlur={name.handleBlur}
         onChange={name.handleChangeValue}
         onSubmit={downloadIfValid}
         placeholder="Name"
         value={name.value}
       />
-
-      <div className="v-spacer" />
-
       <TextEditor
         error={url.isPristine ? undefined : url.error}
         isDisabled={status === "loading"}
-        isFullWidth
         onBlur={url.handleBlur}
         onChange={url.handleChangeValue}
         onSubmit={downloadIfValid}
         placeholder="Download URL"
         value={url.value}
       />
-
-      <div className="v-spacer" />
-
       <PathBrowser
         error={directoryPath.isPristine ? undefined : directoryPath.error}
         isDisabled={status === "loading"}
-        isFullWidth
         mode="directory"
         onBlur={directoryPath.handleBlur}
         onChange={directoryPath.handleChangeValue}
         onSubmit={downloadIfValid}
-        placeholder="Folder"
+        placeholder="Main Folder"
         value={directoryPath.value}
       />
-
-      <div className="v-spacer" />
-
       <PathBrowser
         error={vanillaROMPath.isPristine ? undefined : vanillaROMPath.error}
         isDisabled={status === "loading"}
-        isFullWidth
         mode="file"
         onBlur={vanillaROMPath.handleBlur}
         onChange={vanillaROMPath.handleChangeValue}
@@ -154,20 +141,15 @@ function MainAppForm({
         placeholder="Original File"
         value={vanillaROMPath.value}
       />
-
-      <div className="v-spacer" />
-
       <Button
-        className="flex-1"
         isDisabled={!isValid || status === "loading"}
+        isLoading={status === "loading"}
         onClick={downloadIfValid}
         text="Download"
       />
 
-      <div className="v-spacer" />
-
-      <span className="text-danger">{error ?? "\u00a0"}</span>
-    </div>
+      {error && <Alert status="error" description={error} />}
+    </Flex>
   );
 }
 

@@ -1,28 +1,36 @@
-import { KeyboardEvent, useCallback, useMemo } from "react";
+import {
+  Flex,
+  Input,
+  InputGroup,
+  InputProps,
+  InputRightElement,
+  Text,
+  Tooltip,
+} from "@chakra-ui/react";
+import { WarningIcon } from "@chakra-ui/icons";
+import { KeyboardEvent, useCallback } from "react";
 
-type TextEditorProps = {
+export type TextEditorProps = {
   autoFocus?: boolean;
-  className?: string;
   error?: string;
   isDisabled?: boolean;
-  isFullWidth?: boolean;
   onBlur?: () => void;
   onChange: (value: string) => void;
   onSubmit?: () => void;
   placeholder: string;
+  type?: InputProps["type"];
   value: string;
 };
 
 function TextEditor({
   autoFocus,
-  className,
   error,
   isDisabled,
-  isFullWidth,
   onBlur,
   onChange,
   onSubmit,
   placeholder,
+  type,
   value,
 }: TextEditorProps) {
   const handleChange = useCallback(
@@ -41,31 +49,50 @@ function TextEditor({
     [onSubmit]
   );
 
-  const extendedClassName = useMemo(() => {
-    const classNames = ["relative flex"];
-    if (className) classNames.push(className);
-    if (isFullWidth) classNames.push("flex-1");
-    return classNames.join(" ");
-  }, [className, isFullWidth]);
-
   return (
-    <div className={extendedClassName}>
-      <input
+    <InputGroup bg="white" size="sm">
+      {placeholder && value.length > 0 && (
+        <Flex
+          color={error ? "red.500" : "gray.500"}
+          left={2}
+          position="absolute"
+          top={-2}
+          zIndex={10}
+        >
+          <Text fontSize="xs" px={1} zIndex={1}>
+            {placeholder}
+          </Text>
+          <Flex
+            borderBottomWidth={2}
+            borderColor="white"
+            h="50%"
+            pos="absolute"
+            w="100%"
+          />
+        </Flex>
+      )}
+
+      <Input
         autoFocus={autoFocus}
-        className={error ? "flex-1 error" : "flex-1"}
-        disabled={isDisabled}
-        value={value}
+        borderRadius={0}
+        isDisabled={isDisabled}
+        isInvalid={!!error}
         onBlur={onBlur}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
+        type={type}
+        value={value}
       />
+
       {error && (
-        <div className="absolute error-icon tooltip">
-          !<div className="tooltip-text">{error}</div>
-        </div>
+        <InputRightElement>
+          <Tooltip label={error}>
+            <WarningIcon color="red.600" />
+          </Tooltip>
+        </InputRightElement>
       )}
-    </div>
+    </InputGroup>
   );
 }
 
