@@ -41,7 +41,7 @@ function GameTab({ gameId, onRemoveGame }: GameTabProps) {
   );
 }
 
-function Home() {
+function MainHome() {
   const [selectedGameIndex, { set: setSelectedGameIndex }] =
     useSelectedGameIndex();
 
@@ -49,28 +49,29 @@ function Home() {
 
   return (
     <Tabs
+      borderColor="blue.600"
       index={selectedGameIndex}
       onChange={setSelectedGameIndex}
       variant="enclosed"
     >
       <TabList>
         {gameIds.map((gameId) => (
-          <Tab borderRadius={0} key={gameId}>
+          <Tab borderRadius={0} borderTopWidth={0} key={gameId}>
             <GameTab gameId={gameId} onRemoveGame={() => removeGame(gameId)} />
           </Tab>
         ))}
-        <Tab borderRadius={0} minH={REMOVE_ICON_SIZE}>
+        <Tab borderRadius={0} borderTopWidth={0} minH={REMOVE_ICON_SIZE}>
           <AddIcon />
         </Tab>
       </TabList>
 
       <TabPanels>
         {gameIds.map((gameId) => (
-          <TabPanel key={gameId}>
+          <TabPanel key={gameId} p={0}>
             <PanelGame gameId={gameId} />
           </TabPanel>
         ))}
-        <TabPanel>
+        <TabPanel p={0}>
           <PanelGameCreation onCreateGame={createGame} />
         </TabPanel>
       </TabPanels>
@@ -78,4 +79,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default MainHome;

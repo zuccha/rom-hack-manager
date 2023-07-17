@@ -1,4 +1,4 @@
 import render from "../render";
-import SearchApp from "./SearchApp";
+import SearchHome from "./SearchHome";
 
-render(<SearchApp />);
+render(<SearchHome />);

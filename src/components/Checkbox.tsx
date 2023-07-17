@@ -14,6 +14,7 @@ function Checkbox({ isDisabled, label, onToggle, value }: CheckboxProps) {
       <CCheckbox
         type="checkbox"
         checked={value}
+        defaultChecked={value}
         disabled={isDisabled}
         onChange={onToggle}
       >

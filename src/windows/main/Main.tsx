@@ -1,4 +1,4 @@
 import render from "../render";
-import Home from "./Home";
+import MainHome from "./MainHome";
 
-render(<Home />);
+render(<MainHome />);
