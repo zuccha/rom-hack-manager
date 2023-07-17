@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import Alert from "../../components/Alert";
 import Section from "../../components/Section";
 import Table, { Column } from "../../components/Table";
+import { useSelectedGameId } from "../store";
 import { Hack, SearchResults } from "./useSearchHacks";
 
 type SectionResultsProps = {
@@ -18,16 +19,21 @@ const resultsTableColumns: Column<Hack>[] = [
 ];
 
 function SectionResults({ results }: SectionResultsProps) {
-  const selectHack = useCallback(async (hack: Hack) => {
-    try {
-      await emit("select-hack", hack);
-      const searchWindow = WebviewWindow.getByLabel("search");
-      searchWindow?.close();
-    } catch (e) {
-      console.log(e);
-      // TODO: Do what?
-    }
-  }, []);
+  const [selectedGameId] = useSelectedGameId();
+
+  const selectHack = useCallback(
+    async (hack: Hack) => {
+      try {
+        await emit("select-hack", { ...hack, gameId: selectedGameId });
+        const searchWindow = WebviewWindow.getByLabel("search");
+        searchWindow?.close();
+      } catch (e) {
+        console.log(e);
+        // TODO: Do what?
+      }
+    },
+    [selectedGameId]
+  );
 
   if (!results)
     return (

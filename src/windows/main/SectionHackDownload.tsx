@@ -8,6 +8,7 @@ import Section from "../../components/Section";
 import TextEditor from "../../components/TextEditor";
 import useFormValue from "../../hooks/useFormValue";
 import useIsValid from "../../hooks/useIsValid";
+import useListenEvent from "../../hooks/useListenEvent";
 import useTauriInvoke from "../../hooks/useTauriInvoke";
 import { useGame } from "../store";
 import {
@@ -16,6 +17,7 @@ import {
   validateName,
   validateURL,
 } from "../validation";
+import { SelectHackPayloadSchema } from "../events";
 
 const openSearchWindow = () => {
   new WebviewWindow("search", {
@@ -38,6 +40,24 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
 
   const hackName = useFormValue<string>("", { validate: validateName });
   const hackDownloadUrl = useFormValue<string>("", { validate: validateURL });
+
+  useListenEvent(
+    useCallback(
+      (maybePayload) => {
+        try {
+          console.log(maybePayload);
+          const payload = SelectHackPayloadSchema.parse(maybePayload);
+          if (payload.gameId !== gameId) return;
+          hackName.handleChangeValue(payload.name);
+          hackDownloadUrl.handleChangeValue(payload.downloadUrl);
+        } catch (e) {
+          console.log(e);
+          // TODO: Set generic error.
+        }
+      },
+      [gameId, hackName.handleChangeValue, hackDownloadUrl.handleChangeValue]
+    )
+  );
 
   const downloadArgs = useMemo(
     () => ({

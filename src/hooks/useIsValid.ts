@@ -7,7 +7,6 @@ const useIsValid = <T>(
   const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
-    console.log("validate", value);
     validate(value).then((error) => setIsValid(!error));
   }, [validate, value]);
 

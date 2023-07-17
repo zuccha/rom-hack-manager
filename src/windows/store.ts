@@ -3,8 +3,10 @@ import {
   SetterOrUpdater,
   atom,
   atomFamily,
+  selector,
   useRecoilCallback,
   useRecoilState,
+  useRecoilValue,
 } from "recoil";
 import { recoilPersist } from "recoil-persist";
 import { z } from "zod";
@@ -44,9 +46,18 @@ const gameIdsState = atom<string[]>({
 });
 
 const selectedGameIndexState = atom<number>({
-  key: "GameIndex",
+  key: "SelectedGameIndex",
   default: 0,
   effects_UNSTABLE: [persistAtom],
+});
+
+const selectedGameIdSelector = selector({
+  key: "SelectedGameId",
+  get: ({ get }) => {
+    const index = get(selectedGameIndexState);
+    const ids = get(gameIdsState);
+    return ids[index];
+  },
 });
 
 /** Hooks */
@@ -128,4 +139,10 @@ export const useSelectedGameIndex = (): [
   );
 
   return [selectedGameIndex, { set: setSelectedGameIndex }];
+};
+
+export const useSelectedGameId = (): [string | undefined] => {
+  const selectedGameId = useRecoilValue(selectedGameIdSelector);
+
+  return [selectedGameId];
 };

@@ -7,14 +7,13 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  useDisclosure,
 } from "@chakra-ui/react";
+import { useCallback, useState } from "react";
+import Dialog from "../../components/Dialog";
 import { useGame, useGameIds, useSelectedGameIndex } from "../store";
 import PanelAbout from "./PanelAbout";
 import PanelGame from "./PanelGame";
 import PanelGameCreation from "./PanelGameCreation";
-import Dialog from "../../components/Dialog";
-import { useCallback, useState } from "react";
 
 type GameTabProps = {
   gameId: string;
@@ -34,8 +33,8 @@ function GameTab({ gameId, onRemoveGame }: GameTabProps) {
         h={REMOVE_ICON_SIZE}
         mr={-1}
         onClick={onRemoveGame}
-        _hover={{ bgColor: "gray.100" }}
         w={REMOVE_ICON_SIZE}
+        _hover={{ bgColor: "gray.100" }}
       >
         <CloseIcon fontSize={10} />
       </Center>
