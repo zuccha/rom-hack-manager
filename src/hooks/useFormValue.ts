@@ -3,11 +3,13 @@ import { useCallback, useEffect, useState } from "react";
 export type FormValueOptions<T> = {
   isDirty?: boolean;
   onBlur?: () => void;
+  onChange?: (value: T) => void;
   validate?: (value: T) => (string | undefined) | Promise<string | undefined>;
 };
 
 export type FormValue<T> = {
   error: string | undefined;
+  errorIfDirty: string | undefined;
   handleBlur: () => void;
   handleChangeValue: (value: T) => void;
   isPristine: boolean;
@@ -49,15 +51,16 @@ const useFormValue = <T>(
   const handleChangeValue = useCallback(
     (newValue: T) => {
       setValue(newValue);
+      options.onChange?.(newValue);
       handleValidate(newValue);
     },
-    [handleValidate]
+    [handleValidate, options.onChange]
   );
 
   const handleBlur = useCallback(() => {
     setIsPristine(false);
     options.onBlur?.();
-  }, []);
+  }, [options.onBlur]);
 
   useEffect(() => {
     handleValidate(value);
@@ -65,6 +68,7 @@ const useFormValue = <T>(
 
   return {
     error,
+    errorIfDirty: isPristine ? undefined : error,
     handleBlur,
     handleChangeValue,
     isPristine,

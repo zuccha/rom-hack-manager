@@ -66,9 +66,9 @@ fn validate_directory_path(path: &str) -> Result<(), String> {
 }
 
 #[tauri::command]
-fn validate_vanilla_rom_path(path: &str) -> Result<(), String> {
+fn validate_file_path(path: &str) -> Result<(), String> {
   if path.is_empty() { return Err("No vanilla ROM has been specified".into()) }
-  if !Path::new(path).exists() { return Err("Vanilla ROM doesn't exist".into()) }
+  if !Path::new(path).exists() { return Err("File doesn't exist".into()) }
   Ok(())
 }
 
@@ -81,33 +81,33 @@ fn validate_url(url: &str) -> Result<(), String> {
 #[tauri::command]
 async fn download_hack(
   app_handle: tauri::AppHandle,
-  name: &str,
-  directory_path: &str,
-  url: &str,
-  vanilla_rom_path: &str) -> Result<(), String> {
+  game_directory: &str,
+  game_original_copy: &str,
+  hack_name: &str,
+  hack_download_url: &str) -> Result<(), String> {
   // Validate Directory
-  match validate_directory_path(directory_path) {
+  match validate_directory_path(game_directory) {
     Err(e) => return Err(e),
     _ => (),
   }
 
   // Validate Vanilla ROM
-  match validate_vanilla_rom_path(vanilla_rom_path) {
+  match validate_file_path(game_original_copy) {
     Err(e) => return Err(e),
     _ => (),
   }
 
   // Validate URL
-  match validate_url(url) {
+  match validate_url(hack_download_url) {
     Err(e) => return Err(e),
     _ => (),
   }
 
   // Build paths
-  let hack_directory_path = PathBuf::from(directory_path).join(name);
+  let hack_directory_path = PathBuf::from(game_directory).join(hack_name);
 
   // Download
-  let response = match reqwest::get(url).await {
+  let response = match reqwest::get(hack_download_url).await {
     Err(_) => return Err("Failed to download zip".into()),
     Ok(r) => r,
   };
@@ -158,7 +158,7 @@ async fn download_hack(
       std::process::Command::new(&flips_path)
         .arg("--apply")
         .arg(&bps_path)
-        .arg(&vanilla_rom_path)
+        .arg(&game_original_copy)
         .arg(&sfc_path)
         .spawn()
         .unwrap();
@@ -182,9 +182,9 @@ fn main() {
       download_hack,
       path_exists,
       validate_directory_path,
+      validate_file_path,
       validate_name,
       validate_url,
-      validate_vanilla_rom_path,
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
