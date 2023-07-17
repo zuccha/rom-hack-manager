@@ -3,15 +3,15 @@ import { useEffect } from "react";
 
 const useListenEvent = <T>(onEvent: (payload: unknown) => void) => {
   useEffect(() => {
-    let unlisten: UnlistenFn = () => {};
+    const unlistenRef: { current: UnlistenFn } = { current: () => {} };
 
     listen("select-hack", (event) => {
       onEvent(event.payload);
-    }).then((newUnlisten) => {
-      unlisten = newUnlisten;
+    }).then((unlisten) => {
+      unlistenRef.current = unlisten;
     });
 
-    return unlisten;
+    return () => unlistenRef.current();
   }, [onEvent]);
 };
 

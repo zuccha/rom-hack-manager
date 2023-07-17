@@ -18,16 +18,19 @@ function SectionSettings({ gameId }: SectionSettingsProps) {
   const [game, gameMethods] = useGame(gameId);
 
   const gameName = useFormValue(game.name, {
+    isDirty: game.name !== "",
     onChange: gameMethods.setName,
     validate: validateName,
   });
 
   const gameDirectory = useFormValue(game.directory, {
+    isDirty: game.directory !== "",
     onChange: gameMethods.setDirectory,
     validate: validateDirectoryPath,
   });
 
   const gameOriginalCopy = useFormValue(game.originalCopy, {
+    isDirty: game.originalCopy !== "",
     onChange: gameMethods.setOriginalCopy,
     validate: validateFilePath,
   });

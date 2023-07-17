@@ -18,7 +18,7 @@
       },
       "fs": {
         "all": true,
-        "scope": ["$APPDATA", "$APPDATA/settings.json"]
+        "scope": ["**"]
       },
       "http": {
         "request": true,

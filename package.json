@@ -20,6 +20,7 @@
     "react-dom": "^18.2.0",
     "recoil": "^0.7.7",
     "recoil-persist": "^5.1.0",
+    "tauri-plugin-fs-watch-api": "github:tauri-apps/tauri-plugin-fs-watch#v1",
     "zod": "^3.21.4"
   },
   "devDependencies": {

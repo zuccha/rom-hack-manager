@@ -185,7 +185,8 @@ fn main() {
       validate_file_path,
       validate_name,
       validate_url,
-    ])
+      ])
+    .plugin(tauri_plugin_fs_watch::init())
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
