@@ -2,7 +2,9 @@ import { Flex, SimpleGrid } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 import Button from "../../components/Button";
 import Checkbox from "../../components/Checkbox";
+import Frame from "../../components/Frame";
 import Section from "../../components/Section";
+import Select from "../../components/Select";
 import TextEditor from "../../components/TextEditor";
 import {
   Difficulty,
@@ -10,7 +12,6 @@ import {
   SearchArgs,
   difficulties,
 } from "./useSearchHacks";
-import Select from "../../components/Select";
 
 type SectionFiltersProps = {
   isSearching: boolean;
@@ -31,10 +32,10 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
     useState<DifficultyMap>({});
 
   const toggleDifficulty = useCallback(
-    (difficulty: Difficulty) => () => {
+    (difficulty: Difficulty) => (value: boolean) => {
       setIsDifficultySelected((prevIsDifficultySelected) => ({
         ...prevIsDifficultySelected,
-        [difficulty]: !prevIsDifficultySelected[difficulty],
+        [difficulty]: value,
       }));
     },
     []
@@ -87,23 +88,19 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
         />
 
         {game === "smwhacks" && (
-          <SimpleGrid
-            bg="white"
-            borderWidth={1}
-            columnGap={1}
-            minChildWidth={160}
-            p={2}
-          >
-            {difficulties.map((difficulty) => (
-              <Checkbox
-                key={difficulty.label}
-                isDisabled={isSearching}
-                label={difficulty.label}
-                onToggle={toggleDifficulty(difficulty.label)}
-                value={!!isDifficultySelected[difficulty.label]}
-              />
-            ))}
-          </SimpleGrid>
+          <Frame placeholder="Difficulty">
+            <SimpleGrid columnGap={1} flex={1} minChildWidth={160}>
+              {difficulties.map((difficulty) => (
+                <Checkbox
+                  key={difficulty.label}
+                  isDisabled={isSearching}
+                  label={difficulty.label}
+                  onChange={toggleDifficulty(difficulty.label)}
+                  value={!!isDifficultySelected[difficulty.label]}
+                />
+              ))}
+            </SimpleGrid>
+          </Frame>
         )}
 
         <Button

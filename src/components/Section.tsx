@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Divider,
+  Flex,
   Heading,
 } from "@chakra-ui/react";
 
@@ -32,7 +33,7 @@ function Section({ children, isDefaultExpanded, title }: SectionProps) {
           >
             {title}
           </Heading>
-          <Divider borderColor="gray.500" mx="2" />
+          <Flex flex={1} />
           <AccordionIcon color="gray.700" />
         </AccordionButton>
         <AccordionPanel borderWidth={0} p={0}>

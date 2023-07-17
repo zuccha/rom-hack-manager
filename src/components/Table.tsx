@@ -40,12 +40,22 @@ function Table<T>({ caption, columns, data, onClickRow }: TableProps<T>) {
 
   return (
     <TableContainer>
-      <CTable bg="white" borderWidth={1} layout="fixed" size="sm">
+      <CTable
+        bg="white"
+        borderColor="gray.500"
+        borderWidth={1}
+        layout="fixed"
+        size="sm"
+      >
         {caption && <TableCaption>{caption}</TableCaption>}
         <Thead>
-          <Tr>
+          <Tr borderBottomWidth={1} borderColor="gray.500">
             {columns.map((column) => (
-              <Th isNumeric={column.isNumeric} key={column.header}>
+              <Th
+                borderWidth={0}
+                isNumeric={column.isNumeric}
+                key={column.header}
+              >
                 {column.header}
               </Th>
             ))}
@@ -61,6 +71,7 @@ function Table<T>({ caption, columns, data, onClickRow }: TableProps<T>) {
             >
               {columns.map((column, columnIndex) => (
                 <Td
+                  borderWidth={0}
                   isNumeric={column.isNumeric}
                   key={`${rowIndex}-${columnIndex}`}
                   overflow="hidden"

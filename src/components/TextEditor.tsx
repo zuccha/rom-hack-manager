@@ -1,14 +1,13 @@
 import {
-  Flex,
   Input,
   InputGroup,
   InputProps,
   InputRightElement,
-  Text,
   Tooltip,
 } from "@chakra-ui/react";
 import { WarningIcon } from "@chakra-ui/icons";
 import { KeyboardEvent, useCallback } from "react";
+import Placeholder from "./Placeholder";
 
 export type TextEditorProps = {
   autoFocus?: boolean;
@@ -50,26 +49,9 @@ function TextEditor({
   );
 
   return (
-    <InputGroup bg="white" size="sm">
+    <InputGroup bg="white" borderColor="gray.500" size="sm">
       {placeholder && value.length > 0 && (
-        <Flex
-          color={error ? "red.500" : "gray.500"}
-          left={2}
-          position="absolute"
-          top={-2}
-          zIndex={10}
-        >
-          <Text fontSize="xs" px={1} zIndex={1}>
-            {placeholder}
-          </Text>
-          <Flex
-            borderBottomWidth={2}
-            borderColor="white"
-            h="50%"
-            pos="absolute"
-            w="100%"
-          />
-        </Flex>
+        <Placeholder placeholder={placeholder} />
       )}
 
       <Input

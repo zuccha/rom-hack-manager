@@ -1,6 +1,8 @@
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Center,
+  Divider,
   Flex,
   Tab,
   TabList,
@@ -42,6 +44,12 @@ function GameTab({ gameId, onRemoveGame }: GameTabProps) {
   );
 }
 
+const tabProps = {
+  borderRadius: 0,
+  borderTopWidth: 0,
+  minH: REMOVE_ICON_SIZE,
+};
+
 function MainHome() {
   const [selectedGameIndex, { set: setSelectedGameIndex }] =
     useSelectedGameIndex();
@@ -71,25 +79,23 @@ function MainHome() {
         onChange={setSelectedGameIndex}
         variant="enclosed"
       >
-        <TabList>
+        <TabList mx={-1}>
           {gameIds.map((gameId) => (
-            <Tab borderRadius={0} borderTopWidth={0} key={gameId}>
+            <Tab {...tabProps} key={gameId}>
               <GameTab
                 gameId={gameId}
                 onRemoveGame={() => openRemoveGameDialog(gameId)}
               />
             </Tab>
           ))}
-          <Tab borderRadius={0} borderTopWidth={0} minH={REMOVE_ICON_SIZE}>
+
+          <Tab {...tabProps}>
             <AddIcon />
           </Tab>
+
           <Flex flex={1} />
-          <Tab
-            justifyContent="flex-end"
-            borderRadius={0}
-            borderTopWidth={0}
-            minH={REMOVE_ICON_SIZE}
-          >
+
+          <Tab {...tabProps} justifyContent="flex-end">
             About
           </Tab>
         </TabList>

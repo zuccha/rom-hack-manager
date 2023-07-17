@@ -1,5 +1,6 @@
-import { Flex, Select as CSelect, Text } from "@chakra-ui/react";
+import { Flex, Select as CSelect } from "@chakra-ui/react";
 import { useCallback } from "react";
+import Placeholder from "./Placeholder";
 
 export type SelectProps<Option extends string> = {
   isDisabled?: boolean;
@@ -26,28 +27,12 @@ function Select<Option extends string>({
   return (
     <Flex position="relative">
       {placeholder && value.length > 0 && (
-        <Flex
-          color={"gray.500"}
-          left={2}
-          position="absolute"
-          top={-2}
-          zIndex={10}
-        >
-          <Text fontSize="xs" px={1} zIndex={1}>
-            {placeholder}
-          </Text>
-          <Flex
-            borderBottomWidth={2}
-            borderColor="white"
-            h="50%"
-            pos="absolute"
-            w="100%"
-          />
-        </Flex>
+        <Placeholder placeholder={placeholder} />
       )}
 
       <CSelect
         bg="white"
+        borderColor="gray.500"
         borderRadius={0}
         isDisabled={isDisabled}
         onChange={handleChange}

@@ -1,8 +1,10 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { emit } from "@tauri-apps/api/event";
 import { WebviewWindow } from "@tauri-apps/api/window";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import Alert from "../../components/Alert";
+import Checkbox from "../../components/Checkbox";
+import Frame from "../../components/Frame";
 import Section from "../../components/Section";
 import Table, { Column } from "../../components/Table";
 import { useSelectedGameId } from "../store";
@@ -21,18 +23,20 @@ const resultsTableColumns: Column<Hack>[] = [
 function SectionResults({ results }: SectionResultsProps) {
   const [selectedGameId] = useSelectedGameId();
 
+  const [keepWindowOpen, setKeepWindowOpen] = useState(false);
+
   const selectHack = useCallback(
     async (hack: Hack) => {
       try {
         await emit("select-hack", { ...hack, gameId: selectedGameId });
         const searchWindow = WebviewWindow.getByLabel("search");
-        searchWindow?.close();
+        if (!keepWindowOpen) searchWindow?.close();
       } catch (e) {
         console.log(e);
         // TODO: Do what?
       }
     },
-    [selectedGameId]
+    [keepWindowOpen, selectedGameId]
   );
 
   if (!results)
@@ -63,16 +67,25 @@ function SectionResults({ results }: SectionResultsProps) {
     >
       <Flex direction="column" gap={3} mt={2}>
         {results.hacks.length > 0 ? (
-          <Table
-            caption={
-              results.hasMore
-                ? "There are more than 50 results, please refine your search."
-                : undefined
-            }
-            columns={resultsTableColumns}
-            data={results.hacks}
-            onClickRow={selectHack}
-          />
+          <>
+            <Frame placeholder="Options">
+              <Checkbox
+                label="Keep window open after selection"
+                onChange={setKeepWindowOpen}
+                value={keepWindowOpen}
+              />
+            </Frame>
+            <Table
+              caption={
+                results.hasMore
+                  ? "There are more than 50 results, please refine your search."
+                  : undefined
+              }
+              columns={resultsTableColumns}
+              data={results.hacks}
+              onClickRow={selectHack}
+            />
+          </>
         ) : (
           <Text>Nothing</Text>
         )}
