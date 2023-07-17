@@ -19,18 +19,6 @@ import {
 } from "../validation";
 import { SelectHackPayloadSchema } from "../events";
 
-const openSearchWindow = () => {
-  new WebviewWindow("search", {
-    alwaysOnTop: true,
-    fullscreen: false,
-    resizable: true,
-    title: "Search",
-    width: 550,
-    height: 600,
-    url: "src/windows/search/Search.html",
-  });
-};
-
 type SectionHackDownloadProps = {
   gameId: string;
 };
@@ -93,6 +81,18 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
   const downloadHackIfIsValid = useCallback(() => {
     if (isValid) downloadHack();
   }, [downloadHack, isValid]);
+
+  const openSearchWindow = useCallback(() => {
+    new WebviewWindow(`search-${gameId}`, {
+      alwaysOnTop: true,
+      fullscreen: false,
+      resizable: true,
+      title: `Search (${game.name})`,
+      width: 550,
+      height: 600,
+      url: "src/windows/search/Search.html",
+    });
+  }, []);
 
   return (
     <Section isDefaultExpanded title="Add hack">

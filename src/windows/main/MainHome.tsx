@@ -79,7 +79,7 @@ function MainHome() {
         onChange={setSelectedGameIndex}
         variant="enclosed"
       >
-        <TabList mx={-1}>
+        <TabList>
           {gameIds.map((gameId) => (
             <Tab {...tabProps} key={gameId}>
               <GameTab

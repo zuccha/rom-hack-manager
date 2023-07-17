@@ -12,7 +12,7 @@ function PanelGameProps({ gameId }: PanelGameProps) {
     <Panel>
       <SectionGameSettings gameId={gameId} />
       <SectionHackDownload gameId={gameId} />
-      <SectionHacks />
+      <SectionHacks gameId={gameId} />
     </Panel>
   );
 }
