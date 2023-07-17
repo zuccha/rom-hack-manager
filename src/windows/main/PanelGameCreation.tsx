@@ -10,6 +10,8 @@ import {
   validateFilePath,
   validateName,
 } from "../validation";
+import { Flex } from "@chakra-ui/react";
+import Section from "../../components/Section";
 
 type PanelGameCreationProps = {
   onCreateGame: (gameWithoutId: Omit<Game, "id">) => void;
@@ -36,35 +38,39 @@ function PanelGameCreation({ onCreateGame }: PanelGameCreationProps) {
   }, [gameDirectory.value, gameName.value, gameOriginalCopy.value, isValid]);
 
   return (
-    <Panel title="Configure a new game">
-      <TextEditor
-        autoFocus
-        error={gameName.errorIfDirty}
-        onBlur={gameName.handleBlur}
-        onChange={gameName.handleChangeValue}
-        onSubmit={handleCreateGame}
-        placeholder="Game Name"
-        value={gameName.value}
-      />
-      <PathBrowser
-        error={gameDirectory.errorIfDirty}
-        mode="directory"
-        onBlur={gameDirectory.handleBlur}
-        onChange={gameDirectory.handleChangeValue}
-        onSubmit={handleCreateGame}
-        placeholder="Main Folder"
-        value={gameDirectory.value}
-      />
-      <PathBrowser
-        error={gameOriginalCopy.errorIfDirty}
-        mode="file"
-        onBlur={gameOriginalCopy.handleBlur}
-        onChange={gameOriginalCopy.handleChangeValue}
-        onSubmit={handleCreateGame}
-        placeholder="Original Copy"
-        value={gameOriginalCopy.value}
-      />
-      <Button isDisabled={!isValid} onClick={handleCreateGame} text="Add" />
+    <Panel>
+      <Section isDefaultExpanded title="Configure a game">
+        <Flex direction="column" gap={3} mt={2}>
+          <TextEditor
+            autoFocus
+            error={gameName.errorIfDirty}
+            onBlur={gameName.handleBlur}
+            onChange={gameName.handleChangeValue}
+            onSubmit={handleCreateGame}
+            placeholder="Game Name"
+            value={gameName.value}
+          />
+          <PathBrowser
+            error={gameDirectory.errorIfDirty}
+            mode="directory"
+            onBlur={gameDirectory.handleBlur}
+            onChange={gameDirectory.handleChangeValue}
+            onSubmit={handleCreateGame}
+            placeholder="Main Folder"
+            value={gameDirectory.value}
+          />
+          <PathBrowser
+            error={gameOriginalCopy.errorIfDirty}
+            mode="file"
+            onBlur={gameOriginalCopy.handleBlur}
+            onChange={gameOriginalCopy.handleChangeValue}
+            onSubmit={handleCreateGame}
+            placeholder="Original Copy"
+            value={gameOriginalCopy.value}
+          />
+          <Button isDisabled={!isValid} onClick={handleCreateGame} text="Add" />
+        </Flex>
+      </Section>
     </Panel>
   );
 }

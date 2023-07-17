@@ -32,7 +32,7 @@ function Section({ children, isDefaultExpanded, title }: SectionProps) {
           >
             {title}
           </Heading>
-          <Divider mx="2" />
+          <Divider borderColor="gray.500" mx="2" />
           <AccordionIcon color="gray.700" />
         </AccordionButton>
         <AccordionPanel borderWidth={0} p={0}>
