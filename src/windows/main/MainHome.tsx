@@ -5,7 +5,12 @@ import { BsInfoLg } from "react-icons/bs";
 import { MdSettings } from "react-icons/md";
 import Dialog from "../../components/Dialog";
 import Tabs from "../../components/Tabs";
-import { useGame, useGameIds, useSelectedGameIndex } from "../store";
+import {
+  useGame,
+  useGameIds,
+  useGlobalSettings,
+  useSelectedGameIndex,
+} from "../store";
 import PanelAbout from "./PanelAbout";
 import PanelGame from "./PanelGame";
 import PanelGameCreation from "./PanelGameCreation";
@@ -37,6 +42,7 @@ function GameTab({ gameId, onRemoveGame }: GameTabProps) {
 }
 
 function MainHome() {
+  const [globalSettings] = useGlobalSettings();
   const [selectedGameIndex, { set: setSelectedGameIndex }] =
     useSelectedGameIndex();
 
@@ -53,9 +59,14 @@ function MainHome() {
     if (gameIdToRemove) removeGame(gameIdToRemove);
   }, [gameIdToRemove, removeGame]);
 
-  const openRemoveGameDialog = useCallback((gameId: string) => {
-    setGameIdToRemove(gameId);
-  }, []);
+  const openRemoveGameDialog = useCallback(
+    (gameId: string) => {
+      if (globalSettings.askForConfirmationBeforeRemovingGame)
+        setGameIdToRemove(gameId);
+      else removeGame(gameId);
+    },
+    [globalSettings.askForConfirmationBeforeRemovingGame, removeGame]
+  );
 
   const tabsLeft = useMemo(
     () => [
