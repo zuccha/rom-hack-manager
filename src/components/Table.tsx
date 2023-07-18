@@ -1,4 +1,8 @@
 import {
+  Flex,
+  IconButton,
+  IconButtonProps,
+  SystemStyleObject,
   Table as CTable,
   TableCaption,
   TableContainer,
@@ -6,6 +10,7 @@ import {
   Td,
   Th,
   Thead,
+  Tooltip,
   Tr,
 } from "@chakra-ui/react";
 import { useMemo } from "react";
@@ -16,13 +21,26 @@ export type Column<T> = {
 } & ({ key: keyof T } | { format: (data: T) => string });
 
 export type TableProps<T> = {
+  actions?: {
+    icon: IconButtonProps["icon"];
+    label: string;
+    onClick: (data: T) => void;
+  }[];
   caption?: string;
   columns: Column<T>[];
   data: T[];
+  highlightRowOnHover?: boolean;
   onClickRow?: (row: T) => void | Promise<void>;
 };
 
-function Table<T>({ caption, columns, data, onClickRow }: TableProps<T>) {
+function Table<T>({
+  actions,
+  caption,
+  columns,
+  data,
+  highlightRowOnHover,
+  onClickRow,
+}: TableProps<T>) {
   const rowOddStyle = useMemo(() => {
     return {
       backgroundColor: "gray.100",
@@ -30,12 +48,10 @@ function Table<T>({ caption, columns, data, onClickRow }: TableProps<T>) {
   }, []);
 
   const rowHoverStyle = useMemo(() => {
-    return onClickRow
-      ? {
-          backgroundColor: "blue.200",
-          cursor: "pointer",
-        }
-      : undefined;
+    const style: SystemStyleObject = { "& .action": { visibility: "visible" } };
+    if (highlightRowOnHover || onClickRow) style.backgroundColor = "blue.100";
+    if (onClickRow) style.cursor = "pointer";
+    return style;
   }, [onClickRow]);
 
   return (
@@ -59,6 +75,7 @@ function Table<T>({ caption, columns, data, onClickRow }: TableProps<T>) {
                 {column.header}
               </Th>
             ))}
+            {!!actions && actions.length > 0 && <Th borderWidth={0} />}
           </Tr>
         </Thead>
         <Tbody>
@@ -80,6 +97,27 @@ function Table<T>({ caption, columns, data, onClickRow }: TableProps<T>) {
                   {"key" in column ? `${row[column.key]}` : column.format(row)}
                 </Td>
               ))}
+              {!!actions && actions.length > 0 && (
+                <Td borderWidth={0}>
+                  <Flex
+                    className="action"
+                    gap={1}
+                    justifyContent="flex-end"
+                    visibility="hidden"
+                  >
+                    {actions.map((action) => (
+                      <Tooltip key={action.label} label={action.label}>
+                        <IconButton
+                          aria-label={action.label}
+                          icon={action.icon}
+                          size="xs"
+                          variant="ghost"
+                        />
+                      </Tooltip>
+                    ))}
+                  </Flex>
+                </Td>
+              )}
             </Tr>
           ))}
         </Tbody>
