@@ -1,7 +1,8 @@
 import { Text } from "@chakra-ui/react";
 import { UnlistenFn } from "@tauri-apps/api/event";
 import { readDir } from "@tauri-apps/api/fs";
-import { useCallback, useEffect, useState } from "react";
+import { path } from "@tauri-apps/api";
+import { useEffect, useState } from "react";
 import { watch } from "tauri-plugin-fs-watch-api";
 import Section from "../../components/Section";
 import { useGame } from "../store";
@@ -12,20 +13,39 @@ type SectionHacksProps = {
   gameId: string;
 };
 
+type Hack = {
+  directory: string;
+  name: string;
+  sfc: string;
+};
+
+const isHack = (maybeHack: Partial<Hack>): maybeHack is Hack => {
+  return (
+    typeof maybeHack.directory === "string" &&
+    typeof maybeHack.name === "string" &&
+    typeof maybeHack.sfc === "string"
+  );
+};
+
+const readGameDirectory = async (gameDirectory: string): Promise<Hack[]> => {
+  const hacks = (await readDir(gameDirectory, { recursive: true }))
+    .map((directory) => ({
+      directory: directory.path,
+      name: directory.name ?? "-",
+      sfc: directory.children?.find((child) => child.name?.endsWith(".sfc"))
+        ?.name,
+    }))
+    .filter(isHack);
+  for (const hack of hacks)
+    hack.sfc = await path.join(hack.directory, hack.sfc!);
+  return hacks;
+};
+
 const hacksTableColumns = [{ header: "Name", key: "name" as const }];
 
 function SectionHacks({ gameId }: SectionHacksProps) {
   const [game] = useGame(gameId);
-  const [hacks, setHacks] = useState<{ name: string }[]>([]);
-
-  const readGameDirectory = useCallback(async () => {
-    const entries = await readDir(game.directory);
-    setHacks(
-      entries
-        .filter((entry) => !!entry.children)
-        .map((entry) => ({ name: entry.name ?? "-" }))
-    );
-  }, [game.directory]);
+  const [hacks, setHacks] = useState<Hack[]>([]);
 
   useEffect(() => {
     const stopWatchingRef: { current: UnlistenFn } = { current: () => {} };
@@ -38,18 +58,18 @@ function SectionHacks({ gameId }: SectionHacksProps) {
 
       const stopWatching = await watch(
         game.directory,
-        () => readGameDirectory(),
+        () => readGameDirectory(game.directory).then(setHacks),
         { recursive: true }
       );
       stopWatchingRef.current = stopWatching;
 
-      readGameDirectory();
+      readGameDirectory(game.directory).then(setHacks);
     };
 
     watchGameDirectory();
 
     return () => stopWatchingRef.current();
-  }, [game.directory, readGameDirectory]);
+  }, [game.directory]);
 
   return (
     <Section isDefaultExpanded title="Hacks">
