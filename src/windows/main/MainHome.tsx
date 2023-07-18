@@ -1,17 +1,8 @@
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Center,
-  Divider,
-  Flex,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-} from "@chakra-ui/react";
-import { useCallback, useState } from "react";
+import { Center, IconButton, Tooltip } from "@chakra-ui/react";
+import { useCallback, useMemo, useState } from "react";
 import Dialog from "../../components/Dialog";
+import Tabs from "../../components/Tabs";
 import { useGame, useGameIds, useSelectedGameIndex } from "../store";
 import PanelAbout from "./PanelAbout";
 import PanelGame from "./PanelGame";
@@ -29,17 +20,15 @@ function GameTab({ gameId, onRemoveGame }: GameTabProps) {
   return (
     <Center gap={1}>
       {game.name}
-      <Center
-        borderRadius="full"
-        color="gray.600"
-        h={REMOVE_ICON_SIZE}
-        mr={-1}
-        onClick={onRemoveGame}
-        w={REMOVE_ICON_SIZE}
-        _hover={{ bgColor: "gray.100" }}
-      >
-        <CloseIcon fontSize={10} />
-      </Center>
+      <Tooltip label="Remove game">
+        <IconButton
+          aria-label="Remove game"
+          icon={<CloseIcon />}
+          onClick={onRemoveGame}
+          size="xs"
+          variant="ghost"
+        />
+      </Tooltip>
     </Center>
   );
 }
@@ -71,50 +60,43 @@ function MainHome() {
     setGameIdToRemove(gameId);
   }, []);
 
+  const tabsLeft = useMemo(
+    () => [
+      ...gameIds.map((gameId) => ({
+        body: <PanelGame gameId={gameId} />,
+        header: (
+          <GameTab
+            gameId={gameId}
+            onRemoveGame={() => openRemoveGameDialog(gameId)}
+          />
+        ),
+      })),
+      {
+        body: <PanelGameCreation onCreateGame={createGame} />,
+        header: <AddIcon />,
+      },
+    ],
+    [createGame, gameIds, openRemoveGameDialog]
+  );
+
+  const tabsRight = useMemo(
+    () => [
+      {
+        body: <PanelAbout />,
+        header: "About",
+      },
+    ],
+    []
+  );
+
   return (
     <>
       <Tabs
-        borderColor="gray.500"
         index={selectedGameIndex}
         onChange={setSelectedGameIndex}
-        variant="enclosed"
-      >
-        <TabList>
-          {gameIds.map((gameId) => (
-            <Tab {...tabProps} key={gameId}>
-              <GameTab
-                gameId={gameId}
-                onRemoveGame={() => openRemoveGameDialog(gameId)}
-              />
-            </Tab>
-          ))}
-
-          <Tab {...tabProps}>
-            <AddIcon />
-          </Tab>
-
-          <Flex flex={1} />
-
-          <Tab {...tabProps} justifyContent="flex-end">
-            About
-          </Tab>
-        </TabList>
-
-        <TabPanels>
-          {gameIds.map((gameId) => (
-            <TabPanel key={gameId} p={0}>
-              <PanelGame gameId={gameId} />
-            </TabPanel>
-          ))}
-          <TabPanel p={0}>
-            <PanelGameCreation onCreateGame={createGame} />
-          </TabPanel>
-
-          <TabPanel p={0}>
-            <PanelAbout />
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
+        tabsLeft={tabsLeft}
+        tabsRight={tabsRight}
+      />
 
       <Dialog
         description="Deleting the project will not remove the folder."

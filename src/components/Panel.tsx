@@ -7,7 +7,7 @@ export type PanelProps = {
 
 function Panel({ children, title }: PanelProps) {
   return (
-    <Flex direction="column" gap={3} p={3}>
+    <Flex direction="column" flex={1} gap={3} p={3}>
       {title && (
         <Flex justifyContent="space-between">
           <Heading size="md">{title}</Heading>

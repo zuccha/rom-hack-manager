@@ -1,5 +1,5 @@
 import { DeleteIcon, ExternalLinkIcon, Search2Icon } from "@chakra-ui/icons";
-import { Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { UnlistenFn } from "@tauri-apps/api/event";
 import { readDir } from "@tauri-apps/api/fs";
 import { path } from "@tauri-apps/api";
@@ -93,16 +93,18 @@ function SectionHacks({ gameId }: SectionHacksProps) {
 
   return (
     <Section isDefaultExpanded title="Hacks">
-      {hacks.length > 0 ? (
-        <Table
-          actions={hacksTableActions}
-          columns={hacksTableColumns}
-          data={hacks}
-          highlightRowOnHover
-        />
-      ) : (
-        <Text fontSize="sm">Nothing</Text>
-      )}
+      <Flex mt={2}>
+        {hacks.length > 0 ? (
+          <Table
+            actions={hacksTableActions}
+            columns={hacksTableColumns}
+            data={hacks}
+            highlightRowOnHover
+          />
+        ) : (
+          <Text fontSize="sm">Nothing</Text>
+        )}
+      </Flex>
     </Section>
   );
 }
