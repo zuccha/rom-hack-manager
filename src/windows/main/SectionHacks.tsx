@@ -1,9 +1,9 @@
-import { DeleteIcon, ExternalLinkIcon, Search2Icon } from "@chakra-ui/icons";
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Icon, Text } from "@chakra-ui/react";
 import { UnlistenFn } from "@tauri-apps/api/event";
 import { readDir } from "@tauri-apps/api/fs";
 import { path } from "@tauri-apps/api";
 import { useEffect, useState } from "react";
+import { MdDelete, MdPlayCircle, MdFolder } from "react-icons/md";
 import { watch } from "tauri-plugin-fs-watch-api";
 import Section from "../../components/Section";
 import Table from "../../components/Table";
@@ -47,9 +47,13 @@ const readGameDirectory = async (gameDirectory: string): Promise<Hack[]> => {
 };
 
 const hacksTableActions = [
-  { icon: <ExternalLinkIcon />, label: "Play", onClick: () => {} },
-  { icon: <Search2Icon />, label: "Open", onClick: () => {} },
-  { icon: <DeleteIcon />, label: "Delete", onClick: () => {} },
+  { icon: <Icon as={MdPlayCircle} />, label: "Play", onClick: () => {} },
+  { icon: <Icon as={MdFolder} />, label: "Open folder", onClick: () => {} },
+  {
+    icon: <Icon as={MdDelete} color="red.600" />,
+    label: "Delete",
+    onClick: () => {},
+  },
 ];
 
 const hacksTableColumns = [

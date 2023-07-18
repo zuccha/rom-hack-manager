@@ -42,11 +42,13 @@ function TabHeader({
           : BORDER_COLOR_UNSELECTED
       }
       borderRightWidth={isLast ? 0 : 1}
+      color={isSelected ? "blue.600" : "gray.500"}
       cursor="pointer"
       minH="42px"
       onClick={onClick}
       px={4}
       py={2}
+      _hover={{ color: "blue.600" }}
     >
       {children}
     </Center>

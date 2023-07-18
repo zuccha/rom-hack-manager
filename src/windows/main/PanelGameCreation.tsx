@@ -56,7 +56,7 @@ function PanelGameCreation({ onCreateGame }: PanelGameCreationProps) {
             onBlur={gameDirectory.handleBlur}
             onChange={gameDirectory.handleChangeValue}
             onSubmit={handleCreateGame}
-            placeholder="Main Folder"
+            placeholder="Game Folder"
             value={gameDirectory.value}
           />
           <PathBrowser
@@ -65,7 +65,7 @@ function PanelGameCreation({ onCreateGame }: PanelGameCreationProps) {
             onBlur={gameOriginalCopy.handleBlur}
             onChange={gameOriginalCopy.handleChangeValue}
             onSubmit={handleCreateGame}
-            placeholder="Original Copy"
+            placeholder="Game Original Copy"
             value={gameOriginalCopy.value}
           />
           <Button isDisabled={!isValid} onClick={handleCreateGame} text="Add" />

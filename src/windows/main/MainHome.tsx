@@ -1,19 +1,20 @@
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
-import { Center, IconButton, Tooltip } from "@chakra-ui/react";
+import { Center, Icon, IconButton, Tooltip } from "@chakra-ui/react";
 import { useCallback, useMemo, useState } from "react";
+import { BsInfoLg } from "react-icons/bs";
+import { MdSettings } from "react-icons/md";
 import Dialog from "../../components/Dialog";
 import Tabs from "../../components/Tabs";
 import { useGame, useGameIds, useSelectedGameIndex } from "../store";
 import PanelAbout from "./PanelAbout";
 import PanelGame from "./PanelGame";
 import PanelGameCreation from "./PanelGameCreation";
+import PanelGlobalSettings from "./PanelGlobalSettings";
 
 type GameTabProps = {
   gameId: string;
   onRemoveGame: () => void;
 };
-
-const REMOVE_ICON_SIZE = 6;
 
 function GameTab({ gameId, onRemoveGame }: GameTabProps) {
   const [game] = useGame(gameId);
@@ -23,21 +24,17 @@ function GameTab({ gameId, onRemoveGame }: GameTabProps) {
       <Tooltip label="Remove game">
         <IconButton
           aria-label="Remove game"
+          color="gray.500"
           icon={<CloseIcon />}
           onClick={onRemoveGame}
           size="xs"
           variant="ghost"
+          _hover={{ color: "black" }}
         />
       </Tooltip>
     </Center>
   );
 }
-
-const tabProps = {
-  borderRadius: 0,
-  borderTopWidth: 0,
-  minH: REMOVE_ICON_SIZE,
-};
 
 function MainHome() {
   const [selectedGameIndex, { set: setSelectedGameIndex }] =
@@ -82,8 +79,12 @@ function MainHome() {
   const tabsRight = useMemo(
     () => [
       {
+        body: <PanelGlobalSettings />,
+        header: <Icon as={MdSettings} />,
+      },
+      {
         body: <PanelAbout />,
-        header: "About",
+        header: <Icon as={BsInfoLg} />,
       },
     ],
     []

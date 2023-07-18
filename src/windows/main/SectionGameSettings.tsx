@@ -51,7 +51,7 @@ function SectionSettings({ gameId }: SectionSettingsProps) {
           mode="directory"
           onBlur={gameDirectory.handleBlur}
           onChange={gameDirectory.handleChangeValue}
-          placeholder="Main Folder"
+          placeholder="Game Folder"
           value={gameDirectory.value}
         />
         <PathBrowser
@@ -59,7 +59,7 @@ function SectionSettings({ gameId }: SectionSettingsProps) {
           mode="file"
           onBlur={gameOriginalCopy.handleBlur}
           onChange={gameOriginalCopy.handleChangeValue}
-          placeholder="Original Copy"
+          placeholder="Game Original Copy"
           value={gameOriginalCopy.value}
         />
       </Flex>
