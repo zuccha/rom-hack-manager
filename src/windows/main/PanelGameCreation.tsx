@@ -40,7 +40,7 @@ function PanelGameCreation({ onCreateGame }: PanelGameCreationProps) {
   return (
     <Panel>
       <Section isDefaultExpanded title="Configure a game">
-        <Flex direction="column" gap={3} mt={2}>
+        <Flex direction="column" gap={3}>
           <TextEditor
             autoFocus
             error={gameName.errorIfDirty}

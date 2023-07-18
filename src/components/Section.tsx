@@ -36,7 +36,7 @@ function Section({ children, isDefaultExpanded, title }: SectionProps) {
           <Flex flex={1} />
           <AccordionIcon color="gray.700" />
         </AccordionButton>
-        <AccordionPanel borderWidth={0} p={0}>
+        <AccordionPanel borderWidth={0} p={0} pt={2}>
           {children}
         </AccordionPanel>
       </AccordionItem>

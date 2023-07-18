@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 import Button from "../../components/Button";
 import Checkbox from "../../components/Checkbox";
@@ -53,7 +53,7 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
 
   return (
     <Section isDefaultExpanded title="Filters">
-      <Flex direction="column" gap={3} mt={2}>
+      <Flex direction="column" gap={3}>
         <Select
           isDisabled={isSearching}
           onChange={setGame}
@@ -88,18 +88,16 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
         />
 
         {game === "smwhacks" && (
-          <Frame placeholder="Difficulty">
-            <SimpleGrid columnGap={1} flex={1} minChildWidth={160}>
-              {difficulties.map((difficulty) => (
-                <Checkbox
-                  key={difficulty.label}
-                  isDisabled={isSearching}
-                  label={difficulty.label}
-                  onChange={toggleDifficulty(difficulty.label)}
-                  value={!!isDifficultySelected[difficulty.label]}
-                />
-              ))}
-            </SimpleGrid>
+          <Frame minChildWidth={160} placeholder="Difficulty">
+            {difficulties.map((difficulty) => (
+              <Checkbox
+                key={difficulty.label}
+                isDisabled={isSearching}
+                label={difficulty.label}
+                onChange={toggleDifficulty(difficulty.label)}
+                value={!!isDifficultySelected[difficulty.label]}
+              />
+            ))}
           </Frame>
         )}
 

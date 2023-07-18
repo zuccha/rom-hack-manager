@@ -37,7 +37,7 @@ function SectionSettings({ gameId }: SectionSettingsProps) {
 
   return (
     <Section title="Settings">
-      <Flex direction="column" gap={3} mt={2}>
+      <Flex direction="column" gap={3}>
         <TextEditor
           autoFocus
           error={gameName.errorIfDirty}

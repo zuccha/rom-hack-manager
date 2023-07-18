@@ -97,18 +97,16 @@ function SectionHacks({ gameId }: SectionHacksProps) {
 
   return (
     <Section isDefaultExpanded title="Hacks">
-      <Flex mt={2}>
-        {hacks.length > 0 ? (
-          <Table
-            actions={hacksTableActions}
-            columns={hacksTableColumns}
-            data={hacks}
-            highlightRowOnHover
-          />
-        ) : (
-          <Text fontSize="sm">Nothing</Text>
-        )}
-      </Flex>
+      {hacks.length > 0 ? (
+        <Table
+          actions={hacksTableActions}
+          columns={hacksTableColumns}
+          data={hacks}
+          highlightRowOnHover
+        />
+      ) : (
+        <Text fontSize="sm">Nothing</Text>
+      )}
     </Section>
   );
 }

@@ -7,7 +7,7 @@ function PanelAbout() {
   return (
     <Panel>
       <Section isDefaultExpanded title="Useful links">
-        <Flex direction="column" mt={2} gap={1}>
+        <Flex direction="column" gap={1}>
           <Website
             href="https://github.com/zuccha/rom-hack-downloader"
             label="Documentation"
@@ -24,7 +24,7 @@ function PanelAbout() {
       </Section>
 
       <Section isDefaultExpanded title="Credits">
-        <Flex direction="column" mt={2} gap={1} fontSize="sm">
+        <Flex direction="column" gap={1} fontSize="sm">
           <Flex>
             <Text>Created by&nbsp;</Text>
             <Website href="https://zuccha.io" label="zuccha" />

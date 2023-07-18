@@ -13,6 +13,13 @@ import { z } from "zod";
 
 /** Types */
 
+type GlobalSettings = {
+  askForConfirmationBeforeDeletingHack: boolean;
+  askForConfirmationBeforeRemovingGame: boolean;
+  emulator: string;
+  emulatorArgs: string;
+};
+
 const GameSchema = z.object({
   directory: z.string(),
   id: z.string(),
@@ -32,6 +39,17 @@ export type Configuration = z.infer<typeof ConfigurationSchema>;
 /** States */
 
 const { persistAtom } = recoilPersist();
+
+const globalSettingsState = atom<GlobalSettings>({
+  key: "GlobalSettings",
+  default: {
+    askForConfirmationBeforeDeletingHack: true,
+    askForConfirmationBeforeRemovingGame: true,
+    emulator: "",
+    emulatorArgs: "%1",
+  },
+  effects_UNSTABLE: [persistAtom],
+});
 
 const gameStateFamily = atomFamily<Game, string>({
   key: "Game",
@@ -61,6 +79,65 @@ const selectedGameIdSelector = selector({
 });
 
 /** Hooks */
+
+export const useGlobalSettings = (): [
+  GlobalSettings,
+  {
+    setAskForConfirmationBeforeDeletingHack: (value: boolean) => void;
+    setAskForConfirmationBeforeRemovingGame: (value: boolean) => void;
+    setEmulator: (emulator: string) => void;
+    setEmulatorArgs: (emulatorArgs: string) => void;
+  }
+] => {
+  const [globalSettings, setGlobalSettings] =
+    useRecoilState(globalSettingsState);
+
+  const setAskForConfirmationBeforeDeletingHack = useCallback(
+    (askForConfirmationBeforeDeletingHack: boolean) =>
+      setGlobalSettings((oldGlobalSettings) => ({
+        ...oldGlobalSettings,
+        askForConfirmationBeforeDeletingHack,
+      })),
+    [setGlobalSettings]
+  );
+
+  const setAskForConfirmationBeforeRemovingGame = useCallback(
+    (askForConfirmationBeforeRemovingGame: boolean) =>
+      setGlobalSettings((oldGlobalSettings) => ({
+        ...oldGlobalSettings,
+        askForConfirmationBeforeRemovingGame,
+      })),
+    [setGlobalSettings]
+  );
+
+  const setEmulator = useCallback(
+    (emulator: string) =>
+      setGlobalSettings((oldGlobalSettings) => ({
+        ...oldGlobalSettings,
+        emulator,
+      })),
+    [setGlobalSettings]
+  );
+
+  const setEmulatorArgs = useCallback(
+    (emulatorArgs: string) =>
+      setGlobalSettings((oldGlobalSettings) => ({
+        ...oldGlobalSettings,
+        emulatorArgs,
+      })),
+    [setGlobalSettings]
+  );
+
+  return [
+    globalSettings,
+    {
+      setAskForConfirmationBeforeDeletingHack,
+      setAskForConfirmationBeforeRemovingGame,
+      setEmulator,
+      setEmulatorArgs,
+    },
+  ];
+};
 
 export const useGame = (
   id: string

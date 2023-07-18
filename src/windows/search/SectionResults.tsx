@@ -42,7 +42,7 @@ function SectionResults({ results }: SectionResultsProps) {
   if (!results)
     return (
       <Section isDefaultExpanded title="Results">
-        <Flex direction="column" gap={3} mt={2}>
+        <Flex direction="column" gap={3}>
           <Text fontSize="sm" fontStyle="italic">
             Search to find hacks.
           </Text>
@@ -53,7 +53,7 @@ function SectionResults({ results }: SectionResultsProps) {
   if (typeof results === "string") {
     return (
       <Section isDefaultExpanded title="Results">
-        <Flex direction="column" gap={3} mt={2}>
+        <Flex direction="column" gap={3}>
           <Alert description={results} status="error" />
         </Flex>
       </Section>
@@ -65,7 +65,7 @@ function SectionResults({ results }: SectionResultsProps) {
       title={`Results (${results.hacks.length}${results.hasMore ? "+" : ""})`}
       isDefaultExpanded
     >
-      <Flex direction="column" gap={3} mt={2}>
+      <Flex direction="column" gap={3}>
         {results.hacks.length > 0 ? (
           <>
             <Frame placeholder="Options">

@@ -96,7 +96,7 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
 
   return (
     <Section isDefaultExpanded title="Add hack">
-      <Flex direction="column" gap={3} pt={2}>
+      <Flex direction="column" gap={3}>
         <Button
           isDisabled={isDownloading}
           leftIcon={<SearchIcon />}
