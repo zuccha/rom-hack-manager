@@ -42,7 +42,12 @@ const readGameDirectory = async (gameDirectory: string): Promise<Hack[]> => {
         ?.name,
       sfcPath: "",
     }))
-    .filter(isHack);
+    .filter(isHack)
+    .sort((hack1, hack2) => {
+      if (hack1.name < hack2.name) return -1;
+      if (hack1.name > hack2.name) return 1;
+      return 0;
+    });
   for (const hack of hacks) {
     hack.sfcPath = await path.join(hack.directory, hack.sfcName!);
   }
@@ -141,7 +146,7 @@ function SectionHacks({ gameId }: SectionHacksProps) {
         isOpen={hackDeletionDialog.isOpen}
         onCancel={hackDeletionDialog.close}
         onConfirm={hackDeletionDialog.closeAndRemove}
-        title="Remove game?"
+        title="Delete hack?"
       />
     </>
   );

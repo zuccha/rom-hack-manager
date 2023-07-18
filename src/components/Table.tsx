@@ -1,7 +1,5 @@
 import {
   Flex,
-  IconButton,
-  IconButtonProps,
   SystemStyleObject,
   Table as CTable,
   TableCaption,
@@ -10,10 +8,10 @@ import {
   Td,
   Th,
   Thead,
-  Tooltip,
   Tr,
 } from "@chakra-ui/react";
 import { useMemo } from "react";
+import IconButton, { IconButtonProps } from "./IconButton";
 
 export type Column<T> = {
   header: string;
@@ -76,7 +74,7 @@ function Table<T>({
                 {column.header}
               </Th>
             ))}
-            {!!actions && actions.length > 0 && <Th borderWidth={0} />}
+            {!!actions && actions.length > 0 && <Th borderWidth={0} w={110} />}
           </Tr>
         </Thead>
         <Tbody>
@@ -104,19 +102,16 @@ function Table<T>({
                     className="action"
                     gap={1}
                     justifyContent="flex-end"
-                    visibility="hidden"
+                    // visibility="hidden"
                   >
                     {actions.map((action) => (
-                      <Tooltip key={action.label} label={action.label}>
-                        <IconButton
-                          aria-label={action.label}
-                          icon={action.icon}
-                          isDisabled={action.isDisabled}
-                          onClick={() => action.onClick(row)}
-                          size="xs"
-                          variant="ghost"
-                        />
-                      </Tooltip>
+                      <IconButton
+                        icon={action.icon}
+                        isDisabled={action.isDisabled}
+                        key={action.label}
+                        label={action.label}
+                        onClick={() => action.onClick(row)}
+                      />
                     ))}
                   </Flex>
                 </Td>

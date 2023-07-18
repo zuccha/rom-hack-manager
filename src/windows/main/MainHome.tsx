@@ -1,10 +1,12 @@
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
-import { Center, Icon, IconButton, Tooltip } from "@chakra-ui/react";
-import { useCallback, useMemo, useState } from "react";
+import { Center, Icon, Tooltip } from "@chakra-ui/react";
+import { useMemo } from "react";
 import { BsInfoLg } from "react-icons/bs";
 import { MdSettings } from "react-icons/md";
 import Dialog from "../../components/Dialog";
+import IconButton from "../../components/IconButton";
 import Tabs from "../../components/Tabs";
+import useItemRemovalDialog from "../../hooks/useItemRemovalDialog";
 import {
   useGame,
   useGameIds,
@@ -15,7 +17,6 @@ import PanelAbout from "./PanelAbout";
 import PanelGame from "./PanelGame";
 import PanelGameCreation from "./PanelGameCreation";
 import PanelGlobalSettings from "./PanelGlobalSettings";
-import useItemRemovalDialog from "../../hooks/useItemRemovalDialog";
 
 type GameTabProps = {
   gameId: string;
@@ -27,17 +28,11 @@ function GameTab({ gameId, onRemoveGame }: GameTabProps) {
   return (
     <Center gap={1}>
       {game.name}
-      <Tooltip label="Remove game">
-        <IconButton
-          aria-label="Remove game"
-          color="gray.500"
-          icon={<CloseIcon />}
-          onClick={onRemoveGame}
-          size="xs"
-          variant="ghost"
-          _hover={{ color: "black" }}
-        />
-      </Tooltip>
+      <IconButton
+        icon={<CloseIcon />}
+        label="Remove game"
+        onClick={onRemoveGame}
+      />
     </Center>
   );
 }
