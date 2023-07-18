@@ -62,19 +62,38 @@ fn validate_name(name: &str) -> Result<(), String> {
 fn validate_directory_path(path: &str) -> Result<(), String> {
   if path.is_empty() { return Err("No directory has been specified".into()) }
   if !Path::new(path).exists() { return Err("Directory doesn't exist".into()) }
+  let metadata = match std::fs::metadata(path) {
+    Err(_) => return Err("This is not a valid path".into()),
+    Ok(m) => m
+  };
+  if !metadata.is_dir() { return Err("This is not a directory".into()) }
   Ok(())
 }
 
 #[tauri::command]
 fn validate_file_path(path: &str) -> Result<(), String> {
-  if path.is_empty() { return Err("No vanilla ROM has been specified".into()) }
+  if path.is_empty() { return Err("No file has been specified".into()) }
   if !Path::new(path).exists() { return Err("File doesn't exist".into()) }
+  let metadata = match std::fs::metadata(path) {
+    Err(_) => return Err("This is not a valid path".into()),
+    Ok(m) => m
+  };
+  if !metadata.is_file() { return Err("This is not a file".into()) }
   Ok(())
 }
 
 #[tauri::command]
 fn validate_url(url: &str) -> Result<(), String> {
   if url.is_empty() { return Err("No URL has been specified".into()) }
+  Ok(())
+}
+
+#[tauri::command]
+fn open_with_default_app(path: &str) -> Result<(), String> {
+  match open::that(path) {
+    Err(_) => return Err("Failed to open path".into()),
+    _ => ()
+  };
   Ok(())
 }
 
@@ -164,15 +183,8 @@ async fn download_hack(
         .unwrap();
     });
 
-  // Open hack directory
-  let open_command = match std::env::consts::OS {
-    "macos" => "open",
-    "windows" => "explorer",
-    _ => ""
-  };
-  if !open_command.is_empty() {
-    std::process::Command::new(open_command).arg(hack_directory_path).spawn().unwrap();
-  }
+  // Open hack directory (ignore errors, if it fails we don't care)
+  let _ = open::that(hack_directory_path);
   Ok(())
 }
 
@@ -180,6 +192,7 @@ fn main() {
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
       download_hack,
+      open_with_default_app,
       path_exists,
       validate_directory_path,
       validate_file_path,

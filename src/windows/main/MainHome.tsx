@@ -15,6 +15,7 @@ import PanelAbout from "./PanelAbout";
 import PanelGame from "./PanelGame";
 import PanelGameCreation from "./PanelGameCreation";
 import PanelGlobalSettings from "./PanelGlobalSettings";
+import useItemRemovalDialog from "../../hooks/useItemRemovalDialog";
 
 type GameTabProps = {
   gameId: string;
@@ -48,24 +49,9 @@ function MainHome() {
 
   const [gameIds, { create: createGame, remove: removeGame }] = useGameIds();
 
-  const [gameIdToRemove, setGameIdToRemove] = useState<undefined | string>();
-
-  const closeRemoveGameDialog = useCallback(() => {
-    setGameIdToRemove(undefined);
-  }, [gameIdToRemove, removeGame]);
-
-  const closeRemoveGameDialogAndRemoveGame = useCallback(() => {
-    setGameIdToRemove(undefined);
-    if (gameIdToRemove) removeGame(gameIdToRemove);
-  }, [gameIdToRemove, removeGame]);
-
-  const openRemoveGameDialog = useCallback(
-    (gameId: string) => {
-      if (globalSettings.askForConfirmationBeforeRemovingGame)
-        setGameIdToRemove(gameId);
-      else removeGame(gameId);
-    },
-    [globalSettings.askForConfirmationBeforeRemovingGame, removeGame]
+  const gameRemovalDialog = useItemRemovalDialog(
+    removeGame,
+    globalSettings.askForConfirmationBeforeRemovingGame
   );
 
   const tabsLeft = useMemo(
@@ -75,7 +61,7 @@ function MainHome() {
         header: (
           <GameTab
             gameId={gameId}
-            onRemoveGame={() => openRemoveGameDialog(gameId)}
+            onRemoveGame={() => gameRemovalDialog.openOrRemove(gameId)}
           />
         ),
       })),
@@ -84,7 +70,7 @@ function MainHome() {
         header: <AddIcon />,
       },
     ],
-    [createGame, gameIds, openRemoveGameDialog]
+    [createGame, gameIds, gameRemovalDialog.openOrRemove]
   );
 
   const tabsRight = useMemo(
@@ -111,11 +97,11 @@ function MainHome() {
       />
 
       <Dialog
-        description="Deleting the project will not remove the folder."
-        isOpen={!!gameIdToRemove}
-        onCancel={closeRemoveGameDialog}
-        onConfirm={closeRemoveGameDialogAndRemoveGame}
-        title="Remove project?"
+        description="Removing the game will not delete the folder."
+        isOpen={gameRemovalDialog.isOpen}
+        onCancel={gameRemovalDialog.close}
+        onConfirm={gameRemovalDialog.closeAndRemove}
+        title="Remove game?"
       />
     </>
   );

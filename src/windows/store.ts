@@ -16,8 +16,6 @@ import { z } from "zod";
 type GlobalSettings = {
   askForConfirmationBeforeDeletingHack: boolean;
   askForConfirmationBeforeRemovingGame: boolean;
-  emulator: string;
-  emulatorArgs: string;
 };
 
 const GameSchema = z.object({
@@ -45,8 +43,6 @@ const globalSettingsState = atom<GlobalSettings>({
   default: {
     askForConfirmationBeforeDeletingHack: true,
     askForConfirmationBeforeRemovingGame: true,
-    emulator: "",
-    emulatorArgs: "%1",
   },
   effects_UNSTABLE: [persistAtom],
 });
@@ -85,8 +81,6 @@ export const useGlobalSettings = (): [
   {
     setAskForConfirmationBeforeDeletingHack: (value: boolean) => void;
     setAskForConfirmationBeforeRemovingGame: (value: boolean) => void;
-    setEmulator: (emulator: string) => void;
-    setEmulatorArgs: (emulatorArgs: string) => void;
   }
 ] => {
   const [globalSettings, setGlobalSettings] =
@@ -110,31 +104,11 @@ export const useGlobalSettings = (): [
     [setGlobalSettings]
   );
 
-  const setEmulator = useCallback(
-    (emulator: string) =>
-      setGlobalSettings((oldGlobalSettings) => ({
-        ...oldGlobalSettings,
-        emulator,
-      })),
-    [setGlobalSettings]
-  );
-
-  const setEmulatorArgs = useCallback(
-    (emulatorArgs: string) =>
-      setGlobalSettings((oldGlobalSettings) => ({
-        ...oldGlobalSettings,
-        emulatorArgs,
-      })),
-    [setGlobalSettings]
-  );
-
   return [
     globalSettings,
     {
       setAskForConfirmationBeforeDeletingHack,
       setAskForConfirmationBeforeRemovingGame,
-      setEmulator,
-      setEmulatorArgs,
     },
   ];
 };

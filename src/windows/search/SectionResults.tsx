@@ -1,6 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { emit } from "@tauri-apps/api/event";
-import { WebviewWindow } from "@tauri-apps/api/window";
+import { getCurrent } from "@tauri-apps/api/window";
 import { useCallback, useState } from "react";
 import Alert from "../../components/Alert";
 import Checkbox from "../../components/Checkbox";
@@ -29,8 +29,8 @@ function SectionResults({ results }: SectionResultsProps) {
     async (hack: Hack) => {
       try {
         await emit("select-hack", { ...hack, gameId: selectedGameId });
-        const searchWindow = WebviewWindow.getByLabel("search");
-        if (!keepWindowOpen) searchWindow?.close();
+        const searchWindow = getCurrent();
+        if (!keepWindowOpen) searchWindow.close();
       } catch (e) {
         console.log(e);
         // TODO: Do what?

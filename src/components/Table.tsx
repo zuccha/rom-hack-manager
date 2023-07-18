@@ -23,6 +23,7 @@ export type Column<T> = {
 export type TableProps<T> = {
   actions?: {
     icon: IconButtonProps["icon"];
+    isDisabled?: boolean;
     label: string;
     onClick: (data: T) => void;
   }[];
@@ -110,6 +111,8 @@ function Table<T>({
                         <IconButton
                           aria-label={action.label}
                           icon={action.icon}
+                          isDisabled={action.isDisabled}
+                          onClick={() => action.onClick(row)}
                           size="xs"
                           variant="ghost"
                         />

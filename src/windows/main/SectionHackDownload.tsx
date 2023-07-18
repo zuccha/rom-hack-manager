@@ -33,7 +33,6 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
     useCallback(
       (maybePayload) => {
         try {
-          console.log(maybePayload);
           const payload = SelectHackPayloadSchema.parse(maybePayload);
           if (payload.gameId !== gameId) return;
           hackName.handleChangeValue(payload.name);

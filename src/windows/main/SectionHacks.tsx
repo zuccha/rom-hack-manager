@@ -1,14 +1,17 @@
-import { Flex, Icon, Text } from "@chakra-ui/react";
+import { Icon, Text } from "@chakra-ui/react";
 import { UnlistenFn } from "@tauri-apps/api/event";
-import { readDir } from "@tauri-apps/api/fs";
-import { path } from "@tauri-apps/api";
-import { useEffect, useState } from "react";
+import { readDir, removeDir } from "@tauri-apps/api/fs";
+import { invoke, path } from "@tauri-apps/api";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { MdDelete, MdPlayCircle, MdFolder } from "react-icons/md";
 import { watch } from "tauri-plugin-fs-watch-api";
+import Dialog from "../../components/Dialog";
 import Section from "../../components/Section";
 import Table from "../../components/Table";
-import { useGame } from "../store";
-import { validateDirectoryPath } from "../validation";
+import { useGame, useGlobalSettings } from "../store";
+import { validateDirectoryPath, validateFilePath } from "../validation";
+import useIsValid from "../../hooks/useIsValid";
+import useItemRemovalDialog from "../../hooks/useItemRemovalDialog";
 
 type SectionHacksProps = {
   gameId: string;
@@ -46,16 +49,6 @@ const readGameDirectory = async (gameDirectory: string): Promise<Hack[]> => {
   return hacks;
 };
 
-const hacksTableActions = [
-  { icon: <Icon as={MdPlayCircle} />, label: "Play", onClick: () => {} },
-  { icon: <Icon as={MdFolder} />, label: "Open folder", onClick: () => {} },
-  {
-    icon: <Icon as={MdDelete} color="red.600" />,
-    label: "Delete",
-    onClick: () => {},
-  },
-];
-
 const hacksTableColumns = [
   {
     header: "Name",
@@ -68,8 +61,41 @@ const hacksTableColumns = [
 ];
 
 function SectionHacks({ gameId }: SectionHacksProps) {
+  const [globalSettings] = useGlobalSettings();
   const [game] = useGame(gameId);
   const [hacks, setHacks] = useState<Hack[]>([]);
+
+  const deleteHack = useCallback((hack: Hack) => {
+    removeDir(hack.directory, { recursive: true });
+  }, []);
+
+  const hackDeletionDialog = useItemRemovalDialog(
+    deleteHack,
+    globalSettings.askForConfirmationBeforeDeletingHack
+  );
+
+  const hacksTableActions = useMemo(
+    () => [
+      {
+        icon: <Icon as={MdPlayCircle} />,
+        label: "Play",
+        onClick: (hack: Hack) =>
+          invoke("open_with_default_app", { path: hack.sfcPath }),
+      },
+      {
+        icon: <Icon as={MdFolder} />,
+        label: "Open folder",
+        onClick: (hack: Hack) =>
+          invoke("open_with_default_app", { path: hack.directory }),
+      },
+      {
+        icon: <Icon as={MdDelete} />,
+        label: "Delete",
+        onClick: (hack: Hack) => hackDeletionDialog.openOrRemove(hack),
+      },
+    ],
+    [hackDeletionDialog.openOrRemove]
+  );
 
   useEffect(() => {
     const stopWatchingRef: { current: UnlistenFn } = { current: () => {} };
@@ -96,18 +122,28 @@ function SectionHacks({ gameId }: SectionHacksProps) {
   }, [game.directory]);
 
   return (
-    <Section isDefaultExpanded title="Hacks">
-      {hacks.length > 0 ? (
-        <Table
-          actions={hacksTableActions}
-          columns={hacksTableColumns}
-          data={hacks}
-          highlightRowOnHover
-        />
-      ) : (
-        <Text fontSize="sm">Nothing</Text>
-      )}
-    </Section>
+    <>
+      <Section isDefaultExpanded title="Hacks">
+        {hacks.length > 0 ? (
+          <Table
+            actions={hacksTableActions}
+            columns={hacksTableColumns}
+            data={hacks}
+            highlightRowOnHover
+          />
+        ) : (
+          <Text fontSize="sm">Nothing</Text>
+        )}
+      </Section>
+
+      <Dialog
+        description="Caution: Deleting the hack will delete the folder! This cannot be undone."
+        isOpen={hackDeletionDialog.isOpen}
+        onCancel={hackDeletionDialog.close}
+        onConfirm={hackDeletionDialog.closeAndRemove}
+        title="Remove game?"
+      />
+    </>
   );
 }
 

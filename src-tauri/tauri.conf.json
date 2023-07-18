@@ -61,8 +61,8 @@
         "fullscreen": false,
         "resizable": true,
         "title": "ROM Hack Downloader",
-        "width": 400,
-        "height": 350,
+        "width": 600,
+        "height": 700,
         "url": "src/windows/main/Main.html"
       }
     ]
