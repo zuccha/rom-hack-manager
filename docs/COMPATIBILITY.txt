@@ -1,0 +1,8 @@
+This software is compatible with Windows 10 or newer.
+
+If you want to use it on Windows 7 or older, you'll need to download the version
+with the installer. You can find it on the GitHub repository:
+
+  https://github.com/zuccha/rom-hack-manager
+
+This software is NOT compatible with Windows 32-bit.

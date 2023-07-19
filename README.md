@@ -1,66 +1,179 @@
-# ROM Hack Downloader
+# ROM Hack Manager
 
-Download, unzip, and patch ROM hacks all in one go.
+Download, unzip, and patch ROM hacks all in one go. Manage hacks for your SNES
+games.
 
-<img src="docs/tool-filled.png" width="400px" />
+| <img src="./docs/images/rom_hack_manager.png" alt="ROM Hack Manager" max-width="400px"> |
+| :-------------------------------------------------------------------------------------: |
+|                                    ROM Hack Manager                                     |
 
 ## Downloads
 
-The tool is available for:
-- [Windows](https://github.com/zuccha/rom-hack-downloader/releases/download/1.0.0/ROM.Hack.Downloader_1.0.0_win.zip): Package containing the executable and Flips. **N.B.: Flips needs to stay in the _resources_ folder.**
-- [Windows (installer)](https://github.com/zuccha/rom-hack-downloader/releases/download/1.0.0/ROM.Hack.Downloader_1.0.0_win_installer.zip): Automatically install the application on your PC.
-- [macOS](https://github.com/zuccha/rom-hack-downloader/releases/download/1.0.0/ROM.Hack.Downloader_1.0.0.macos.zip): Since I'm not a certified Apple developer, newer versions of macOS won't let you open the application (saying it's broken). To use it, you have to disable Gatekeeper for the application: `xattr -cr "/path/to/ROM Hack Downloader.app"` ([instructions](https://osxdaily.com/2019/02/13/fix-app-damaged-cant-be-opened-trash-error-mac)). **N.B.: Do this only if you trust me :).**
+| OS          | Type               | Link                          |
+| ----------- | ------------------ | ----------------------------- |
+| Windows[^1] | `.exe`             | [Download](https://zuccha.io) |
+| Windows     | `.msi` (installer) | [Download](https://zuccha.io) |
+| macOS[^2]   | `.app`             | [Download](https://zuccha.io) |
 
-## Instructions
+- [^1] This works only for Windows 10 or newer.
+- [^2] Since I'm not a certified Apple developer, newer versions of macOS won't
+  let you open the application (saying it's broken). To use it, you have to
+  disable Gatekeeper for the application:
+  `xattr -cr "/path/to/ROM Hack Manager.app"`
+  ([instructions](https://osxdaily.com/2019/02/13/fix-app-damaged-cant-be-opened-trash-error-mac)).
+  **N.B.: Do this only if you trust me :).**
 
-1. Copy the URL for downloading the game zip file:
+## Features
 
-    |<img src="docs/link.png" width="800px" />|
-    |:-:|
-    |Download URL on SMW Central|
+With _ROM Hack Manager_ you can:
 
-2. Fill the required fields:
+- **Manage hacks:** The tool will list SNES ROM hacks for selected games.
+- **Download hacks:** Download, unzip, and patch hacks automatically. You can
+  search _Super Mario World_ and _Yoshi Island_ hacks on SMWCentral's catalogue
+  directly from within the tool.
 
-    1. **Hack Name:** The hack will be downloaded in a folder with the chosen name
-    2. **Download URL:** URL for downloading the hack zip (e.g., the download link found on SMW Central for each hack)
-    3. **Directory:** Folder containing all your ROM hacks
-    4. **Vanilla File:** An original, untouched ROM of the game
+## Guide
 
-    |<img src="docs/tool-empty.png" width="400px" />|<img src="docs/tool-filled.png" width="400px" />|
-    |:-:|:-:|
-    |Empty form|Filled form|
+Instructions on how to use the tool and its features.
 
-3. Press **Download**. The tool will:
-    1. Download, extract, and remove the zip file inside a folder name after the hack, within the chosen base folder
-    2. Identify any `bps` file and patch it onto the original vanilla ROM using Flips, creating an equivalent `sfc` file
-    3. Remember the base directory and vanilla ROM location for future use
+### Configure a game
 
-    |<img src="docs/file-explorer-before.png" width="400px" />|<img src="docs/file-explorer-after.png" width="400px" />|
-    |:-:|:-:|
-    |Folder before download|Folder after download|
+Before you can download a hack, you need to configure a game. A game consists of
+the following:
+
+- _Name_: Name of the game, it can be anything (it's the name that appears in
+  the tabs on top).
+- _Folder_: Folder containing the hacks for the game. The tool will download
+  hacks for the game inside this folder.
+- _Original copy_: Original copy of the game, as a ROM. Patches downloaded with
+  the tool will be applied to this file (without modifying it).
+
+| <img src="./docs/images/configure_game.gif" alt="Configure a game" max-width="400px"> |
+| :-----------------------------------------------------------------------------------: |
+|                                   Configure a game                                    |
+
+Configuring a game doesn't create any directory, it only operates existing ones.
+You can remove a game from the tool through the tabs on top
+
+| <img src="./docs/images/remove_game.gif" alt="Remove a game" max-width="400px"> |
+| :-----------------------------------------------------------------------------: |
+|                                  Remove a game                                  |
+
+Removing a game this way won't remove any folder, it will just tell the tool not
+to list the game.
+
+You can change the game's name, folder, and original copy from the game tab
+itself (under the _Settings_ section, collapsed by default).
+
+### Download a hack
+
+To download (and patch) a hack, you have to specify:
+
+- _Name_: A name of your choosing (usually the name of the hack). This will be
+  the name of the folder created by the tool inside the game folder.
+- _Download URL_: URL for downloading the zip file. For example, you can find
+  this URL on SMWCentral.
+
+| <img src="./docs/images/download_hack.gif" alt="Download a hack manually" max-width="400px"> |
+| :------------------------------------------------------------------------------------------: |
+|                                   Download a hack manually                                   |
+
+You can also look for a game present on SMWCentral directly from within the tool
+
+| <img src="./docs/images/search_hack.gif" alt="Look for a hack in SMWCentral's catalogue" max-width="400px"> |
+| :---------------------------------------------------------------------------------------------------------: |
+|                                  Look for a hack in SMWCentral's catalogue                                  |
+
+You can look for _Super Mario World_ and _Yoshi Island_ hacks.
+
+The tool will download the zip file from the given URL, extract it inside a
+folder of the chosen name (`<game_folder>/<hack_name>`), and it will patch the
+first `.bps` file it finds.
+
+If the URL doesn't download a zip, or if the zip doesn't contain a `.bps` file,
+the operation will fail.
+
+After you download a hack, you'll have to wait a few seconds for it to appear in
+the list underneath, while the tool is syncing with the operating system.
+
+### Manage hacks
+
+Once you configured a game (_i.e._, selected a folder containing that game's
+hacks), the tool will list hacks present in that folder. A hack is a folder
+containing a `.sfc` file.
+
+The tool provides the following operations on hacks
+
+- **Play:** The tool opens the `.sfc` file of the hack with its default
+  application (it should be an emulator). You can specify the default app on you
+  operating system. If the hack has more than one `.sfc` file, the tool will
+  play the one that you see in the table (you cannot control which one).
+- **Open folder:** Open the folder containing the hack.
+- **Delete:** Delete the hack. This deletes the folder of the hack and all its
+  contents.
+
+| <img src="./docs/images/play_hack.gif" alt="Hack list" max-width="400px"> |
+| :-----------------------------------------------------------------------: |
+|                                 Hack list                                 |
+
+### Settings
+
+The tab with the gear icon allows to modify global settings. Their names should
+be pretty self-explanatory.
 
 ## Credits
 
-The tool has been developed by zuccha using:
+_ROM Hack Manager_ has been developed by zuccha using:
 
 - [Flips](https://github.com/Alcaro/Flips) by Alcaro, for patching on Windows
-- [MultiPatch](https://projects.sappharad.com/multipatch/) by Paul Kratt, for patching on macOS
-- [Tauri](https://tauri.app/), development framework
+- [MultiPatch](https://projects.sappharad.com/multipatch/) by Paul Kratt, for
+  patching on macOS
+
+## License
+
+This tool is under GPL3, which roughly means:
+
+- You can apply modifications to the software.
+- You should credit the author for the original for, and you can credit yourself
+  for the modifications.
+- If you modify this software, you must label it as a modification.
+- Any applications containing any part of this software must provide the full
+  source code needed to modify and rebuild this application, under the same
+  license. Including this interpretation is optional.
+- The author claims no copyright over input, output, or error messages generated
+  by this tool.
+
+This applies to this program, Flips, and MultiPatch.
+
+[More about GP3](https://www.gnu.org/licenses/gpl-3.0.en.html)
+
+## Compatibility
+
+This software is compatible with macOS and Windows 10 or newer.
+
+If you want to use it on Windows 7 or older, you'll need to download the version
+with the installer.
+
+This software is NOT compatible with Windows 32-bit.
 
 ## Run Locally
 
 If you want to run the tool locally, first you will need to:
+
 1. [Install Node](https://nodejs.org/en)
 2. [Setup Tauri](https://tauri.app/v1/guides/getting-started/prerequisites)
 
-After that, you have to clone this repository, navigate to the tool directory, and install dependencies
+After that, you have to clone this repository, navigate to the tool directory,
+and install dependencies
+
 ```bash
-git clone https://github.com/zuccha/rom-hack-downloader.git
-cd rom-hack-downloader
+git clone https://github.com/zuccha/rom-hack-manager.git
+cd rom-hack-manager
 npm install
 ```
 
 Finally, you can run it
+
 ```bash
 npm run tauri dev
 ```
