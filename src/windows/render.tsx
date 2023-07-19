@@ -2,6 +2,7 @@ import { Box, ChakraProvider, Flex, extendTheme } from "@chakra-ui/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RecoilRoot } from "recoil";
+import useTheme from "../hooks/useTheme";
 
 const styles = {
   global: {
@@ -11,16 +12,24 @@ const styles = {
   },
 };
 
-const theme = extendTheme({ styles });
+const chakraTheme = extendTheme({ styles });
+
+function BorderWrapper({ children }: { children: React.ReactNode }) {
+  const theme = useTheme();
+
+  return (
+    <Box borderTopColor="gray.300" borderTopWidth={theme === "light" ? 1 : 0}>
+      {children}
+    </Box>
+  );
+}
 
 const render = (root: React.ReactNode) => {
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
       <RecoilRoot>
-        <ChakraProvider theme={theme}>
-          <Box borderTopColor="gray.300" borderTopWidth={1}>
-            {root}
-          </Box>
+        <ChakraProvider theme={chakraTheme}>
+          <BorderWrapper>{root}</BorderWrapper>
         </ChakraProvider>
       </RecoilRoot>
     </React.StrictMode>
