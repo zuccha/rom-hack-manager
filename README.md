@@ -3,23 +3,30 @@
 Download, unzip, and patch ROM hacks all in one go. Manage hacks for your SNES
 games.
 
-| <img src="./docs/images/rom_hack_manager.png" alt="ROM Hack Manager" max-width="400px"> |
-| :-------------------------------------------------------------------------------------: |
-|                                    ROM Hack Manager                                     |
+<img src="./docs/images/rom_hack_manager.png" alt="ROM Hack Manager" width="400px" max-width="100%" style="border: 1px solid black; border-radius: 10px;" />
+
+## Table of Contents
+
+1. [Downloads](#downloads)
+2. [Features](#features)
+3. [Guide](#guide)
+4. [Credits](#credits)
+5. [License](#license)
+6. [Compatibility](#compatibility)
+7. [Run locally](#run-locally)
 
 ## Downloads
 
-| OS          | Type               | Link                          |
-| ----------- | ------------------ | ----------------------------- |
-| Windows[^1] | `.exe`             | [Download](https://zuccha.io) |
-| Windows     | `.msi` (installer) | [Download](https://zuccha.io) |
-| macOS[^2]   | `.app`             | [Download](https://zuccha.io) |
+| OS             | Type      | Link                          |
+| -------------- | --------- | ----------------------------- |
+| Windows **\*** | `.exe`    | [Download](https://zuccha.io) |
+| Windows        | Installer | [Download](https://zuccha.io) |
+| macOS **\*\*** | `.app`    | [Download](https://zuccha.io) |
 
-- [^1] This works only for Windows 10 or newer.
-- [^2] Since I'm not a certified Apple developer, newer versions of macOS won't
-  let you open the application (saying it's broken). To use it, you have to
-  disable Gatekeeper for the application:
-  `xattr -cr "/path/to/ROM Hack Manager.app"`
+- **\*** This works only for Windows 10 or newer.
+- **\*\*** Since I'm not a certified Apple developer, newer versions of macOS
+  won't let you open the application (saying it's broken). To use it, you have
+  to disable Gatekeeper for the app: `xattr -cr "/path/to/ROM Hack Manager.app"`
   ([instructions](https://osxdaily.com/2019/02/13/fix-app-damaged-cant-be-opened-trash-error-mac)).
   **N.B.: Do this only if you trust me :).**
 
@@ -51,16 +58,16 @@ the following:
 - _Original copy_: Original copy of the game, as a ROM. Patches downloaded with
   the tool will be applied to this file (without modifying it).
 
-| <img src="./docs/images/configure_game.gif" alt="Configure a game" max-width="400px"> |
-| :-----------------------------------------------------------------------------------: |
-|                                   Configure a game                                    |
+| <img src="./docs/images/configure_game.gif" alt="Configure a game" width="400px" max-width="100%" /> |
+| :--------------------------------------------------------------------------------------------------: |
+|                                           Configure a game                                           |
 
 Configuring a game doesn't create any directory, it only operates existing ones.
 You can remove a game from the tool through the tabs on top
 
-| <img src="./docs/images/remove_game.gif" alt="Remove a game" max-width="400px"> |
-| :-----------------------------------------------------------------------------: |
-|                                  Remove a game                                  |
+| <img src="./docs/images/remove_game.gif" alt="Remove a game" width="400px" max-width="100%" style="border: 1px solid black; border-radius: 10px;" /> |
+| :--------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                                    Remove a game                                                                     |
 
 Removing a game this way won't remove any folder, it will just tell the tool not
 to list the game.
@@ -77,15 +84,15 @@ To download (and patch) a hack, you have to specify:
 - _Download URL_: URL for downloading the zip file. For example, you can find
   this URL on SMWCentral.
 
-| <img src="./docs/images/download_hack.gif" alt="Download a hack manually" max-width="400px"> |
-| :------------------------------------------------------------------------------------------: |
-|                                   Download a hack manually                                   |
+| <img src="./docs/images/download_hack.gif" alt="Download a hack manually" width="400px" max-width="100%" style="border: 1px solid black; border-radius: 10px;" /> |
+| :---------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|                                                                     Download a hack manually                                                                      |
 
 You can also look for a game present on SMWCentral directly from within the tool
 
-| <img src="./docs/images/search_hack.gif" alt="Look for a hack in SMWCentral's catalogue" max-width="400px"> |
-| :---------------------------------------------------------------------------------------------------------: |
-|                                  Look for a hack in SMWCentral's catalogue                                  |
+| <img src="./docs/images/search_hack.gif" alt="Look for a hack in SMWCentral's catalogue" width="400px" max-width="100%" /> |
+| :------------------------------------------------------------------------------------------------------------------------: |
+|                                         Look for a hack in SMWCentral's catalogue                                          |
 
 You can look for _Super Mario World_ and _Yoshi Island_ hacks.
 
@@ -115,9 +122,9 @@ The tool provides the following operations on hacks
 - **Delete:** Delete the hack. This deletes the folder of the hack and all its
   contents.
 
-| <img src="./docs/images/play_hack.gif" alt="Hack list" max-width="400px"> |
-| :-----------------------------------------------------------------------: |
-|                                 Hack list                                 |
+| <img src="./docs/images/play_hack.gif" alt="Hack list" width="400px" max-width="100%" /> |
+| :--------------------------------------------------------------------------------------: |
+|                                        Hack list                                         |
 
 ### Settings
 
