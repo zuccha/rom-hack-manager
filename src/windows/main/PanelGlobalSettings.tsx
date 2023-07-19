@@ -9,7 +9,7 @@ function PanelGlobalSettings() {
 
   return (
     <Panel>
-      <Section isDefaultExpanded title="Confirmation">
+      <Section isDefaultExpanded title="Global Settings">
         <Flex direction="column" gap={1}>
           <Checkbox
             label="Ask for confirmation before removing a game"
@@ -24,6 +24,11 @@ function PanelGlobalSettings() {
               globalSettingsMethods.setAskForConfirmationBeforeDeletingHack
             }
             value={globalSettings.askForConfirmationBeforeDeletingHack}
+          />
+          <Checkbox
+            label="Open hack folder after download"
+            onChange={globalSettingsMethods.setOpenHackFolderAfterDownload}
+            value={globalSettings.openHackFolderAfterDownload}
           />
         </Flex>
       </Section>

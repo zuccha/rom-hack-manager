@@ -16,6 +16,7 @@ import { z } from "zod";
 type GlobalSettings = {
   askForConfirmationBeforeDeletingHack: boolean;
   askForConfirmationBeforeRemovingGame: boolean;
+  openHackFolderAfterDownload: boolean;
 };
 
 const GameSchema = z.object({
@@ -43,6 +44,7 @@ const globalSettingsState = atom<GlobalSettings>({
   default: {
     askForConfirmationBeforeDeletingHack: true,
     askForConfirmationBeforeRemovingGame: true,
+    openHackFolderAfterDownload: false,
   },
   effects_UNSTABLE: [persistAtom],
 });
@@ -81,6 +83,7 @@ export const useGlobalSettings = (): [
   {
     setAskForConfirmationBeforeDeletingHack: (value: boolean) => void;
     setAskForConfirmationBeforeRemovingGame: (value: boolean) => void;
+    setOpenHackFolderAfterDownload: (value: boolean) => void;
   }
 ] => {
   const [globalSettings, setGlobalSettings] =
@@ -104,11 +107,21 @@ export const useGlobalSettings = (): [
     [setGlobalSettings]
   );
 
+  const setOpenHackFolderAfterDownload = useCallback(
+    (openHackFolderAfterDownload: boolean) =>
+      setGlobalSettings((oldGlobalSettings) => ({
+        ...oldGlobalSettings,
+        openHackFolderAfterDownload,
+      })),
+    [setGlobalSettings]
+  );
+
   return [
     globalSettings,
     {
       setAskForConfirmationBeforeDeletingHack,
       setAskForConfirmationBeforeRemovingGame,
+      setOpenHackFolderAfterDownload,
     },
   ];
 };

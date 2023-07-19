@@ -103,7 +103,8 @@ async fn download_hack(
   game_directory: &str,
   game_original_copy: &str,
   hack_name: &str,
-  hack_download_url: &str) -> Result<(), String> {
+  hack_download_url: &str,
+  open_hack_folder_after_download: bool) -> Result<(), String> {
   // Validate Directory
   match validate_directory_path(game_directory) {
     Err(e) => return Err(e),
@@ -184,7 +185,11 @@ async fn download_hack(
     });
 
   // Open hack directory (ignore errors, if it fails we don't care)
-  let _ = open::that(hack_directory_path);
+  if open_hack_folder_after_download {
+    let _ = open::that(hack_directory_path);
+  }
+
+  // All good
   Ok(())
 }
 

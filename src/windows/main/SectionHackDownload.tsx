@@ -10,7 +10,7 @@ import useFormValue from "../../hooks/useFormValue";
 import useIsValid from "../../hooks/useIsValid";
 import useListenEvent from "../../hooks/useListenEvent";
 import useTauriInvoke from "../../hooks/useTauriInvoke";
-import { useGame } from "../store";
+import { useGame, useGlobalSettings } from "../store";
 import {
   validateDirectoryPath,
   validateFilePath,
@@ -24,6 +24,7 @@ type SectionHackDownloadProps = {
 };
 
 function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
+  const [globalSettings] = useGlobalSettings();
   const [game] = useGame(gameId);
 
   const hackName = useFormValue<string>("", { validate: validateName });
@@ -52,8 +53,15 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
       gameOriginalCopy: game.originalCopy,
       hackName: hackName.value,
       hackDownloadUrl: hackDownloadUrl.value,
+      openHackFolderAfterDownload: globalSettings.openHackFolderAfterDownload,
     }),
-    [game.directory, game.originalCopy, hackName.value, hackDownloadUrl.value]
+    [
+      game.directory,
+      game.originalCopy,
+      globalSettings.openHackFolderAfterDownload,
+      hackName.value,
+      hackDownloadUrl.value,
+    ]
   );
 
   const [downloadHack, isDownloading, error] = useTauriInvoke(
