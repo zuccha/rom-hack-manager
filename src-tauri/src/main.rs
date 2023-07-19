@@ -150,8 +150,8 @@ async fn download_hack(
 
   // Retrieve Flips
   let flips_command = match std::env::consts::OS {
-    "macos" => "flips-macos",
-    "windows" => "flips-windows.exe",
+    "macos" => "multipatch",
+    "windows" => "flips.exe",
     _ => ""
   };
 
