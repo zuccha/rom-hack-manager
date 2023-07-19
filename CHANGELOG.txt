@@ -1,0 +1,57 @@
+================================================================================
+|                                  CHANGELOG                                   |
+================================================================================
+
+List of additions and changes for every version.
+
+
+--------------------------------------------------------------------------------
+* 2.0.0 - UNRELEASED
+--------------------------------------------------------------------------------
+
+Breaking:
+- The game's folder and original copy specified in v1.0.0 will not be
+  remembered.
+
+Additions:
+- Implement game management panels (configure and remove games).
+- Allow to edit a game's name, folder, and original copy.
+- Implement download and patch per game.
+- Search SMW and YI hacks on SMWCentral's catalogue.
+- Show game's hacks.
+- Allow to open a hack with the OS's default app (usually, emulator).
+- Allow to open a hack's folder.
+- Allow to delete a hack.
+- Add global setting for controlling whether the tool asks for confirmation
+  before removing a game and deleting a hack.
+- Add global setting for controlling whether the tool opens the hack's folder
+  after download.
+- Add "About" page.
+
+Changes:
+- Rename project to "ROM Hack Manager".
+
+Build:
+- Exclude Flips from macOS builds.
+- Exclude MultiPatch from Windows builds.
+- Remove .DS_Store from Windows builds.
+- Include Flips source code in build.
+- Include readme, license, and changelog in build.
+
+Docs:
+- Adjust readme.
+- Write changelog.
+- Add compatibility disclaimer.
+
+
+--------------------------------------------------------------------------------
+* 1.0.0 - 2023-04-17
+--------------------------------------------------------------------------------
+
+Features:
+- Implement hack download and patch, by specifying game directory, game original
+  copy, hack name, and hack download URL.
+- Persist hack game directory and game original copy.
+
+Docs:
+- Write readme.

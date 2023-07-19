@@ -32,6 +32,9 @@ With _ROM Hack Manager_ you can:
   search _Super Mario World_ and _Yoshi Island_ hacks on SMWCentral's catalogue
   directly from within the tool.
 
+You can check the [changelog](./CHANGELOG.txt) for an exhaustive list of changes
+for every version.
+
 ## Guide
 
 Instructions on how to use the tool and its features.
