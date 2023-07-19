@@ -14,6 +14,12 @@ type Tab = {
 const BORDER_COLOR_SELECTED = "gray.500";
 const BORDER_COLOR_UNSELECTED = "gray.300";
 
+const hideScrollBarCss = {
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
+};
+
 /** TabHeader */
 
 type TabHeaderProps = {
@@ -72,7 +78,7 @@ function Tabs({ index, onChange, tabsLeft, tabsRight }: TabsProps) {
 
   return (
     <Flex direction="column">
-      <Flex bgColor="gray.50" overflow="scroll">
+      <Flex bgColor="gray.50" overflow="scroll" css={hideScrollBarCss}>
         {tabsLeft.map((tab, tabIndex) => (
           <TabHeader
             isLast={tabIndex === tabsLeft.length - 1 && tabsRight.length === 0}

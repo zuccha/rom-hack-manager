@@ -8,10 +8,9 @@ import { watch } from "tauri-plugin-fs-watch-api";
 import Dialog from "../../components/Dialog";
 import Section from "../../components/Section";
 import Table from "../../components/Table";
-import { useGame, useGlobalSettings } from "../store";
-import { validateDirectoryPath, validateFilePath } from "../validation";
-import useIsValid from "../../hooks/useIsValid";
 import useItemRemovalDialog from "../../hooks/useItemRemovalDialog";
+import { useGame, useGlobalSettings } from "../store";
+import { validateDirectoryPath } from "../validation";
 
 type SectionHacksProps = {
   gameId: string;
