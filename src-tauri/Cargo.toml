@@ -1,5 +1,5 @@
 [package]
-name = "rom-hack-downloader"
+name = "rom-hack-manager"
 version = "1.0.0"
 description = "A Tauri App"
 authors = ["you"]

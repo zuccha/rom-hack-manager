@@ -2429,7 +2429,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rom-hack-downloader"
+name = "rom-hack-manager"
 version = "1.0.0"
 dependencies = [
  "open 4.2.0",

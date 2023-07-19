@@ -9,7 +9,7 @@ function PanelAbout() {
       <Section isDefaultExpanded title="Useful links">
         <Flex alignItems="flex-start" direction="column" gap={1}>
           <Website
-            href="https://github.com/zuccha/rom-hack-downloader"
+            href="https://github.com/zuccha/rom-hack-manager"
             label="Documentation"
           />
           <Website
