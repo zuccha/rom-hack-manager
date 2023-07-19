@@ -1,8 +1,8 @@
 [package]
 name = "rom-hack-manager"
 version = "1.0.0"
-description = "A Tauri App"
-authors = ["you"]
+description = "Download, unzip, and patch ROM hacks all in one go."
+authors = ["zuccha"]
 license = ""
 repository = ""
 edition = "2021"
