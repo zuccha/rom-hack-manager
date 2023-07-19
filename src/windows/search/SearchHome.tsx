@@ -1,3 +1,4 @@
+import { Flex } from "@chakra-ui/react";
 import Panel from "../../components/Panel";
 import SectionFilters from "./SectionFilters";
 import SectionResults from "./SectionResults";
