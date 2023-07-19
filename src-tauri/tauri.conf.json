@@ -7,7 +7,7 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "ROM Hack Downloader",
+    "productName": "ROM Hack Manager",
     "version": "1.0.0"
   },
   "tauri": {
@@ -45,9 +45,9 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "io.zuccha.rom-hack-downloader",
+      "identifier": "io.zuccha.rom-hack-manager",
       "resources": ["resources/*"],
-      "targets": "all"
+      "targets": ["app", "nsis"]
     },
     "security": {
       "csp": null
@@ -60,7 +60,7 @@
         "label": "main",
         "fullscreen": false,
         "resizable": true,
-        "title": "ROM Hack Downloader",
+        "title": "ROM Hack Manager",
         "width": 600,
         "height": 700,
         "url": "src/windows/main/Main.html"
