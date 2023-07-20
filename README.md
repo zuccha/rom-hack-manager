@@ -17,11 +17,11 @@ games.
 
 ## Downloads
 
-| OS             | Type      | Link                          |
-| -------------- | --------- | ----------------------------- |
-| Windows **\*** | `.exe`    | [Download](https://zuccha.io) |
-| Windows        | Installer | [Download](https://zuccha.io) |
-| macOS **\*\*** | `.app`    | [Download](https://zuccha.io) |
+| OS             | Type      | Link                                                                                                                    |
+| -------------- | --------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Windows **\*** | `.exe`    | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.0.0/rom-hack-manager_2.0.0_win.zip)           |
+| Windows        | Installer | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.0.0/rom-hack-manager_2.0.0_win_installer.zip) |
+| macOS **\*\*** | `.app`    | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.0.0/rom-hack-manager_2.0.0_macos.zip)         |
 
 - **\*** This works only for Windows 10 or newer.
 - **\*\*** Since I'm not a certified Apple developer, newer versions of macOS
