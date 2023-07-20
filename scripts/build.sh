@@ -2,7 +2,7 @@ VERSION=$(cat src-tauri/tauri.conf.json | jq -r '.package.version')
 APPNAME="ROM Hack Manager.app"
 DIRPATH="./rom-hack-manager_${VERSION}_macos"
 
-npm run tauri builds
+npm run tauri build
 
 cd "./releases"
 

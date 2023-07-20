@@ -14,11 +14,11 @@ function PanelAbout() {
           />
           <Website
             href="https://www.smwcentral.net/?p=section&s=smwhacks"
-            label="Super Mario World Hacks"
+            label="Super Mario World hacks"
           />
           <Website
             href="https://www.smwcentral.net/?p=section&s=yihacks"
-            label="Yoshi Island Hacks"
+            label="Yoshi Island hacks"
           />
         </Flex>
       </Section>
