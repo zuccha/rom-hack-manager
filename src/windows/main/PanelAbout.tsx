@@ -10,7 +10,7 @@ function PanelAbout() {
         <Flex alignItems="flex-start" direction="column" gap={1}>
           <Website
             href="https://github.com/zuccha/rom-hack-manager"
-            label="Documentation"
+            label="Online documentation"
           />
           <Website
             href="https://www.smwcentral.net/?p=section&s=smwhacks"
@@ -40,7 +40,7 @@ function PanelAbout() {
               href="https://projects.sappharad.com/multipatch/"
               label="MultiPatch"
             />
-            <Text>&nbsp;by sappharad</Text>
+            <Text>&nbsp;by Paul Kratt</Text>
           </Flex>
         </Flex>
       </Section>
