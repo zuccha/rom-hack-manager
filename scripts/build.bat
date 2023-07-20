@@ -13,7 +13,7 @@ SET DIRPATH_INSTALLER=".\rom-hack-manager_%VERSION%_win_installer"
 SET APPNAME_BUNDLE="ROM Hack Manager.exe"
 SET DIRPATH_BUNDLE=".\rom-hack-manager_%VERSION%_win"
 
-@REM npm run tauri build
+npm run tauri build
 
 if NOT EXIST .\releases MKDIR .\releases
 cd .\releases
