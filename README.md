@@ -3,6 +3,9 @@
 Download, unzip, and patch ROM hacks all in one go. Manage hacks for your SNES
 games.
 
+For bug reports, support, and feature requests you can submit an issue here, or
+[join the Discord server](https://discord.gg/jTdTmxm3)!
+
 <img src="./docs/images/rom_hack_manager.png" alt="ROM Hack Manager" width="400px" max-width="100%" style="border: 1px solid black; border-radius: 10px;" />
 
 ## Table of Contents
