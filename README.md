@@ -17,18 +17,28 @@ games.
 
 ## Downloads
 
-| OS             | Type      | Link                                                                                                                    |
-| -------------- | --------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Windows **\*** | `.exe`    | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.0.0/rom-hack-manager_2.0.0_win.zip)           |
-| Windows        | Installer | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.0.0/rom-hack-manager_2.0.0_win_installer.zip) |
-| macOS **\*\*** | `.app`    | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.0.0/rom-hack-manager_2.0.0_macos.zip)         |
+| OS          | Version       | Architecture         | Type      | Link                                                                                                                    |
+| ----------- | ------------- | -------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **Windows** | 10, 11        | x86, 64-bit          | `.exe`    | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.0.0/rom-hack-manager_2.0.0_win.zip)           |
+| **Windows** | 7 or newer    | x86, 64-bit          | Installer | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.0.0/rom-hack-manager_2.0.0_win_installer.zip) |
+| **macOS**   | 10.3 or newer | Intel, Apple Silicon | `.app`    | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.0.0/rom-hack-manager_2.0.0_macos.zip)         |
 
-- **\*** This works only for Windows 10 or newer.
-- **\*\*** Since I'm not a certified Apple developer, newer versions of macOS
-  won't let you open the application (saying it's broken). To use it, you have
-  to disable Gatekeeper for the app: `xattr -cr "/path/to/ROM Hack Manager.app"`
-  ([instructions](https://osxdaily.com/2019/02/13/fix-app-damaged-cant-be-opened-trash-error-mac)).
-  **N.B.: Do this only if you trust me :).**
+**N.B.: Since I'm not a certified developer, both Windows and macOS will warn
+you the first time you try to open the application.**
+
+- On **Windows** you can select _More Info_ and _Run Anyway_ on the warning
+  message.
+- **macOS** will tell you the app is broken (or something along those lines). To
+  use the tool, you have to disable _Gatekeeper_:
+
+  1. Open the _Terminal_ app
+  2. Type `xattr -cr "/path/to/ROM Hack Manager.app"` and hit _Enter_
+  3. Open the app again
+
+  You can find a better explanation on
+  [this website](https://osxdaily.com/2019/02/13/fix-app-damaged-cant-be-opened-trash-error-mac)
+
+Do this only if you trust me :)
 
 ## Features
 
