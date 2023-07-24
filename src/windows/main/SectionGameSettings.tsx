@@ -4,11 +4,7 @@ import Section from "../../components/Section";
 import TextEditor from "../../components/TextEditor";
 import useFormValue from "../../hooks/useFormValue";
 import { useGame } from "../store";
-import {
-  validateDirectoryPath,
-  validateFilePath,
-  validateName,
-} from "../validation";
+import { validateDirectoryPath, validateFilePath } from "../validation";
 
 type SectionSettingsProps = {
   gameId: string;
@@ -20,7 +16,6 @@ function SectionSettings({ gameId }: SectionSettingsProps) {
   const gameName = useFormValue(game.name, {
     isDirty: game.name !== "",
     onChange: gameMethods.setName,
-    validate: validateName,
   });
 
   const gameDirectory = useFormValue(game.directory, {

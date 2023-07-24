@@ -55,6 +55,20 @@ fn path_exists(path: &str) -> bool {
 #[tauri::command]
 fn validate_name(name: &str) -> Result<(), String> {
   if name.is_empty() { return Err("No name has been specified".into()) }
+  for c in name.chars() {
+    match c {
+      '"' => return Err("Name cannot contain character \"\"\"".into()),
+      '*' => return Err("Name cannot contain character \"*\"".into()),
+      '/' => return Err("Name cannot contain character \"/\"".into()),
+      ':' => return Err("Name cannot contain character \":\"".into()),
+      '<' => return Err("Name cannot contain character \"<\"".into()),
+      '>' => return Err("Name cannot contain character \">\"".into()),
+      '?' => return Err("Name cannot contain character \"?\"".into()),
+      '\\' => return Err("Name cannot contain character \\\"".into()),
+      '|' => return Err("Name cannot contain character \"|\"".into()),
+      _ => ()
+    };
+  }
   Ok(())
 }
 

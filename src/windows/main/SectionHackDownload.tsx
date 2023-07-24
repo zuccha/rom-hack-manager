@@ -23,6 +23,20 @@ type SectionHackDownloadProps = {
   gameId: string;
 };
 
+const sanitizeHackName = (name: string): string => {
+  return name
+    .replace(/"/g, "")
+    .replace(/\*/g, "")
+    .replace(/\//g, "")
+    .replace(/:\S/g, "-")
+    .replace(/:/g, " -")
+    .replace(/</g, "")
+    .replace(/>/g, "")
+    .replace(/\?/g, "")
+    .replace(/\\/g, "")
+    .replace(/\|/g, "");
+};
+
 function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
   const [globalSettings] = useGlobalSettings();
   const [game] = useGame(gameId);
@@ -31,12 +45,13 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
   const hackDownloadUrl = useFormValue<string>("", { validate: validateURL });
 
   useListenEvent(
+    "select-hack",
     useCallback(
       (maybePayload) => {
         try {
           const payload = SelectHackPayloadSchema.parse(maybePayload);
           if (payload.gameId !== gameId) return;
-          hackName.handleChangeValue(payload.name);
+          hackName.handleChangeValue(sanitizeHackName(payload.name));
           hackDownloadUrl.handleChangeValue(payload.downloadUrl);
         } catch (e) {
           console.log(e);

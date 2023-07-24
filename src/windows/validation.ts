@@ -1,5 +1,9 @@
 import { invoke } from "@tauri-apps/api/tauri";
 
+export const validateNotEmpty = (str: string): string | undefined => {
+  return str === "" ? "Value cannot be empty" : undefined;
+};
+
 export const validateDirectoryPath = async (
   directoryPath: string
 ): Promise<string | undefined> => {

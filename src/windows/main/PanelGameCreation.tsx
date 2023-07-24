@@ -8,7 +8,7 @@ import { Game } from "../store";
 import {
   validateDirectoryPath,
   validateFilePath,
-  validateName,
+  validateNotEmpty,
 } from "../validation";
 import { Flex } from "@chakra-ui/react";
 import Section from "../../components/Section";
@@ -20,7 +20,7 @@ type PanelGameCreationProps = {
 const ES: string = "";
 
 function PanelGameCreation({ onCreateGame }: PanelGameCreationProps) {
-  const gameName = useFormValue(ES, { validate: validateName });
+  const gameName = useFormValue(ES, { validate: validateNotEmpty });
   const gameDirectory = useFormValue(ES, { validate: validateDirectoryPath });
   const gameOriginalCopy = useFormValue(ES, { validate: validateFilePath });
 
