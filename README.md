@@ -151,6 +151,7 @@ _ROM Hack Manager_ has been developed by zuccha using:
 - [Flips](https://github.com/Alcaro/Flips) by Alcaro, for patching on Windows
 - [MultiPatch](https://projects.sappharad.com/multipatch/) by Paul Kratt, for
   patching on macOS
+- [SMW Central](https://www.smwcentral.net/), for the hacks catalogue
 
 ## License
 

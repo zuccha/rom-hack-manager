@@ -18,7 +18,7 @@ function PanelAbout() {
           />
           <Website
             href="https://www.smwcentral.net/?p=section&s=yihacks"
-            label="Yoshi Island hacks"
+            label="Yoshi's Island hacks"
           />
         </Flex>
       </Section>
@@ -41,6 +41,10 @@ function PanelAbout() {
               label="MultiPatch"
             />
             <Text>&nbsp;by Paul Kratt</Text>
+          </Flex>
+
+          <Flex>
+            <Website href="https://www.smwcentral.net/" label="SMW Central" />
           </Flex>
         </Flex>
       </Section>
