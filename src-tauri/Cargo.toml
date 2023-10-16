@@ -1,6 +1,6 @@
 [package]
 name = "rom-hack-manager"
-version = "2.0.1"
+version = "2.1.0"
 description = "Download, unzip, and patch ROM hacks all in one go."
 authors = ["zuccha"]
 license = ""
