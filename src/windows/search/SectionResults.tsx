@@ -14,10 +14,15 @@ type SectionResultsProps = {
   results: SearchResults;
 };
 
-const resultsTableColumns: Column<Hack>[] = [
+const resultsTableColumnsSMW: Column<Hack>[] = [
   { header: "Name", key: "name" },
   { header: "Authors", format: (hack: Hack) => hack.authors.join(", ") },
   { header: "Type", format: (hack: Hack) => hack.type ?? "-" },
+];
+
+const resultsTableColumnsYI: Column<Hack>[] = [
+  { header: "Name", key: "name" },
+  { header: "Authors", format: (hack: Hack) => hack.authors.join(", ") },
 ];
 
 function SectionResults({ results }: SectionResultsProps) {
@@ -81,7 +86,11 @@ function SectionResults({ results }: SectionResultsProps) {
                   ? "There are more than 50 results, please refine your search."
                   : undefined
               }
-              columns={resultsTableColumns}
+              columns={
+                results.showType
+                  ? resultsTableColumnsSMW
+                  : resultsTableColumnsYI
+              }
               data={results.hacks}
               onClickRow={selectHack}
             />
