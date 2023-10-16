@@ -10,7 +10,7 @@ import useFormValue from "../../hooks/useFormValue";
 import useIsValid from "../../hooks/useIsValid";
 import useListenEvent from "../../hooks/useListenEvent";
 import useTauriInvoke from "../../hooks/useTauriInvoke";
-import { useGame, useGlobalSettings } from "../store";
+import { useGame, useGameDownloadData, useGlobalSettings } from "../store";
 import {
   validateDirectoryPath,
   validateFilePath,
@@ -40,9 +40,17 @@ const sanitizeHackName = (name: string): string => {
 function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
   const [globalSettings] = useGlobalSettings();
   const [game] = useGame(gameId);
+  const [gameDownloadData, gameDownloadDataMethods] =
+    useGameDownloadData(gameId);
 
-  const hackName = useFormValue<string>("", { validate: validateName });
-  const hackDownloadUrl = useFormValue<string>("", { validate: validateURL });
+  const hackName = useFormValue(gameDownloadData.name, {
+    onChange: gameDownloadDataMethods.setName,
+    validate: validateName,
+  });
+  const hackDownloadUrl = useFormValue(gameDownloadData.downloadUrl, {
+    onChange: gameDownloadDataMethods.setDownloadUrl,
+    validate: validateURL,
+  });
 
   useListenEvent(
     "select-hack",

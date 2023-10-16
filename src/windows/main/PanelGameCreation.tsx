@@ -4,7 +4,7 @@ import Panel from "../../components/Panel";
 import PathBrowser from "../../components/PathBrowser";
 import TextEditor from "../../components/TextEditor";
 import useFormValue from "../../hooks/useFormValue";
-import { Game } from "../store";
+import { Game, useGameCreationData } from "../store";
 import {
   validateDirectoryPath,
   validateFilePath,
@@ -17,18 +17,31 @@ type PanelGameCreationProps = {
   onCreateGame: (gameWithoutId: Omit<Game, "id">) => void;
 };
 
-const ES: string = "";
-
 function PanelGameCreation({ onCreateGame }: PanelGameCreationProps) {
-  const gameName = useFormValue(ES, { validate: validateNotEmpty });
-  const gameDirectory = useFormValue(ES, { validate: validateDirectoryPath });
-  const gameOriginalCopy = useFormValue(ES, { validate: validateFilePath });
+  const [gameCreationData, gameCreationDataMethods] = useGameCreationData();
+
+  const gameName = useFormValue(gameCreationData.name, {
+    onChange: gameCreationDataMethods.setName,
+    validate: validateNotEmpty,
+  });
+  const gameDirectory = useFormValue(gameCreationData.directory, {
+    onChange: gameCreationDataMethods.setDirectory,
+    validate: validateDirectoryPath,
+  });
+  const gameOriginalCopy = useFormValue(gameCreationData.originalCopy, {
+    onChange: gameCreationDataMethods.setOriginalCopy,
+    validate: validateFilePath,
+  });
 
   const isValid =
     gameName.isValid && gameDirectory.isValid && gameOriginalCopy.isValid;
 
   const handleCreateGame = useCallback(() => {
     if (!isValid) return;
+
+    gameCreationDataMethods.setDirectory("");
+    gameCreationDataMethods.setName("");
+    gameCreationDataMethods.setOriginalCopy("");
 
     onCreateGame({
       directory: gameDirectory.value,
