@@ -63,6 +63,10 @@ const useFormValue = <T>(
   }, [options.onBlur]);
 
   useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
+
+  useEffect(() => {
     handleValidate(value);
   }, [handleValidate]);
 

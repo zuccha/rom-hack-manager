@@ -10,7 +10,7 @@ type SectionSettingsProps = {
   gameId: string;
 };
 
-function SectionSettings({ gameId }: SectionSettingsProps) {
+function SectionGameSettings({ gameId }: SectionSettingsProps) {
   const [game, gameMethods] = useGame(gameId);
 
   const gameName = useFormValue(game.name, {
@@ -62,4 +62,4 @@ function SectionSettings({ gameId }: SectionSettingsProps) {
   );
 }
 
-export default SectionSettings;
+export default SectionGameSettings;
