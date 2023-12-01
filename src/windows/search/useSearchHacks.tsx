@@ -38,6 +38,7 @@ export type SearchArgs = {
   game: "smwhacks" | "yihacks";
   isDifficultySelected: DifficultyMap;
   name: string;
+  cookie?: string;
 };
 
 export type SearchResults =
@@ -133,6 +134,7 @@ const useSearchHacks = (): [
       game,
       isDifficultySelected,
       name,
+      cookie,
     }: SearchArgs) => {
       if (isSearching) return;
 
@@ -162,7 +164,17 @@ const useSearchHacks = (): [
         // Send request.
         const client = await getClient();
         const responseType = ResponseType.Text;
-        const { data } = await client.get(url.toString(), { responseType });
+        const { data } = await client.get(
+          url.toString(),
+          {
+            responseType,
+            ...(cookie && {
+              headers: {
+                Cookie: cookie,
+              },
+            })
+          },
+        );
 
         // Parse response to find the hacks table.
         if (typeof data !== "string") throw new Error("Data is not a string");
