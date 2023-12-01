@@ -12,6 +12,7 @@ import {
   SearchArgs,
   difficulties,
 } from "./useSearchHacks";
+import { useGlobalSettings } from "../store";
 
 type SectionFiltersProps = {
   isSearching: boolean;
@@ -28,7 +29,6 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
   const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
-  const [cookie, setCookie] = useState("");
   const [isDifficultySelected, setIsDifficultySelected] =
     useState<DifficultyMap>({});
 
@@ -41,6 +41,8 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
     },
     []
   );
+
+  const [{ cookie }] = useGlobalSettings();
 
   const searchHacks = useCallback(() => {
     onSearchHacks({
@@ -87,14 +89,6 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
           onSubmit={searchHacks}
           placeholder="Description"
           value={description}
-        />
-
-        <TextEditor
-          isDisabled={isSearching}
-          onChange={setCookie}
-          onSubmit={searchHacks}
-          placeholder="Copy a cookie to prevent DDOS error"
-          value={cookie}
         />
 
         {game === "smwhacks" && (
