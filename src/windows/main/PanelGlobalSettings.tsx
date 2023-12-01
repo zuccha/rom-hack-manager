@@ -3,6 +3,7 @@ import Checkbox from "../../components/Checkbox";
 import Panel from "../../components/Panel";
 import Section from "../../components/Section";
 import { useGlobalSettings } from "../store";
+import TextEditor from "../../components/TextEditor";
 
 function PanelGlobalSettings() {
   const [globalSettings, globalSettingsMethods] = useGlobalSettings();
@@ -29,6 +30,15 @@ function PanelGlobalSettings() {
             label="Open hack folder after download"
             onChange={globalSettingsMethods.setOpenHackFolderAfterDownload}
             value={globalSettings.openHackFolderAfterDownload}
+          />
+          <TextEditor
+            placeholder="Copy a cookie to prevent DDOS error"
+            onChange={
+              globalSettingsMethods.setCookie
+            }
+            value={
+              globalSettings.cookie
+            }
           />
         </Flex>
       </Section>
