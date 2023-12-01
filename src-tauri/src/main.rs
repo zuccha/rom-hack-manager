@@ -2,6 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::path::{Path, PathBuf};
+use reqwest::header;
 
 fn flatten_directory(dir_path: &Path) -> Result<(), String> {
   let mut dir = match dir_path.read_dir() {
@@ -118,6 +119,7 @@ async fn download_hack(
   game_original_copy: &str,
   hack_name: &str,
   hack_download_url: &str,
+  cookie: &str,
   open_hack_folder_after_download: bool) -> Result<(), String> {
   // Validate Directory
   match validate_directory_path(game_directory) {
@@ -140,16 +142,35 @@ async fn download_hack(
   // Build paths
   let hack_directory_path = PathBuf::from(game_directory).join(hack_name);
 
-  // Download
-  let response = match reqwest::get(hack_download_url).await {
+  // Create a reqwest client with custom cookie
+  let client = reqwest::Client::builder()
+    .default_headers({
+      let mut headers = header::HeaderMap::new();
+      headers.insert(header::COOKIE, header::HeaderValue::from_str(cookie).unwrap());
+      headers
+    })
+    .build()
+    .unwrap();
+
+  // Issue a GET request with the custom client
+  let response = match client.get(hack_download_url).send().await {
     Err(_) => return Err("Failed to download zip".into()),
     Ok(r) => r,
   };
+
+  // Log error if response is not 200
+  if response.status() != 200 {
+    println!("Failed to download zip: {}", response.status());
+    return Err("Failed to download zip".into())
+  }
 
   let content = match response.bytes().await {
     Err(_) => return Err("Failed to download zip".into()),
     Ok(r) => std::io::Cursor::new(r)
   };
+
+  println!("Dowloaded zip");
+  println!("Zip size: {}", content.get_ref().len());
 
   // Unzip
   match zip_extract::extract(content, hack_directory_path.as_path(), false) {
