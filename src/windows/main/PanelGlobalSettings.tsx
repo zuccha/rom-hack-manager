@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import Checkbox from "../../components/Checkbox";
 import Panel from "../../components/Panel";
 import Section from "../../components/Section";
@@ -10,7 +10,7 @@ function PanelGlobalSettings() {
 
   return (
     <Panel>
-      <Section isDefaultExpanded title="Global Settings">
+      <Section isDefaultExpanded title="Generic">
         <Flex direction="column" gap={1}>
           <Checkbox
             label="Ask for confirmation before removing a game"
@@ -31,14 +31,26 @@ function PanelGlobalSettings() {
             onChange={globalSettingsMethods.setOpenHackFolderAfterDownload}
             value={globalSettings.openHackFolderAfterDownload}
           />
+        </Flex>
+      </Section>
+
+      <Section isDefaultExpanded title="Cookies">
+        <Flex direction="column" gap={2}>
+          <Text fontSize="sm">
+            Use the field below to specify a custom cookie that will be used
+            during search and download. The cookie can be used to bypass CAPTCHA
+            tests.
+          </Text>
+          <Text fontSize="xs">
+            For example, SMW Central may require a human verification test to
+            prevent DDoS attacks. To circumvent this, complete the test on SMW
+            Central's website, then copy the <i>smwc-session</i> cookie from
+            your browser into the field down below.
+          </Text>
           <TextEditor
-            placeholder="Copy a cookie to prevent DDOS error"
-            onChange={
-              globalSettingsMethods.setCookie
-            }
-            value={
-              globalSettings.cookie
-            }
+            placeholder="Cookie"
+            onChange={globalSettingsMethods.setCookie}
+            value={globalSettings.cookie}
           />
         </Flex>
       </Section>

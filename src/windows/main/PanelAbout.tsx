@@ -31,11 +31,14 @@ function PanelAbout() {
           </Flex>
 
           <Flex>
-            <Website href="https://github.com/Alcaro/Flips" label="Flips" />
-            <Text>&nbsp;by Alcaro</Text>
+            <Text>Contributors:&nbsp;</Text>
+            <Website href="https://github.com/spigelli" label="spigelli" />
           </Flex>
 
           <Flex>
+            <Text>Tools:&nbsp;</Text>
+            <Website href="https://github.com/Alcaro/Flips" label="Flips" />
+            <Text>&nbsp;by Alcaro,&nbsp;</Text>
             <Website
               href="https://projects.sappharad.com/multipatch/"
               label="MultiPatch"
@@ -44,6 +47,7 @@ function PanelAbout() {
           </Flex>
 
           <Flex>
+            <Text>API:&nbsp;</Text>
             <Website href="https://www.smwcentral.net/" label="SMW Central" />
           </Flex>
         </Flex>
