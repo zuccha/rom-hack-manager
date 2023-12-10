@@ -76,6 +76,7 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
       gameOriginalCopy: game.originalCopy,
       hackName: hackName.value,
       hackDownloadUrl: hackDownloadUrl.value,
+      cookie: globalSettings.cookie,
       openHackFolderAfterDownload: globalSettings.openHackFolderAfterDownload,
     }),
     [

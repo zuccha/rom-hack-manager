@@ -12,6 +12,7 @@ import {
   SearchArgs,
   difficulties,
 } from "./useSearchHacks";
+import { useGlobalSettings } from "../store";
 
 type SectionFiltersProps = {
   isSearching: boolean;
@@ -41,6 +42,8 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
     []
   );
 
+  const [{ cookie }] = useGlobalSettings();
+
   const searchHacks = useCallback(() => {
     onSearchHacks({
       author,
@@ -48,6 +51,7 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
       game,
       isDifficultySelected,
       name,
+      cookie,
     });
   }, [author, description, game, isDifficultySelected, name]);
 
