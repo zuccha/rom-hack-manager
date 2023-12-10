@@ -82,18 +82,25 @@ The tool provides the following operations on hacks:
 The tab with the gear icon allows to modify global settings. Their names should
 be pretty self-explanatory.
 
+You can also specify a custom cookie that will be used for search and downloads,
+to bypass CAPTCHAs.
+
 
 --------------------------------------------------------------------------------
 * CREDITS
 --------------------------------------------------------------------------------
 
-ROM Hack Manager has been developed by zuccha.
+ROM Hack Manager has been developed by zuccha using:
 
-The tool uses the following programs:
-
-- Flips by Alcaro, for patching on Windows (https://github.com/Alcaro/Flips)
+- Flips by Alcaro, for patching on Windows (https://github.com/Alcaro/Flips).
 - MultiPatch by Paul Kratt, for patching on macOS
-  (https://projects.sappharad.com/multipatch)
+  (https://projects.sappharad.com/multipatch).
+- SMW Central, for the hacks catalogue and API.
+
+Contributors:
+
+- spigelli (https://github.com/spigelli) for implementing the custom cookie
+  setting.
 
 
 --------------------------------------------------------------------------------
