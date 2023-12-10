@@ -8,17 +8,17 @@ import {
   useRecoilState,
   useRecoilValue,
 } from "recoil";
-import { recoilPersist } from "recoil-persist";
 import { z } from "zod";
+import { storePersist } from "./store-persist";
 
 /** Types */
 
-type GlobalSettings = {
-  askForConfirmationBeforeDeletingHack: boolean;
-  askForConfirmationBeforeRemovingGame: boolean;
-  openHackFolderAfterDownload: boolean;
-  cookie: string;
-};
+const GlobalSettingsSchema = z.object({
+  askForConfirmationBeforeDeletingHack: z.boolean(),
+  askForConfirmationBeforeRemovingGame: z.boolean(),
+  openHackFolderAfterDownload: z.boolean(),
+  cookie: z.string(),
+});
 
 const GameSchema = z.object({
   directory: z.string(),
@@ -44,6 +44,7 @@ const ConfigurationSchema = z.object({
   selectedGameIndex: z.number(),
 });
 
+export type GlobalSettings = z.infer<typeof GlobalSettingsSchema>;
 export type Game = z.infer<typeof GameSchema>;
 export type GameDownloadData = z.infer<typeof GameDownloadDataSchema>;
 export type GameCreationData = z.infer<typeof GameCreationDataSchema>;
@@ -51,23 +52,32 @@ export type Configuration = z.infer<typeof ConfigurationSchema>;
 
 /** States */
 
-const { persistAtom } = recoilPersist();
+const { persistAtom, persistAtomWithDefaults } = storePersist();
+
+const defaultGlobalSettings = {
+  askForConfirmationBeforeDeletingHack: true,
+  askForConfirmationBeforeRemovingGame: true,
+  openHackFolderAfterDownload: false,
+  cookie: "",
+};
 
 const globalSettingsState = atom<GlobalSettings>({
   key: "GlobalSettings",
-  default: {
-    askForConfirmationBeforeDeletingHack: true,
-    askForConfirmationBeforeRemovingGame: true,
-    openHackFolderAfterDownload: false,
-    cookie: '',
-  },
-  effects_UNSTABLE: [persistAtom],
+  default: defaultGlobalSettings,
+  effects_UNSTABLE: [persistAtomWithDefaults(defaultGlobalSettings)],
 });
+
+const defaultGame = {
+  directory: "",
+  id: "",
+  name: "",
+  originalCopy: "",
+};
 
 const gameStateFamily = atomFamily<Game, string>({
   key: "Game",
-  default: { directory: "", id: "", name: "", originalCopy: "" },
-  effects_UNSTABLE: [persistAtom],
+  default: defaultGame,
+  effects_UNSTABLE: [persistAtomWithDefaults(defaultGame)],
 });
 
 const gameDownloadDataStateFamily = atomFamily<GameDownloadData, string>({
@@ -143,12 +153,12 @@ export const useGlobalSettings = (): [
   );
 
   const setCookie = useCallback(
-    (cookie: string) => 
+    (cookie: string) =>
       setGlobalSettings((oldGlobalSettings) => ({
         ...oldGlobalSettings,
         cookie,
       })),
-      [setGlobalSettings],
+    [setGlobalSettings]
   );
 
   return [
