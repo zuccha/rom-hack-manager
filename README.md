@@ -22,9 +22,9 @@ For bug reports, support, and feature requests you can submit an issue here, or
 
 | OS          | Version       | Architecture         | Type      | Link                                                                                                                    |
 | ----------- | ------------- | -------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------- |
-| **Windows** | 10, 11        | x86, 64-bit          | `.exe`    | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.1.1/rom-hack-manager_2.1.1_win.zip)           |
-| **Windows** | 7 or newer    | x86, 64-bit          | Installer | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.1.1/rom-hack-manager_2.1.1_win_installer.zip) |
-| **macOS**   | 10.3 or newer | Intel, Apple Silicon | `.app`    | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.1.1/rom-hack-manager_2.1.1_macos.zip)         |
+| **Windows** | 10, 11        | x86, 64-bit          | `.exe`    | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.2.0/rom-hack-manager_2.2.0_win.zip)           |
+| **Windows** | 7 or newer    | x86, 64-bit          | Installer | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.2.0/rom-hack-manager_2.2.0_win_installer.zip) |
+| **macOS**   | 10.3 or newer | Intel, Apple Silicon | `.app`    | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.2.0/rom-hack-manager_2.2.0_macos.zip)         |
 
 **N.B.: Since I'm not a certified developer, both Windows and macOS will warn
 you the first time you try to open the application.**
