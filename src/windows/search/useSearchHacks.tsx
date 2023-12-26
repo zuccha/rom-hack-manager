@@ -3,16 +3,16 @@ import { useCallback, useState } from "react";
 import { z } from "zod";
 
 export const difficulties = [
-  { label: "Standard: Easy", code: 104 },
-  { label: "Standard: Normal", code: 105 },
-  { label: "Standard: Hard", code: 106 },
-  { label: "Standard: Very Hard", code: 141 },
-  { label: "Kaizo: Beginner", code: 196 },
-  { label: "Kaizo: Intermediate", code: 107 },
-  { label: "Kaizo: Expert", code: 197 },
-  { label: "Tool Assisted: Kaizo", code: 124 },
-  { label: "Tool Assisted: Pit", code: 125 },
-  { label: "Misc.: Troll", code: 161 },
+  { label: "Standard: Easy", code: 104, short: "easy" },
+  { label: "Standard: Normal", code: 105, short: "normal" },
+  { label: "Standard: Hard", code: 106, short: "hard" },
+  { label: "Standard: Very Hard", code: 141, short: "very_hard" },
+  { label: "Kaizo: Beginner", code: 196, short: "kaizo_beginner" },
+  { label: "Kaizo: Intermediate", code: 107, short: "kaizo_light" },
+  { label: "Kaizo: Expert", code: 197, short: "kaizo_expoert" },
+  { label: "Tool Assisted: Kaizo", code: 124, short: "kaizo_hard" },
+  { label: "Tool Assisted: Pit", code: 125, short: "pit" },
+  { label: "Misc.: Troll", code: 161, short: "troll" },
 ] as const;
 
 export type Difficulty = (typeof difficulties)[number]["label"];
@@ -158,23 +158,17 @@ const useSearchHacks = (): [
       if (game === "smwhacks")
         for (const difficulty of difficulties)
           if (isDifficultySelected[difficulty.label])
-            url.searchParams.append("f[difficulty][]", `${difficulty.code}`);
+            url.searchParams.append("f[difficulty][]", difficulty.short);
 
       try {
         // Send request.
         const client = await getClient();
         const responseType = ResponseType.Text;
-        const { data } = await client.get(
-          url.toString(),
-          {
-            responseType,
-            ...(cookie && {
-              headers: {
-                Cookie: cookie,
-              },
-            })
-          },
-        );
+        console.log(url.toString());
+        const { data } = await client.get(url.toString(), {
+          responseType,
+          ...(cookie && { headers: { Cookie: cookie } }),
+        });
 
         // Parse response to find the hacks table.
         if (typeof data !== "string") throw new Error("Data is not a string");
@@ -184,8 +178,6 @@ const useSearchHacks = (): [
             : YoshiIslandResponseSchema.parse(JSON.parse(data))
         );
       } catch (e) {
-        // If parsing (or request) goes wrong, show an error message.
-        // TODO: Distinguish between parse and request errors.
         setResults("An error occurred");
         console.log(e);
       } finally {

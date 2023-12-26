@@ -6,10 +6,17 @@ List of additions and changes for every version.
 
 
 --------------------------------------------------------------------------------
+* v2.2.1 - 2023-12-26
+--------------------------------------------------------------------------------
+
+Fixed:
+- Fix SMW search by type.
+
+--------------------------------------------------------------------------------
 * v2.2.0 - 2023-12-10
 --------------------------------------------------------------------------------
 
-Additions:
+Added:
 - Add global setting to set a custom cookie for search and download requests
   (thanks to spigelli).
 
@@ -27,7 +34,7 @@ Fixed:
 * v2.1.0 - 2023-10-16
 --------------------------------------------------------------------------------
 
-Changes:
+Changed:
 - Use SMWCentral's API to fetch list of hacks instead of parsing HTML.
 - Hide "Type" column for Yoshi's Island hacks.
 
@@ -36,7 +43,7 @@ Changes:
 * v2.0.1 - 2023-07-25
 --------------------------------------------------------------------------------
 
-Fixes:
+Fixed:
 - Strip illegal characters from hack name (e.g., ":") after search.
 - Prevent the user to download a hack if some illegal characters are specified
   in the name.
@@ -50,7 +57,7 @@ Breaking:
 - The game's folder and original copy specified in v1.0.0 will not be
   remembered.
 
-Additions:
+Added:
 - Implement game management panels (configure and remove games).
 - Allow to edit a game's name, folder, and original copy.
 - Implement download and patch per game.
@@ -65,7 +72,7 @@ Additions:
   after download.
 - Add "About" page.
 
-Changes:
+Changed:
 - Rename project to "ROM Hack Manager".
 
 Build:
@@ -85,7 +92,7 @@ Docs:
 * v1.0.0 - 2023-04-17
 --------------------------------------------------------------------------------
 
-Features:
+Added:
 - Implement hack download and patch, by specifying game directory, game original
   copy, hack name, and hack download URL.
 - Persist hack game directory and game original copy.
