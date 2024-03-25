@@ -1,32 +1,13 @@
 import { Flex, Text } from "@chakra-ui/react";
-import Button from "../../components/Button";
 import Checkbox from "../../components/Checkbox";
 import Panel from "../../components/Panel";
+import PathBrowser from "../../components/PathBrowser";
 import Section from "../../components/Section";
 import TextEditor from "../../components/TextEditor";
 import { useGlobalSettings } from "../store";
-import useTauriInvoke from "../../hooks/useTauriInvoke";
-import { invoke } from "@tauri-apps/api";
 
 function PanelGlobalSettings() {
   const [globalSettings, globalSettingsMethods] = useGlobalSettings();
-
-  const onSelectPathClick = async () => {
-    try {
-      const selectedPath = await invoke("select_emulator_path");
-      if (typeof selectedPath === "string") {
-        globalSettingsMethods.setEmulatorPath(selectedPath);
-      } else {
-        console.error("Selected path is not a string:", selectedPath);
-      }
-    } catch (error) {
-      console.error("Error selecting path:", error);
-    }
-  };
-
-  const onSelectedPathClear = () => {
-    globalSettingsMethods.setEmulatorPath("");
-  };
 
   return (
     <Panel>
@@ -60,20 +41,12 @@ function PanelGlobalSettings() {
             Set the path to your preferred emulator here. You can set optional
             command line arguments e.g. when using something like Retroarch
           </Text>
-          <Flex gap={2}>
-            <Button text="Select Path" onClick={onSelectPathClick} />
-            <TextEditor
-              value={globalSettings.emulatorPath}
-              onChange={() => console.log()}
-              placeholder="Path to your emulator"
-              isReadOnly
-            />
-            <Button
-              colorScheme="red"
-              text="Clear"
-              onClick={onSelectedPathClear}
-            />
-          </Flex>
+          <PathBrowser
+            mode="file"
+            onChange={globalSettingsMethods.setEmulatorPath}
+            value={globalSettings.emulatorPath}
+            placeholder="Emulator path"
+          />
           <Flex gap={2}>
             <TextEditor
               value={globalSettings.emulatorArguments}

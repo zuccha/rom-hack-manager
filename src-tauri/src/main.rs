@@ -113,14 +113,6 @@ fn open_with_default_app(path: &str) -> Result<(), String> {
 }
 
 #[tauri::command]
-fn select_emulator_path() -> Result<String, String> {
-  tauri::api::dialog::blocking::FileDialogBuilder::new()
-    .pick_file()
-    .map(|path_buf| path_buf.to_string_lossy().into_owned())
-    .ok_or_else(|| "No file selected".to_string())
-}
-
-#[tauri::command]
 async fn download_hack(
   app_handle: tauri::AppHandle,
   game_directory: &str,
@@ -241,7 +233,6 @@ fn main() {
     .invoke_handler(tauri::generate_handler![
       download_hack,
       open_with_default_app,
-      select_emulator_path,
       path_exists,
       validate_directory_path,
       validate_file_path,
