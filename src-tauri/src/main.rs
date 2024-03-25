@@ -113,6 +113,20 @@ fn open_with_default_app(path: &str) -> Result<(), String> {
 }
 
 #[tauri::command]
+fn open_with_selected_app(file_path: &str, emulator_path: &str, args: &str) -> Result<(), String> {
+  let args_vec: Vec<&str> = args.split_whitespace().collect(); // Split the args into a vector
+  let mut command = std::process::Command::new(emulator_path);
+  for arg in args_vec {
+      command.arg(arg); // Add each argument separately
+  }
+  command.arg(file_path); // Then, add the file path
+  command.spawn()
+      .map_err(|e| e.to_string())?;
+
+  Ok(())
+}
+
+#[tauri::command]
 async fn download_hack(
   app_handle: tauri::AppHandle,
   game_directory: &str,
@@ -126,6 +140,7 @@ async fn download_hack(
     Err(e) => return Err(e),
     _ => (),
   }
+  
 
   // Validate Vanilla ROM
   match validate_file_path(game_original_copy) {
@@ -233,6 +248,7 @@ fn main() {
     .invoke_handler(tauri::generate_handler![
       download_hack,
       open_with_default_app,
+      open_with_selected_app,
       path_exists,
       validate_directory_path,
       validate_file_path,
