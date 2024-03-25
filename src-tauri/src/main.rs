@@ -114,12 +114,12 @@ fn open_with_default_app(path: &str) -> Result<(), String> {
 
 #[tauri::command]
 fn open_with_selected_app(file_path: &str, emulator_path: &str, args: &str) -> Result<(), String> {
-  let args_vec: Vec<&str> = args.split_whitespace().collect(); // Split the args into a vector
+  let args_vec: Vec<&str> = args.split_whitespace().collect();
   let mut command = std::process::Command::new(emulator_path);
   for arg in args_vec {
-      command.arg(arg); // Add each argument separately
+      command.arg(arg);
   }
-  command.arg(file_path); // Then, add the file path
+  command.arg(file_path);
   command.spawn()
       .map_err(|e| e.to_string())?;
 
