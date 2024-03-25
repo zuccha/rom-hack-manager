@@ -37,10 +37,6 @@ function PanelGlobalSettings() {
 
       <Section isDefaultExpanded title="Emulator">
         <Flex direction="column" gap={2}>
-          <Text fontSize="sm">
-            Set the path to your preferred emulator here. You can set optional
-            command line arguments e.g. when using something like Retroarch
-          </Text>
           <PathBrowser
             mode="file"
             onChange={globalSettingsMethods.setEmulatorPath}
@@ -51,7 +47,7 @@ function PanelGlobalSettings() {
             <TextEditor
               value={globalSettings.emulatorArguments}
               onChange={globalSettingsMethods.setEmulatorArguments}
-              placeholder="Arguments (optional)"
+              placeholder="Command Line Arguments (optional)"
             />
           </Flex>
         </Flex>
