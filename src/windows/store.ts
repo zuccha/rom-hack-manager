@@ -18,6 +18,8 @@ const GlobalSettingsSchema = z.object({
   askForConfirmationBeforeRemovingGame: z.boolean(),
   openHackFolderAfterDownload: z.boolean(),
   cookie: z.string(),
+  emulatorPath: z.string(),
+  emulatorArguments: z.string(),
 });
 
 const GameSchema = z.object({
@@ -59,6 +61,8 @@ const defaultGlobalSettings = {
   askForConfirmationBeforeRemovingGame: true,
   openHackFolderAfterDownload: false,
   cookie: "",
+  emulatorPath: "",
+  emulatorArguments: "",
 };
 
 const globalSettingsState = atom<GlobalSettings>({
@@ -120,6 +124,8 @@ export const useGlobalSettings = (): [
     setAskForConfirmationBeforeRemovingGame: (value: boolean) => void;
     setOpenHackFolderAfterDownload: (value: boolean) => void;
     setCookie: (value: string) => void;
+    setEmulatorPath: (value: string) => void;
+    setEmulatorArguments: (value: string) => void;
   }
 ] => {
   const [globalSettings, setGlobalSettings] =
@@ -161,6 +167,24 @@ export const useGlobalSettings = (): [
     [setGlobalSettings]
   );
 
+  const setEmulatorPath = useCallback(
+    (emulatorPath: string) =>
+      setGlobalSettings((oldGlobalSettings) => ({
+        ...oldGlobalSettings,
+        emulatorPath,
+      })),
+    [setGlobalSettings]
+  );
+
+  const setEmulatorArguments = useCallback(
+    (emulatorArguments: string) =>
+      setGlobalSettings((oldGlobalSettings) => ({
+        ...oldGlobalSettings,
+        emulatorArguments,
+      })),
+    [setGlobalSettings]
+  );
+
   return [
     globalSettings,
     {
@@ -168,6 +192,8 @@ export const useGlobalSettings = (): [
       setAskForConfirmationBeforeRemovingGame,
       setOpenHackFolderAfterDownload,
       setCookie,
+      setEmulatorPath,
+      setEmulatorArguments,
     },
   ];
 };

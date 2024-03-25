@@ -11,6 +11,7 @@ export type ButtonProps = {
   rightIcon?: CButtonProps["rightIcon"];
   text: string;
   variant?: CButtonProps["variant"];
+  colorScheme?: CButtonProps["colorScheme"];
 };
 
 function Button({
@@ -21,11 +22,12 @@ function Button({
   rightIcon,
   text,
   variant,
+  colorScheme = "blue",
 }: ButtonProps) {
   return (
     <CButton
       borderRadius={0}
-      colorScheme="blue"
+      colorScheme={colorScheme}
       leftIcon={leftIcon}
       isDisabled={isDisabled}
       isLoading={isLoading}

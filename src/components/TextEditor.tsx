@@ -19,6 +19,7 @@ export type TextEditorProps = {
   placeholder: string;
   type?: InputProps["type"];
   value: string;
+  isReadOnly?: boolean;
 };
 
 function TextEditor({
@@ -31,6 +32,7 @@ function TextEditor({
   placeholder,
   type,
   value,
+  isReadOnly = false,
 }: TextEditorProps) {
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,6 +67,7 @@ function TextEditor({
         placeholder={placeholder}
         type={type}
         value={value}
+        isReadOnly={isReadOnly}
       />
 
       {error && (
