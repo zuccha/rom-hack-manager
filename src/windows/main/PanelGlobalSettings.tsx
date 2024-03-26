@@ -1,9 +1,10 @@
 import { Flex, Text } from "@chakra-ui/react";
 import Checkbox from "../../components/Checkbox";
 import Panel from "../../components/Panel";
+import PathBrowser from "../../components/PathBrowser";
 import Section from "../../components/Section";
-import { useGlobalSettings } from "../store";
 import TextEditor from "../../components/TextEditor";
+import { useGlobalSettings } from "../store";
 
 function PanelGlobalSettings() {
   const [globalSettings, globalSettingsMethods] = useGlobalSettings();
@@ -31,6 +32,31 @@ function PanelGlobalSettings() {
             onChange={globalSettingsMethods.setOpenHackFolderAfterDownload}
             value={globalSettings.openHackFolderAfterDownload}
           />
+        </Flex>
+      </Section>
+
+      <Section isDefaultExpanded title="Emulator">
+        <Flex direction="column" gap={2}>
+          <Text fontSize="sm">
+            Use the field below to specify a custom emulator with which to open
+            ROMs. If nothing is specified, the default app specified in the
+            operating system for SFC files will be used. In the command line
+            arguments <b>%1</b> will be replaced with the ROM path.
+          </Text>
+          <PathBrowser
+            mode="file"
+            onChange={globalSettingsMethods.setEmulatorPath}
+            value={globalSettings.emulatorPath}
+            placeholder="Emulator path"
+          />
+          <Flex gap={2}>
+            <TextEditor
+              value={globalSettings.emulatorArgs}
+              onChange={globalSettingsMethods.setEmulatorArgs}
+              placeholder="Command Line Arguments"
+              isDisabled={!globalSettings.emulatorPath.trim()}
+            />
+          </Flex>
         </Flex>
       </Section>
 

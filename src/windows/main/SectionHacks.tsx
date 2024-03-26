@@ -83,8 +83,17 @@ function SectionHacks({ gameId }: SectionHacksProps) {
       {
         icon: <Icon as={MdPlayCircle} />,
         label: "Play",
-        onClick: (hack: Hack) =>
-          invoke("open_with_default_app", { path: hack.sfcPath }),
+        onClick: (hack: Hack) => {
+          if (globalSettings.emulatorPath) {
+            invoke("open_with_selected_app", {
+              filePath: hack.sfcPath,
+              emulatorPath: globalSettings.emulatorPath,
+              emulatorArgs: globalSettings.emulatorArgs,
+            });
+          } else {
+            invoke("open_with_default_app", { path: hack.sfcPath });
+          }
+        },
       },
       {
         icon: <Icon as={MdFolder} />,

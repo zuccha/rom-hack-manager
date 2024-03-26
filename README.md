@@ -144,6 +144,11 @@ The tool provides the following operations on hacks
 The tab with the gear icon allows to modify global settings. Their names should
 be pretty self-explanatory.
 
+By default, the tool will open SFC file with the default app specified in the
+operating system. It's possible to specify a custom emulator path and arguments
+via settings. This is especially useful when using RetroArch, which requires
+opening files with the `-L` flag.
+
 You can also specify a custom cookie that will be used for search and downloads,
 to bypass CAPTCHAs.
 
