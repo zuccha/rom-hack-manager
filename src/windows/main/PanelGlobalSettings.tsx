@@ -37,6 +37,12 @@ function PanelGlobalSettings() {
 
       <Section isDefaultExpanded title="Emulator">
         <Flex direction="column" gap={2}>
+          <Text fontSize="sm">
+            Use the field below to specify a custom emulator with which to open
+            ROMs. If nothing is specified, the default app specified in the
+            operating system for SFC files will be used. In the command line
+            arguments <b>%1</b> will be replaced with the ROM path.
+          </Text>
           <PathBrowser
             mode="file"
             onChange={globalSettingsMethods.setEmulatorPath}
