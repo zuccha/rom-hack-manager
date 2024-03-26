@@ -88,7 +88,7 @@ function SectionHacks({ gameId }: SectionHacksProps) {
             invoke("open_with_selected_app", {
               filePath: hack.sfcPath,
               emulatorPath: globalSettings.emulatorPath,
-              args: globalSettings.emulatorArguments,
+              emulatorArgs: globalSettings.emulatorArgs,
             });
           } else {
             invoke("open_with_default_app", { path: hack.sfcPath });

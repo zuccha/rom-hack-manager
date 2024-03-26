@@ -19,7 +19,7 @@ const GlobalSettingsSchema = z.object({
   openHackFolderAfterDownload: z.boolean(),
   cookie: z.string(),
   emulatorPath: z.string(),
-  emulatorArguments: z.string(),
+  emulatorArgs: z.string(),
 });
 
 const GameSchema = z.object({
@@ -62,7 +62,7 @@ const defaultGlobalSettings = {
   openHackFolderAfterDownload: false,
   cookie: "",
   emulatorPath: "",
-  emulatorArguments: "",
+  emulatorArgs: "",
 };
 
 const globalSettingsState = atom<GlobalSettings>({
@@ -125,7 +125,7 @@ export const useGlobalSettings = (): [
     setOpenHackFolderAfterDownload: (value: boolean) => void;
     setCookie: (value: string) => void;
     setEmulatorPath: (value: string) => void;
-    setEmulatorArguments: (value: string) => void;
+    setEmulatorArgs: (value: string) => void;
   }
 ] => {
   const [globalSettings, setGlobalSettings] =
@@ -176,11 +176,11 @@ export const useGlobalSettings = (): [
     [setGlobalSettings]
   );
 
-  const setEmulatorArguments = useCallback(
-    (emulatorArguments: string) =>
+  const setEmulatorArgs = useCallback(
+    (emulatorArgs: string) =>
       setGlobalSettings((oldGlobalSettings) => ({
         ...oldGlobalSettings,
-        emulatorArguments,
+        emulatorArgs,
       })),
     [setGlobalSettings]
   );
@@ -193,7 +193,7 @@ export const useGlobalSettings = (): [
       setOpenHackFolderAfterDownload,
       setCookie,
       setEmulatorPath,
-      setEmulatorArguments,
+      setEmulatorArgs,
     },
   ];
 };

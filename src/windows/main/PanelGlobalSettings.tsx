@@ -45,9 +45,9 @@ function PanelGlobalSettings() {
           />
           <Flex gap={2}>
             <TextEditor
-              value={globalSettings.emulatorArguments}
-              onChange={globalSettingsMethods.setEmulatorArguments}
               placeholder="Command Line Arguments (optional)"
+              value={globalSettings.emulatorArgs}
+              onChange={globalSettingsMethods.setEmulatorArgs}
             />
           </Flex>
         </Flex>
