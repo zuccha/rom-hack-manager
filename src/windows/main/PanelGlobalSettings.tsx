@@ -48,6 +48,7 @@ function PanelGlobalSettings() {
               value={globalSettings.emulatorArgs}
               onChange={globalSettingsMethods.setEmulatorArgs}
               placeholder="Command Line Arguments"
+              isDisabled={!globalSettings.emulatorPath.trim()}
             />
           </Flex>
         </Flex>
