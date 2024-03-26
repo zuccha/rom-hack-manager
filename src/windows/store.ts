@@ -62,7 +62,7 @@ const defaultGlobalSettings = {
   openHackFolderAfterDownload: false,
   cookie: "",
   emulatorPath: "",
-  emulatorArgs: "",
+  emulatorArgs: "%1",
 };
 
 const globalSettingsState = atom<GlobalSettings>({

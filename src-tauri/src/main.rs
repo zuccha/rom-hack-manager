@@ -120,9 +120,8 @@ fn open_with_selected_app(file_path: &str, emulator_path: &str, emulator_args: &
   };
   let mut command = std::process::Command::new(emulator_path);
   for arg in args {
-      command.arg(arg);
+      command.arg(if arg == "%1" { file_path } else { &arg });
   }
-  command.arg(file_path);
   command.spawn()
       .map_err(|e| e.to_string())?;
 
