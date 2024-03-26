@@ -114,9 +114,12 @@ fn open_with_default_app(path: &str) -> Result<(), String> {
 
 #[tauri::command]
 fn open_with_selected_app(file_path: &str, emulator_path: &str, emulator_args: &str) -> Result<(), String> {
-  let args_vec: Vec<&str> = emulator_args.split_whitespace().collect();
+  let args = match shell_words::split(emulator_args) {
+    Err(_) => return Err("Failed to parse emulator arguments".into()),
+    Ok(a) => a
+  };
   let mut command = std::process::Command::new(emulator_path);
-  for arg in args_vec {
+  for arg in args {
       command.arg(arg);
   }
   command.arg(file_path);
