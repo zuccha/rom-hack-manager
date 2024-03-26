@@ -163,6 +163,8 @@ _ROM Hack Manager_ has been developed by zuccha using:
 
 Contributors:
 
+- [Elegist](https://github.com/robinpatzak) for implementing the custom emulator
+  path.
 - [spigelli](https://github.com/spigelli) for implementing the custom cookie
   setting.
 
