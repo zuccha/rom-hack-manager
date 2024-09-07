@@ -22,8 +22,8 @@ For bug reports, support, and feature requests you can submit an issue here, or
 
 | OS          | Version       | Architecture Link    | Link                                                                                                                    |
 | ----------- | ------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| **Windows** | 7 or newer    | x86, 64-bit          | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.3.0/rom-hack-manager_2.3.0_win_installer.zip) |
-| **macOS**   | 10.3 or newer | Intel, Apple Silicon | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.3.0/rom-hack-manager_2.3.0_macos.zip)         |
+| **Windows** | 7 or newer    | x86, 64-bit          | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.4.0/rom-hack-manager_2.4.0_win_installer.zip) |
+| **macOS**   | 10.3 or newer | Intel, Apple Silicon | [Download](https://github.com/zuccha/rom-hack-manager/releases/download/2.4.0/rom-hack-manager_2.4.0_macos.zip)         |
 
 **N.B.: Since I'm not a certified developer, both Windows and macOS will warn
 you the first time you try to open the application.**
