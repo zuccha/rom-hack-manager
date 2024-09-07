@@ -5,8 +5,9 @@ import {
   InputRightElement,
   Tooltip,
 } from "@chakra-ui/react";
-import { WarningIcon } from "@chakra-ui/icons";
+import { CloseIcon, WarningIcon } from "@chakra-ui/icons";
 import { KeyboardEvent, useCallback } from "react";
+import IconButton from "./IconButton";
 import Placeholder from "./Placeholder";
 
 export type TextEditorProps = {
@@ -15,6 +16,7 @@ export type TextEditorProps = {
   isDisabled?: boolean;
   onBlur?: () => void;
   onChange: (value: string) => void;
+  onClear?: () => void;
   onSubmit?: () => void;
   placeholder: string;
   type?: InputProps["type"];
@@ -28,6 +30,7 @@ function TextEditor({
   isDisabled,
   onBlur,
   onChange,
+  onClear,
   onSubmit,
   placeholder,
   type,
@@ -75,6 +78,17 @@ function TextEditor({
           <Tooltip label={error}>
             <WarningIcon color="red.600" />
           </Tooltip>
+        </InputRightElement>
+      )}
+
+      {!error && onClear && (
+        <InputRightElement>
+          <IconButton
+            icon={<CloseIcon />}
+            isDisabled={!value}
+            label="Clear"
+            onClick={onClear}
+          />
         </InputRightElement>
       )}
     </InputGroup>

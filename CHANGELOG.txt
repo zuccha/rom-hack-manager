@@ -10,6 +10,7 @@ List of additions and changes for every version.
 --------------------------------------------------------------------------------
 
 Added:
+- Add filter to find downloaded hacks more easily.
 - Add search option to select moderated/waiting hacks.
 - Add search option to sort (ascending and descending) by name, date, featured,
   length (exits), size (bytes), rating, and downloads.

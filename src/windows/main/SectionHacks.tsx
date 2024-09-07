@@ -1,4 +1,4 @@
-import { Icon, Text } from "@chakra-ui/react";
+import { Flex, Icon, Text } from "@chakra-ui/react";
 import { UnlistenFn } from "@tauri-apps/api/event";
 import { readDir, removeDir } from "@tauri-apps/api/fs";
 import { invoke, path } from "@tauri-apps/api";
@@ -8,6 +8,7 @@ import { watch } from "tauri-plugin-fs-watch-api";
 import Dialog from "../../components/Dialog";
 import Section from "../../components/Section";
 import Table from "../../components/Table";
+import TextEditor from "../../components/TextEditor";
 import useItemRemovalDialog from "../../hooks/useItemRemovalDialog";
 import { useGame, useGlobalSettings } from "../store";
 import { validateDirectoryPath } from "../validation";
@@ -68,6 +69,8 @@ function SectionHacks({ gameId }: SectionHacksProps) {
   const [globalSettings] = useGlobalSettings();
   const [game] = useGame(gameId);
   const [hacks, setHacks] = useState<Hack[]>([]);
+  const [nameFilter, setNameFilter] = useState("");
+  const clearNameFilter = useCallback(() => setNameFilter(""), []);
 
   const deleteHack = useCallback((hack: Hack) => {
     removeDir(hack.directory, { recursive: true });
@@ -134,19 +137,36 @@ function SectionHacks({ gameId }: SectionHacksProps) {
     return () => stopWatchingRef.current();
   }, [game.directory]);
 
+  const filteredHacks = useMemo(() => {
+    return hacks.filter((hack) =>
+      hack.name.toLowerCase().includes(nameFilter.toLowerCase())
+    );
+  }, [hacks, nameFilter]);
+
   return (
     <>
       <Section isDefaultExpanded title="Hacks">
-        {hacks.length > 0 ? (
-          <Table
-            actions={hacksTableActions}
-            columns={hacksTableColumns}
-            data={hacks}
-            highlightRowOnHover
+        <Flex direction="column" gap={3}>
+          <TextEditor
+            onChange={setNameFilter}
+            onClear={clearNameFilter}
+            placeholder="Search by name"
+            value={nameFilter}
           />
-        ) : (
-          <Text fontSize="sm">Nothing</Text>
-        )}
+
+          {filteredHacks.length > 0 ? (
+            <Table
+              actions={hacksTableActions}
+              columns={hacksTableColumns}
+              data={filteredHacks}
+              highlightRowOnHover
+            />
+          ) : (
+            <Text fontSize="sm">
+              {nameFilter ? "Nothing, check the filter" : "nothing"}
+            </Text>
+          )}
+        </Flex>
       </Section>
 
       <Dialog
