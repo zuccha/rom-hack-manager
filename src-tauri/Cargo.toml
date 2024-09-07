@@ -15,13 +15,13 @@ tauri-build = { version = "1.2", features = [] }
 [dependencies]
 tauri = { version = "1.2", features = ["dialog-open", "fs-all", "http-request", "path-all", "shell-open", "window-close", "window-create", "window-show"] }
 tauri-plugin-fs-watch = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
+tauri-plugin-window-state = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 open = "4"
 reqwest = "0.11.16"
 zip-extract = "0.1.2"
 shell-words = "1.1.0"
-
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem

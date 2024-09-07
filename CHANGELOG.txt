@@ -10,9 +10,10 @@ List of additions and changes for every version.
 --------------------------------------------------------------------------------
 
 Added:
-- Search option to select moderated/waiting hacks.
-- Search option to sort (ascending and descending) by name, date, featured,
+- Add search option to select moderated/waiting hacks.
+- Add search option to sort (ascending and descending) by name, date, featured,
   length (exits), size (bytes), rating, and downloads.
+- Save windows' positions and sizes.
 
 Changed:
 - Reorganize form elements to gain some vertical space.
