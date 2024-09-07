@@ -111,7 +111,7 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
             isFullWidth
             onChange={setModerated}
             options={moderatedOptions}
-            placeholder="Moderation Status"
+            placeholder="Moderation status"
             value={moderated}
           />
         </Flex>
