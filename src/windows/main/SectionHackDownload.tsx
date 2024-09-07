@@ -128,13 +128,6 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
   return (
     <Section isDefaultExpanded title="Add hack">
       <Flex direction="column" gap={3}>
-        <Button
-          isDisabled={isDownloading}
-          leftIcon={<SearchIcon />}
-          onClick={openSearchWindow}
-          text="Search on SMWCentral"
-          variant="outline"
-        />
         <TextEditor
           autoFocus
           error={hackName.isPristine ? undefined : hackName.error}
@@ -154,12 +147,24 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
           placeholder="Hack Download URL"
           value={hackDownloadUrl.value}
         />
-        <Button
-          isDisabled={!isValid || isDownloading}
-          isLoading={isDownloading}
-          onClick={downloadHackIfIsValid}
-          text="Download"
-        />
+        <Flex gap={3}>
+          <Button
+            isDisabled={isDownloading}
+            isFullWidth
+            leftIcon={<SearchIcon />}
+            onClick={openSearchWindow}
+            text="Search on SMWCentral"
+            variant="outline"
+          />
+
+          <Button
+            isDisabled={!isValid || isDownloading}
+            isFullWidth
+            isLoading={isDownloading}
+            onClick={downloadHackIfIsValid}
+            text="Download"
+          />
+        </Flex>
         {error && <Alert status="error" description={error} />}
       </Flex>
     </Section>

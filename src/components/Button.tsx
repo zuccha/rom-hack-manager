@@ -5,6 +5,7 @@ import {
 
 export type ButtonProps = {
   isDisabled?: boolean;
+  isFullWidth?: boolean;
   isLoading?: boolean;
   leftIcon?: CButtonProps["leftIcon"];
   onClick: () => void;
@@ -16,6 +17,7 @@ export type ButtonProps = {
 
 function Button({
   isDisabled,
+  isFullWidth,
   isLoading,
   leftIcon,
   onClick,
@@ -28,6 +30,7 @@ function Button({
     <CButton
       borderRadius={0}
       colorScheme={colorScheme}
+      flex={isFullWidth ? 1 : undefined}
       leftIcon={leftIcon}
       isDisabled={isDisabled}
       isLoading={isLoading}

@@ -65,38 +65,44 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
   return (
     <Section isDefaultExpanded title="Filters">
       <Flex direction="column" gap={3}>
-        <Select
-          isDisabled={isSearching}
-          onChange={setGame}
-          options={gameOptions}
-          placeholder="Game"
-          value={game}
-        />
+        <Flex gap={3}>
+          <Select
+            isDisabled={isSearching}
+            isFullWidth
+            onChange={setGame}
+            options={gameOptions}
+            placeholder="Game"
+            value={game}
+          />
 
-        <Select
-          isDisabled={isSearching}
-          onChange={setModerated}
-          options={moderatedOptions}
-          placeholder="Moderation Status"
-          value={moderated}
-        />
+          <Select
+            isDisabled={isSearching}
+            isFullWidth
+            onChange={setModerated}
+            options={moderatedOptions}
+            placeholder="Moderation Status"
+            value={moderated}
+          />
+        </Flex>
 
-        <TextEditor
-          autoFocus
-          isDisabled={isSearching}
-          onChange={setName}
-          onSubmit={searchHacks}
-          placeholder="Name"
-          value={name}
-        />
+        <Flex gap={3}>
+          <TextEditor
+            autoFocus
+            isDisabled={isSearching}
+            onChange={setName}
+            onSubmit={searchHacks}
+            placeholder="Name"
+            value={name}
+          />
 
-        <TextEditor
-          isDisabled={isSearching}
-          onChange={setAuthor}
-          onSubmit={searchHacks}
-          placeholder="Author"
-          value={author}
-        />
+          <TextEditor
+            isDisabled={isSearching}
+            onChange={setAuthor}
+            onSubmit={searchHacks}
+            placeholder="Author"
+            value={author}
+          />
+        </Flex>
 
         <TextEditor
           isDisabled={isSearching}

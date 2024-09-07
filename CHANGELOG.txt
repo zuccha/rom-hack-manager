@@ -12,6 +12,9 @@ List of additions and changes for every version.
 Added:
 - Search option to select moderated/waiting hacks.
 
+Changed:
+- Reorganize form elements to gain some vertical space.
+
 Fixed:
 - Fix filter for "Kaizo: Expert" hacks' search.
 

@@ -4,6 +4,7 @@ import Placeholder from "./Placeholder";
 
 export type SelectProps<Option extends string> = {
   isDisabled?: boolean;
+  isFullWidth?: boolean;
   onChange: (value: Option) => void;
   options: { value: Option; label: string }[];
   placeholder: string;
@@ -12,6 +13,7 @@ export type SelectProps<Option extends string> = {
 
 function Select<Option extends string>({
   isDisabled,
+  isFullWidth,
   onChange,
   options,
   placeholder,
@@ -25,7 +27,7 @@ function Select<Option extends string>({
   );
 
   return (
-    <Flex position="relative">
+    <Flex position="relative" flex={isFullWidth ? 1 : undefined}>
       {placeholder && value.length > 0 && (
         <Placeholder placeholder={placeholder} />
       )}
