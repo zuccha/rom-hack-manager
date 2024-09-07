@@ -2636,7 +2636,7 @@ dependencies = [
 
 [[package]]
 name = "rom-hack-manager"
-version = "2.3.0"
+version = "2.4.0"
 dependencies = [
  "open 4.2.0",
  "reqwest",
