@@ -32,6 +32,11 @@ function PanelGlobalSettings() {
             onChange={globalSettingsMethods.setOpenHackFolderAfterDownload}
             value={globalSettings.openHackFolderAfterDownload}
           />
+          <Checkbox
+            label="Keep search window always on top"
+            onChange={globalSettingsMethods.setKeepSearchWindowOnTop}
+            value={globalSettings.keepSearchWindowOnTop}
+          />
         </Flex>
       </Section>
 

@@ -18,6 +18,8 @@ Added:
   results.
 - Allow to hide any column in search results.
 - Save windows' positions and sizes.
+- Add global setting to control whether the search windows should always be on
+  top of other windows.
 
 Changed:
 - Reorganize form elements to gain some vertical space.

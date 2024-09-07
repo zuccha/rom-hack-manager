@@ -115,7 +115,7 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
 
   const openSearchWindow = useCallback(() => {
     new WebviewWindow(`search-${gameId}`, {
-      alwaysOnTop: true,
+      alwaysOnTop: globalSettings.keepSearchWindowOnTop,
       fullscreen: false,
       resizable: true,
       title: `Search (${game.name})`,
@@ -123,7 +123,7 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
       height: 600,
       url: "src/windows/search/Search.html",
     });
-  }, []);
+  }, [game.name, gameId, globalSettings.keepSearchWindowOnTop]);
 
   return (
     <Section isDefaultExpanded title="Add hack">

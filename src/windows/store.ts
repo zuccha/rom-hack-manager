@@ -17,6 +17,7 @@ const GlobalSettingsSchema = z.object({
   askForConfirmationBeforeDeletingHack: z.boolean(),
   askForConfirmationBeforeRemovingGame: z.boolean(),
   openHackFolderAfterDownload: z.boolean(),
+  keepSearchWindowOnTop: z.boolean(),
   cookie: z.string(),
   emulatorPath: z.string(),
   emulatorArgs: z.string(),
@@ -72,6 +73,7 @@ const defaultGlobalSettings = {
   askForConfirmationBeforeDeletingHack: true,
   askForConfirmationBeforeRemovingGame: true,
   openHackFolderAfterDownload: false,
+  keepSearchWindowOnTop: true,
   cookie: "",
   emulatorPath: "",
   emulatorArgs: "%1",
@@ -152,6 +154,7 @@ export const useGlobalSettings = (): [
     setAskForConfirmationBeforeDeletingHack: (value: boolean) => void;
     setAskForConfirmationBeforeRemovingGame: (value: boolean) => void;
     setOpenHackFolderAfterDownload: (value: boolean) => void;
+    setKeepSearchWindowOnTop: (value: boolean) => void;
     setCookie: (value: string) => void;
     setEmulatorPath: (value: string) => void;
     setEmulatorArgs: (value: string) => void;
@@ -183,6 +186,15 @@ export const useGlobalSettings = (): [
       setGlobalSettings((oldGlobalSettings) => ({
         ...oldGlobalSettings,
         openHackFolderAfterDownload,
+      })),
+    [setGlobalSettings]
+  );
+
+  const setKeepSearchWindowOnTop = useCallback(
+    (keepSearchWindowOnTop: boolean) =>
+      setGlobalSettings((oldGlobalSettings) => ({
+        ...oldGlobalSettings,
+        keepSearchWindowOnTop,
       })),
     [setGlobalSettings]
   );
@@ -220,6 +232,7 @@ export const useGlobalSettings = (): [
       setAskForConfirmationBeforeDeletingHack,
       setAskForConfirmationBeforeRemovingGame,
       setOpenHackFolderAfterDownload,
+      setKeepSearchWindowOnTop,
       setCookie,
       setEmulatorPath,
       setEmulatorArgs,
