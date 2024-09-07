@@ -34,12 +34,21 @@ export type Hack = z.infer<typeof HackSchema>;
 
 export type SearchArgs = {
   author: string;
+  cookie?: string;
   description: string;
   game: "smwhacks" | "yihacks";
-  moderated: "0" | "1";
   isDifficultySelected: DifficultyMap;
+  moderated: "0" | "1";
   name: string;
-  cookie?: string;
+  orderDirection: "asc" | "desc";
+  orderField:
+    | "date"
+    | "name"
+    | "featured"
+    | "length"
+    | "rating"
+    | "filesize"
+    | "downloads";
 };
 
 export type SearchResults =
@@ -131,12 +140,14 @@ const useSearchHacks = (): [
   const search = useCallback(
     async ({
       author,
+      cookie,
       description,
       game,
-      moderated,
       isDifficultySelected,
+      moderated,
       name,
-      cookie,
+      orderDirection,
+      orderField,
     }: SearchArgs) => {
       if (isSearching) return;
 
@@ -150,8 +161,8 @@ const useSearchHacks = (): [
       url.searchParams.set("u", moderated); // Moderated (0 = yes, 1 = no)
       url.searchParams.set("g", "0"); // Gallery (0 = no, 1 = yes)
       url.searchParams.set("n", "1"); // Page (starts from 1)
-      url.searchParams.set("o", "date"); // Order field (date, name, featured, length, rating, filesize, downloads)
-      url.searchParams.set("d", "desc"); // Order type (asc, desc)
+      url.searchParams.set("o", orderField); // Order field (date, name, featured, length, rating, filesize, downloads)
+      url.searchParams.set("d", orderDirection); // Order direction (asc, desc)
 
       if (name) url.searchParams.set("f[name]", name); // Name
       if (author) url.searchParams.set("f[author]", author); // Author

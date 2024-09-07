@@ -29,14 +29,33 @@ const moderatedOptions = [
   { label: "Waiting", value: "1" as const },
 ];
 
+const orderFieldOptions = [
+  { label: "Name", value: "name" as const },
+  { label: "Date", value: "date" as const },
+  { label: "Featured", value: "featured" as const },
+  { label: "Length (exits)", value: "length" as const },
+  { label: "Size (bytes)", value: "filesize" as const },
+  { label: "Rating", value: "rating" as const },
+  { label: "Downloads", value: "downloads" as const },
+];
+
+const orderDirectionOptions = [
+  { label: "Ascending", value: "asc" as const },
+  { label: "Descending", value: "desc" as const },
+];
+
 function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
-  const [game, setGame] = useState<"smwhacks" | "yihacks">("smwhacks");
-  const [moderated, setModerated] = useState<"0" | "1">("0");
+  const [game, setGame] = useState<SearchArgs["game"]>("smwhacks");
+  const [moderated, setModerated] = useState<SearchArgs["moderated"]>("0");
   const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
   const [isDifficultySelected, setIsDifficultySelected] =
     useState<DifficultyMap>({});
+  const [orderField, setOrderField] =
+    useState<SearchArgs["orderField"]>("date");
+  const [orderDirection, setOrderDirection] =
+    useState<SearchArgs["orderDirection"]>("desc");
 
   const toggleDifficulty = useCallback(
     (difficulty: Difficulty) => (value: boolean) => {
@@ -53,14 +72,26 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
   const searchHacks = useCallback(() => {
     onSearchHacks({
       author,
+      cookie,
       description,
       game,
-      moderated,
       isDifficultySelected,
+      moderated,
       name,
-      cookie,
+      orderField,
+      orderDirection,
     });
-  }, [author, description, game, moderated, isDifficultySelected, name]);
+  }, [
+    author,
+    cookie,
+    description,
+    game,
+    isDifficultySelected,
+    moderated,
+    name,
+    orderDirection,
+    orderField,
+  ]);
 
   return (
     <Section isDefaultExpanded title="Filters">
@@ -111,6 +142,26 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
           placeholder="Description"
           value={description}
         />
+
+        <Flex gap={3}>
+          <Select
+            isDisabled={isSearching}
+            isFullWidth
+            onChange={setOrderField}
+            options={orderFieldOptions}
+            placeholder="Sort by"
+            value={orderField}
+          />
+
+          <Select
+            isDisabled={isSearching}
+            isFullWidth
+            onChange={setOrderDirection}
+            options={orderDirectionOptions}
+            placeholder="Sort direction"
+            value={orderDirection}
+          />
+        </Flex>
 
         {game === "smwhacks" && (
           <Frame minChildWidth={160} placeholder="Difficulty">
