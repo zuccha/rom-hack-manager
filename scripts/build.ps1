@@ -33,7 +33,6 @@ New-Item -ItemType Directory -Path $DIRPATH_BUNDLE -Force
 # Copy files for the installer
 Copy-Item ".\src-tauri\target\release\bundle\nsis\ROM Hack Manager_${VERSION}_x64-setup.exe" $APPPATH_INSTALLER -Force
 Copy-Item ".\docs\README.txt" $DIRPATH_INSTALLER -Force
-Copy-Item ".\docs\COMPATIBILITY.txt" $DIRPATH_INSTALLER -Force
 Copy-Item ".\CHANGELOG.txt" $DIRPATH_INSTALLER -Force
 Copy-Item ".\LICENSE.txt" $DIRPATH_INSTALLER -Force
 
