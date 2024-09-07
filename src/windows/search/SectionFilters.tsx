@@ -24,8 +24,14 @@ const gameOptions = [
   { label: "Yoshi Island", value: "yihacks" as const },
 ];
 
+const moderatedOptions = [
+  { label: "Moderated", value: "0" as const },
+  { label: "Waiting", value: "1" as const },
+];
+
 function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
   const [game, setGame] = useState<"smwhacks" | "yihacks">("smwhacks");
+  const [moderated, setModerated] = useState<"0" | "1">("0");
   const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
@@ -49,11 +55,12 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
       author,
       description,
       game,
+      moderated,
       isDifficultySelected,
       name,
       cookie,
     });
-  }, [author, description, game, isDifficultySelected, name]);
+  }, [author, description, game, moderated, isDifficultySelected, name]);
 
   return (
     <Section isDefaultExpanded title="Filters">
@@ -64,6 +71,14 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
           options={gameOptions}
           placeholder="Game"
           value={game}
+        />
+
+        <Select
+          isDisabled={isSearching}
+          onChange={setModerated}
+          options={moderatedOptions}
+          placeholder="Moderation Status"
+          value={moderated}
         />
 
         <TextEditor

@@ -9,7 +9,7 @@ export const difficulties = [
   { label: "Standard: Very Hard", code: 141, short: "very_hard" },
   { label: "Kaizo: Beginner", code: 196, short: "kaizo_beginner" },
   { label: "Kaizo: Intermediate", code: 107, short: "kaizo_light" },
-  { label: "Kaizo: Expert", code: 197, short: "kaizo_expoert" },
+  { label: "Kaizo: Expert", code: 197, short: "kaizo_expert" },
   { label: "Tool Assisted: Kaizo", code: 124, short: "kaizo_hard" },
   { label: "Tool Assisted: Pit", code: 125, short: "pit" },
   { label: "Misc.: Troll", code: 161, short: "troll" },
@@ -36,6 +36,7 @@ export type SearchArgs = {
   author: string;
   description: string;
   game: "smwhacks" | "yihacks";
+  moderated: "0" | "1";
   isDifficultySelected: DifficultyMap;
   name: string;
   cookie?: string;
@@ -132,6 +133,7 @@ const useSearchHacks = (): [
       author,
       description,
       game,
+      moderated,
       isDifficultySelected,
       name,
       cookie,
@@ -145,7 +147,7 @@ const useSearchHacks = (): [
       url.searchParams.set("a", "getsectionlist");
       url.searchParams.set("p", "section");
       url.searchParams.set("s", game); // Game (smwhacks, yihacks)
-      url.searchParams.set("u", "0"); // Unknown
+      url.searchParams.set("u", moderated); // Moderated (0 = yes, 1 = no)
       url.searchParams.set("g", "0"); // Gallery (0 = no, 1 = yes)
       url.searchParams.set("n", "1"); // Page (starts from 1)
       url.searchParams.set("o", "date"); // Order field (date, name, featured, length, rating, filesize, downloads)
