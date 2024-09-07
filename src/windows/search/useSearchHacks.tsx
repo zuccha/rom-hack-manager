@@ -3,16 +3,17 @@ import { useCallback, useState } from "react";
 import { z } from "zod";
 
 export const difficulties = [
-  { label: "Standard: Easy", code: 104, short: "easy" },
-  { label: "Standard: Normal", code: 105, short: "normal" },
-  { label: "Standard: Hard", code: 106, short: "hard" },
-  { label: "Standard: Very Hard", code: 141, short: "very_hard" },
-  { label: "Kaizo: Beginner", code: 196, short: "kaizo_beginner" },
-  { label: "Kaizo: Intermediate", code: 107, short: "kaizo_light" },
-  { label: "Kaizo: Expert", code: 197, short: "kaizo_expert" },
-  { label: "Tool Assisted: Kaizo", code: 124, short: "kaizo_hard" },
-  { label: "Tool Assisted: Pit", code: 125, short: "pit" },
-  { label: "Misc.: Troll", code: 161, short: "troll" },
+  { label: "Standard: Easy", short: "easy" },
+  { label: "Standard: Normal", short: "normal" },
+  { label: "Standard: Hard", short: "hard" },
+  { label: "Standard: Very Hard", short: "very_hard" },
+  { label: "Kaizo: Beginner", short: "kaizo_beginner" },
+  { label: "Kaizo: Intermediate", short: "kaizo_light" },
+  { label: "Kaizo: Expert", short: "kaizo_expert" },
+  { label: "Tool Assisted: Kaizo", short: "kaizo_hard" },
+  { label: "Tool Assisted: Pit", short: "pit" },
+  { label: "Misc.: Troll", short: "troll" },
+  { label: "Misc.: Puzzle", short: "puzzle" },
 ] as const;
 
 export type Difficulty = (typeof difficulties)[number]["label"];
