@@ -16,6 +16,7 @@ import IconButton, { IconButtonProps } from "./IconButton";
 export type Column<T> = {
   header: string;
   isNumeric?: boolean;
+  width?: number | string;
 } & ({ key: keyof T } | { format: (data: T) => string });
 
 export type TableProps<T> = {
@@ -70,6 +71,7 @@ function Table<T>({
                 borderWidth={0}
                 isNumeric={column.isNumeric}
                 key={column.header}
+                width={column.width}
               >
                 {column.header}
               </Th>
@@ -91,19 +93,15 @@ function Table<T>({
                   isNumeric={column.isNumeric}
                   key={`${rowIndex}-${columnIndex}`}
                   overflow="hidden"
-                  textOverflow="ellipsis"
+                  whiteSpace="normal"
+                  width={column.width}
                 >
                   {"key" in column ? `${row[column.key]}` : column.format(row)}
                 </Td>
               ))}
               {!!actions && actions.length > 0 && (
                 <Td borderWidth={0}>
-                  <Flex
-                    className="action"
-                    gap={1}
-                    justifyContent="flex-end"
-                    // visibility="hidden"
-                  >
+                  <Flex className="action" gap={1} justifyContent="flex-end">
                     {actions.map((action) => (
                       <IconButton
                         icon={action.icon}

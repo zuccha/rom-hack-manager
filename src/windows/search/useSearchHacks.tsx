@@ -27,6 +27,7 @@ export const HackSchema = z.object({
   length: z.union([z.string(), z.undefined()]),
   name: z.string().transform((value) => value.replace(/&amp;/g, "&")),
   rating: z.union([z.number(), z.undefined()]),
+  size: z.union([z.number(), z.undefined()]),
   type: z.union([z.string(), z.undefined()]),
 });
 
@@ -74,6 +75,7 @@ const SuperMarioWorldResponseSchema = z
             difficulty: z.string(),
             length: z.string(),
           }),
+          size: z.number(),
         })
         .transform((value) => ({
           authors: value.authors,
@@ -84,6 +86,7 @@ const SuperMarioWorldResponseSchema = z
           name: value.name,
           rating: value.rating,
           type: value.fields.difficulty,
+          size: value.size,
         }))
     ),
   })
@@ -110,6 +113,7 @@ const YoshiIslandResponseSchema = z
           fields: z.object({
             length: z.string(),
           }),
+          size: z.number(),
         })
         .transform((value) => ({
           authors: value.authors,
@@ -120,6 +124,7 @@ const YoshiIslandResponseSchema = z
           name: value.name,
           rating: value.rating,
           type: "",
+          size: value.size,
         }))
     ),
   })

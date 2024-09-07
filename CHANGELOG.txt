@@ -13,6 +13,9 @@ Added:
 - Add search option to select moderated/waiting hacks.
 - Add search option to sort (ascending and descending) by name, date, featured,
   length (exits), size (bytes), rating, and downloads.
+- Add length (exits), size (bytes), downloads, and rating columns to search
+  results.
+- Allow to hide any column in search results.
 - Save windows' positions and sizes.
 
 Changed:

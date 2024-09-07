@@ -22,6 +22,17 @@ const GlobalSettingsSchema = z.object({
   emulatorArgs: z.string(),
 });
 
+const SearchResultsOptionsSchema = z.object({
+  keepWindowOpen: z.boolean(),
+  showAuthorsColumn: z.boolean().default(true),
+  showDownloadsColumn: z.boolean().default(false),
+  showLengthColumn: z.boolean().default(true),
+  showNameColumn: z.boolean().default(true),
+  showRatingColumn: z.boolean().default(true),
+  showSizeColumn: z.boolean().default(false),
+  showTypeColumn: z.boolean().default(true),
+});
+
 const GameSchema = z.object({
   directory: z.string(),
   id: z.string(),
@@ -47,6 +58,7 @@ const ConfigurationSchema = z.object({
 });
 
 export type GlobalSettings = z.infer<typeof GlobalSettingsSchema>;
+export type SearchResultsOptions = z.infer<typeof SearchResultsOptionsSchema>;
 export type Game = z.infer<typeof GameSchema>;
 export type GameDownloadData = z.infer<typeof GameDownloadDataSchema>;
 export type GameCreationData = z.infer<typeof GameCreationDataSchema>;
@@ -65,10 +77,27 @@ const defaultGlobalSettings = {
   emulatorArgs: "%1",
 };
 
+const defaultSearchResultsOptions = {
+  keepWindowOpen: false,
+  showAuthorsColumn: true,
+  showDownloadsColumn: false,
+  showLengthColumn: true,
+  showNameColumn: true,
+  showRatingColumn: false,
+  showSizeColumn: false,
+  showTypeColumn: true,
+};
+
 const globalSettingsState = atom<GlobalSettings>({
   key: "GlobalSettings",
   default: defaultGlobalSettings,
   effects_UNSTABLE: [persistAtomWithDefaults(defaultGlobalSettings)],
+});
+
+const searchResultsOptionsState = atom<SearchResultsOptions>({
+  key: "SearchResultsOptions",
+  default: defaultSearchResultsOptions,
+  effects_UNSTABLE: [persistAtomWithDefaults(defaultSearchResultsOptions)],
 });
 
 const defaultGame = {
@@ -194,6 +223,110 @@ export const useGlobalSettings = (): [
       setCookie,
       setEmulatorPath,
       setEmulatorArgs,
+    },
+  ];
+};
+
+export const useSearchResultsOptions = (): [
+  SearchResultsOptions,
+  {
+    setKeepWindowOpen: (value: boolean) => void;
+    setShowAuthorsColumn: (value: boolean) => void;
+    setShowDownloadsColumn: (value: boolean) => void;
+    setShowLengthColumn: (value: boolean) => void;
+    setShowNameColumn: (value: boolean) => void;
+    setShowRatingColumn: (value: boolean) => void;
+    setShowSizeColumn: (value: boolean) => void;
+    setShowTypeColumn: (value: boolean) => void;
+  }
+] => {
+  const [searchResultsOptions, setSearchResultsOptions] = useRecoilState(
+    searchResultsOptionsState
+  );
+
+  const setKeepWindowOpen = useCallback(
+    (keepWindowOpen: boolean) =>
+      setSearchResultsOptions((oldSearchResultsOptions) => ({
+        ...oldSearchResultsOptions,
+        keepWindowOpen,
+      })),
+    [setSearchResultsOptions]
+  );
+
+  const setShowAuthorsColumn = useCallback(
+    (showAuthorsColumn: boolean) =>
+      setSearchResultsOptions((oldSearchResultsOptions) => ({
+        ...oldSearchResultsOptions,
+        showAuthorsColumn,
+      })),
+    [setSearchResultsOptions]
+  );
+
+  const setShowDownloadsColumn = useCallback(
+    (showDownloadsColumn: boolean) =>
+      setSearchResultsOptions((oldSearchResultsOptions) => ({
+        ...oldSearchResultsOptions,
+        showDownloadsColumn,
+      })),
+    [setSearchResultsOptions]
+  );
+
+  const setShowLengthColumn = useCallback(
+    (showLengthColumn: boolean) =>
+      setSearchResultsOptions((oldSearchResultsOptions) => ({
+        ...oldSearchResultsOptions,
+        showLengthColumn,
+      })),
+    [setSearchResultsOptions]
+  );
+
+  const setShowNameColumn = useCallback(
+    (showNameColumn: boolean) =>
+      setSearchResultsOptions((oldSearchResultsOptions) => ({
+        ...oldSearchResultsOptions,
+        showNameColumn,
+      })),
+    [setSearchResultsOptions]
+  );
+
+  const setShowRatingColumn = useCallback(
+    (showRatingColumn: boolean) =>
+      setSearchResultsOptions((oldSearchResultsOptions) => ({
+        ...oldSearchResultsOptions,
+        showRatingColumn,
+      })),
+    [setSearchResultsOptions]
+  );
+
+  const setShowSizeColumn = useCallback(
+    (showSizeColumn: boolean) =>
+      setSearchResultsOptions((oldSearchResultsOptions) => ({
+        ...oldSearchResultsOptions,
+        showSizeColumn,
+      })),
+    [setSearchResultsOptions]
+  );
+
+  const setShowTypeColumn = useCallback(
+    (showTypeColumn: boolean) =>
+      setSearchResultsOptions((oldSearchResultsOptions) => ({
+        ...oldSearchResultsOptions,
+        showTypeColumn,
+      })),
+    [setSearchResultsOptions]
+  );
+
+  return [
+    searchResultsOptions,
+    {
+      setKeepWindowOpen,
+      setShowAuthorsColumn,
+      setShowDownloadsColumn,
+      setShowLengthColumn,
+      setShowNameColumn,
+      setShowRatingColumn,
+      setShowSizeColumn,
+      setShowTypeColumn,
     },
   ];
 };
