@@ -34,6 +34,8 @@ function PanelAbout() {
             <Text>Contributors:&nbsp;</Text>
             <Website href="https://github.com/robinpatzak" label="Elegist" />
             ,&nbsp;
+            <Website href="https://github.com/nick-sds" label="nick-sds" />
+            ,&nbsp;
             <Website href="https://github.com/spigelli" label="spigelli" />
           </Flex>
 

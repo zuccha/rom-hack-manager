@@ -106,6 +106,8 @@ Contributors:
 
 - Elegist (https://github.com/robinpatzak) for implementing the custom emulator
   path.
+- nick-sds (https://github.com/nick-sds) for adding the moderated/waiting search
+  option and fixing the "Kaizo: Expert" search filter.
 - spigelli (https://github.com/spigelli) for implementing the custom cookie
   setting.
 
