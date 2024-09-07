@@ -163,7 +163,7 @@ function SectionHacks({ gameId }: SectionHacksProps) {
             />
           ) : (
             <Text fontSize="sm">
-              {nameFilter ? "Nothing, check the filter" : "nothing"}
+              {nameFilter ? "Nothing, check the filter" : "Nothing"}
             </Text>
           )}
         </Flex>
