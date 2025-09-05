@@ -1,9 +1,4 @@
-import {
-  Flex,
-  SystemStyleObject,
-  Table as ChakraTable,
-} from "@chakra-ui/react";
-import { useMemo } from "react";
+import { Flex, Table as ChakraTable } from "@chakra-ui/react";
 import IconButton, { IconButtonProps } from "./IconButton";
 
 export type Column<T> = {
@@ -35,12 +30,7 @@ function Table<T>({
 }: TableProps<T>) {
   return (
     <ChakraTable.ScrollArea>
-      <ChakraTable.Root
-        borderWidth={1}
-        interactive
-        tableLayout="fixed"
-        size="sm"
-      >
+      <ChakraTable.Root borderWidth={1} tableLayout="fixed" size="sm">
         {caption && <ChakraTable.Caption>{caption}</ChakraTable.Caption>}
         <ChakraTable.Header>
           <ChakraTable.Row borderBottomWidth={1}>
@@ -66,6 +56,7 @@ function Table<T>({
         <ChakraTable.Body>
           {data.map((row, rowIndex) => (
             <ChakraTable.Row
+              _hover={{ bgColor: "bg.emphasized" }}
               bgColor="transparent"
               cursor={onClickRow ? "pointer" : "default"}
               key={rowIndex}
