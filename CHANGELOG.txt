@@ -6,6 +6,20 @@ List of additions and changes for every version.
 
 
 --------------------------------------------------------------------------------
+* v2.5.0 - 2025-09-05
+--------------------------------------------------------------------------------
+
+Added:
+- Add search options to select hack by types and difficulties.
+- Add dark mode (controlled via global settings).
+
+Changed:
+- Adjusted theme colors and icons.
+
+Fixed:
+- Don't switch to game tab when clicking on remove icon.
+
+--------------------------------------------------------------------------------
 * v2.4.0 - 2024-09-07
 --------------------------------------------------------------------------------
 
