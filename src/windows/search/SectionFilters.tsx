@@ -4,8 +4,8 @@ import Button from "../../components/Button";
 import Section from "../../components/Section";
 import Select from "../../components/Select";
 import TextEditor from "../../components/TextEditor";
+import { useGlobalSettings } from "../../store/global-settings";
 import { SearchArgs } from "./useSearchHacks";
-import { useGlobalSettings } from "../store";
 
 type SectionFiltersProps = {
   isSearching: boolean;

@@ -10,7 +10,8 @@ import Section from "../../components/Section";
 import Table from "../../components/Table";
 import TextEditor from "../../components/TextEditor";
 import useItemRemovalDialog from "../../hooks/useItemRemovalDialog";
-import { useGame, useGlobalSettings } from "../store";
+import { useGame } from "../../store/game";
+import { useGlobalSettings } from "../../store/global-settings";
 import { validateDirectoryPath } from "../validation";
 
 type SectionHacksProps = {

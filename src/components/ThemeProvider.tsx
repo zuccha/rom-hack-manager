@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { ThemeProvider as NextThemesThemeProvider } from "next-themes";
 import { type ReactNode } from "react";
-import { useGlobalSettings } from "../windows/store";
+import { useGlobalSettings } from "../store/global-settings";
 
 const config = defineConfig({
   globalCss: {

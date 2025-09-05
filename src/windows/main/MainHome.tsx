@@ -5,12 +5,9 @@ import Dialog from "../../components/Dialog";
 import IconButton from "../../components/IconButton";
 import Tabs from "../../components/Tabs";
 import useItemRemovalDialog from "../../hooks/useItemRemovalDialog";
-import {
-  useGame,
-  useGameIds,
-  useGlobalSettings,
-  useSelectedGameIndex,
-} from "../store";
+import { useGameIds, useSelectedGameIndex } from "../../store/configuration";
+import { useGame } from "../../store/game";
+import { useGlobalSettings } from "../../store/global-settings";
 import PanelAbout from "./PanelAbout";
 import PanelGame from "./PanelGame";
 import PanelGameCreation from "./PanelGameCreation";
@@ -41,8 +38,7 @@ function GameTab({ gameId, onRemoveGame }: GameTabProps) {
 
 function MainHome() {
   const [globalSettings] = useGlobalSettings();
-  const [selectedGameIndex, { set: setSelectedGameIndex }] =
-    useSelectedGameIndex();
+  const [selectedGameIndex, setSelectedGameIndex] = useSelectedGameIndex();
 
   const [gameIds, { create: createGame, remove: removeGame }] = useGameIds();
 

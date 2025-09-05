@@ -10,7 +10,9 @@ import useFormValue from "../../hooks/useFormValue";
 import useIsValid from "../../hooks/useIsValid";
 import useListenEvent from "../../hooks/useListenEvent";
 import useTauriInvoke from "../../hooks/useTauriInvoke";
-import { useGame, useGameDownloadData, useGlobalSettings } from "../store";
+import { useGame } from "../../store/game";
+import { useGameDownloadData } from "../../store/game-download-data";
+import { useGlobalSettings } from "../../store/global-settings";
 import {
   validateDirectoryPath,
   validateFilePath,

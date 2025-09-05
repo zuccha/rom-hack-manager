@@ -1,15 +1,14 @@
 import { Box } from "@chakra-ui/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { RecoilRoot } from "recoil";
-import useTheme from "../hooks/useTheme";
 import { ThemeProvider } from "../components/ThemeProvider";
+import { useGlobalSettings } from "../store/global-settings";
 
 function BorderWrapper({ children }: { children: React.ReactNode }) {
-  const theme = useTheme();
+  const [globalSettings] = useGlobalSettings();
 
   return (
-    <Box borderTopColor="gray.300" borderTopWidth={theme === "light" ? 1 : 0}>
+    <Box borderTopWidth={globalSettings.theme === "light" ? 1 : 0}>
       {children}
     </Box>
   );
@@ -18,11 +17,9 @@ function BorderWrapper({ children }: { children: React.ReactNode }) {
 const render = (root: React.ReactNode) => {
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
-      <RecoilRoot>
-        <ThemeProvider>
-          <BorderWrapper>{root}</BorderWrapper>
-        </ThemeProvider>
-      </RecoilRoot>
+      <ThemeProvider>
+        <BorderWrapper>{root}</BorderWrapper>
+      </ThemeProvider>
     </React.StrictMode>
   );
 };

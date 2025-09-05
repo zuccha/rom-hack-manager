@@ -4,7 +4,7 @@ import Panel from "../../components/Panel";
 import PathBrowser from "../../components/PathBrowser";
 import Section from "../../components/Section";
 import TextEditor from "../../components/TextEditor";
-import { useGlobalSettings } from "../store";
+import { useGlobalSettings } from "../../store/global-settings";
 
 function PanelGlobalSettings() {
   const [globalSettings, globalSettingsMethods] = useGlobalSettings();

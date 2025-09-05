@@ -7,7 +7,8 @@ import Checkbox from "../../components/Checkbox";
 import Frame from "../../components/Frame";
 import Section from "../../components/Section";
 import Table, { Column } from "../../components/Table";
-import { useSearchResultsOptions, useSelectedGameId } from "../store";
+import { useSelectedGameId } from "../../store/configuration";
+import { useSearchResultsOptions } from "../../store/search-results-options";
 import { Hack, SearchResults } from "./useSearchHacks";
 
 type SectionResultsProps = {
