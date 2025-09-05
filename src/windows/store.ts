@@ -27,6 +27,7 @@ const GlobalSettingsSchema = z.object({
 const SearchResultsOptionsSchema = z.object({
   keepWindowOpen: z.boolean(),
   showAuthorsColumn: z.boolean().default(true),
+  showDifficultyColumn: z.boolean().default(false),
   showDownloadsColumn: z.boolean().default(false),
   showLengthColumn: z.boolean().default(true),
   showNameColumn: z.boolean().default(true),
@@ -84,6 +85,7 @@ const defaultGlobalSettings = {
 const defaultSearchResultsOptions = {
   keepWindowOpen: false,
   showAuthorsColumn: true,
+  showDifficultyColumn: false,
   showDownloadsColumn: false,
   showLengthColumn: true,
   showNameColumn: true,
@@ -258,6 +260,7 @@ export const useSearchResultsOptions = (): [
   {
     setKeepWindowOpen: (value: boolean) => void;
     setShowAuthorsColumn: (value: boolean) => void;
+    setShowDifficultyColumn: (value: boolean) => void;
     setShowDownloadsColumn: (value: boolean) => void;
     setShowLengthColumn: (value: boolean) => void;
     setShowNameColumn: (value: boolean) => void;
@@ -284,6 +287,15 @@ export const useSearchResultsOptions = (): [
       setSearchResultsOptions((oldSearchResultsOptions) => ({
         ...oldSearchResultsOptions,
         showAuthorsColumn,
+      })),
+    [setSearchResultsOptions]
+  );
+
+  const setShowDifficultyColumn = useCallback(
+    (showDifficultyColumn: boolean) =>
+      setSearchResultsOptions((oldSearchResultsOptions) => ({
+        ...oldSearchResultsOptions,
+        showDifficultyColumn,
       })),
     [setSearchResultsOptions]
   );
@@ -347,6 +359,7 @@ export const useSearchResultsOptions = (): [
     {
       setKeepWindowOpen,
       setShowAuthorsColumn,
+      setShowDifficultyColumn,
       setShowDownloadsColumn,
       setShowLengthColumn,
       setShowNameColumn,

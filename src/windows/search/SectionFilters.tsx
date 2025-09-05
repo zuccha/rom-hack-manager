@@ -37,6 +37,14 @@ const orderDirectionOptions = [
   { label: "Descending", value: "desc" as const },
 ];
 
+const typeOptions = [
+  { label: "Standard", value: "standard" },
+  { label: "Kaizo", value: "kaizo" },
+  { label: "Puzzle", value: "puzzle" },
+  { label: "Tool-Assisted", value: "tool_assisted" },
+  { label: "Pit", value: "pit" },
+];
+
 const difficultyOptions = [
   { label: "Newcomer", value: "diff_1" },
   { label: "Casual", value: "diff_2" },
@@ -53,6 +61,7 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
   const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
+  const [types, setTypes] = useState<string[]>([]);
   const [difficulties, setDifficulties] = useState<string[]>([]);
 
   const [orderField, setOrderField] =
@@ -73,6 +82,7 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
       name,
       orderField,
       orderDirection,
+      types,
     });
   }, [
     author,
@@ -84,6 +94,7 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
     name,
     orderDirection,
     orderField,
+    types,
   ]);
 
   return (
@@ -158,6 +169,16 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
 
         {game === "smwhacks" && (
           <Flex gap={3}>
+            <Select
+              isDisabled={isSearching}
+              isFullWidth
+              isMultiple
+              onChange={setTypes}
+              options={typeOptions}
+              placeholder="Types"
+              value={types}
+            />
+
             <Select
               isDisabled={isSearching}
               isFullWidth

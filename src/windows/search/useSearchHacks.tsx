@@ -12,6 +12,7 @@ export const HackSchema = z.object({
   name: z.string().transform((value) => value.replace(/&amp;/g, "&")),
   rating: z.union([z.number(), z.undefined()]),
   size: z.union([z.number(), z.undefined()]),
+  type: z.union([z.string(), z.undefined()]),
 });
 
 export type Hack = z.infer<typeof HackSchema>;
@@ -33,10 +34,16 @@ export type SearchArgs = {
     | "rating"
     | "filesize"
     | "downloads";
+  types: string[];
 };
 
 export type SearchResults =
-  | { hacks: Hack[]; hasMore: boolean; showType: boolean }
+  | {
+      hacks: Hack[];
+      hasMore: boolean;
+      showDifficulty: boolean;
+      showType: boolean;
+    }
   | string
   | undefined;
 
@@ -57,6 +64,7 @@ const SuperMarioWorldResponseSchema = z
           fields: z.object({
             difficulty: z.string(),
             length: z.string(),
+            type: z.string(),
           }),
           size: z.number(),
         })
@@ -70,12 +78,14 @@ const SuperMarioWorldResponseSchema = z
           name: value.name,
           rating: value.rating,
           size: value.size,
+          type: value.fields.type,
         }))
     ),
   })
   .transform((value) => ({
     hacks: value.data,
     hasMore: value.current_page < value.last_page,
+    showDifficulty: true,
     showType: true,
   }));
 
@@ -108,12 +118,14 @@ const YoshiIslandResponseSchema = z
           name: value.name,
           rating: value.rating,
           size: value.size,
+          type: "",
         }))
     ),
   })
   .transform((value) => ({
     hacks: value.data,
     hasMore: value.current_page < value.last_page,
+    showDifficulty: false,
     showType: false,
   }));
 
@@ -136,6 +148,7 @@ const useSearchHacks = (): [
       name,
       orderDirection,
       orderField,
+      types,
     }: SearchArgs) => {
       if (isSearching) return;
 
@@ -156,9 +169,12 @@ const useSearchHacks = (): [
       if (author) url.searchParams.set("f[author]", author); // Author
       if (description) url.searchParams.set("f[description]", description); // Description
 
-      if (game === "smwhacks")
+      if (game === "smwhacks") {
+        for (const type of types) url.searchParams.append("f[type][]", type);
+
         for (const difficulty of difficulties)
           url.searchParams.append("f[difficulty][]", difficulty);
+      }
 
       try {
         const response = await fetch(url.toString(), {

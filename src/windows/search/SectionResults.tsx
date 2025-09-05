@@ -40,6 +40,8 @@ function formatSize(hack: Hack) {
   return `${parseFloat((hack.size / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
 }
 
+const formatType = (hack: Hack): string => hack.type ?? "-";
+
 function SectionResults({ results }: SectionResultsProps) {
   const [selectedGameId] = useSelectedGameId();
 
@@ -60,13 +62,17 @@ function SectionResults({ results }: SectionResultsProps) {
   );
 
   const resultsTableColumns = useMemo(() => {
-    const showTypeColumn =
-      results && typeof results !== "string" && results.showType;
     const columns: Column<Hack>[] = [];
     if (options.showNameColumn) columns.push({ header: "Name", key: "name" });
     if (options.showAuthorsColumn)
       columns.push({ header: "Authors", format: formatAuthors });
-    if (options.showTypeColumn && showTypeColumn)
+    if (options.showTypeColumn)
+      columns.push({
+        header: "Type",
+        format: formatType,
+        width: "14em",
+      });
+    if (options.showDifficultyColumn)
       columns.push({
         header: "Difficulty",
         format: formatDifficulty,
@@ -84,6 +90,7 @@ function SectionResults({ results }: SectionResultsProps) {
   }, [
     results,
     options.showAuthorsColumn,
+    options.showDifficultyColumn,
     options.showDownloadsColumn,
     options.showLengthColumn,
     options.showNameColumn,
@@ -140,6 +147,13 @@ function SectionResults({ results }: SectionResultsProps) {
                       label="Type"
                       onChange={optionsMethods.setShowTypeColumn}
                       value={options.showTypeColumn}
+                    />
+                  )}
+                  {results.showDifficulty && (
+                    <Checkbox
+                      label="Difficulty"
+                      onChange={optionsMethods.setShowDifficultyColumn}
+                      value={options.showDifficultyColumn}
                     />
                   )}
                   <Checkbox
