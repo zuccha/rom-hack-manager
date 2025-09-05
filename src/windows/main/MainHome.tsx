@@ -1,6 +1,6 @@
 import { Center, Icon } from "@chakra-ui/react";
 import { InfoIcon, PlusIcon, SettingsIcon, XIcon } from "lucide-react";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import Dialog from "../../components/Dialog";
 import IconButton from "../../components/IconButton";
 import Tabs from "../../components/Tabs";
@@ -23,10 +23,18 @@ type GameTabProps = {
 
 function GameTab({ gameId, onRemoveGame }: GameTabProps) {
   const [game] = useGame(gameId);
+  const remove = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      onRemoveGame();
+    },
+    [onRemoveGame]
+  );
+
   return (
     <Center gap={1}>
       {game.name}
-      <IconButton icon={<XIcon />} label="Remove game" onClick={onRemoveGame} />
+      <IconButton icon={<XIcon />} label="Remove game" onClick={remove} />
     </Center>
   );
 }

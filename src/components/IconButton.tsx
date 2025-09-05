@@ -6,7 +6,7 @@ export type IconButtonProps = {
   icon: ReactNode;
   isDisabled?: boolean;
   label: string;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 function IconButton({ icon, isDisabled, label, onClick }: IconButtonProps) {
