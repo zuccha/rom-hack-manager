@@ -23,7 +23,7 @@ const formatDownloads = (hack: Hack): string =>
         minimumFractionDigits: 0,
       })}`;
 
-const formatType = (hack: Hack): string => hack.type ?? "-";
+const formatDifficulty = (hack: Hack): string => hack.difficulty ?? "-";
 
 const formatLength = (hack: Hack): string => hack.length ?? "-";
 
@@ -67,7 +67,11 @@ function SectionResults({ results }: SectionResultsProps) {
     if (options.showAuthorsColumn)
       columns.push({ header: "Authors", format: formatAuthors });
     if (options.showTypeColumn && showTypeColumn)
-      columns.push({ header: "Type", format: formatType, width: "14em" });
+      columns.push({
+        header: "Difficulty",
+        format: formatDifficulty,
+        width: "14em",
+      });
     if (options.showLengthColumn)
       columns.push({ header: "Length", format: formatLength, width: "9em" });
     if (options.showRatingColumn)

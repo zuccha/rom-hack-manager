@@ -1,17 +1,10 @@
 import { Flex } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
 import Button from "../../components/Button";
-import Checkbox from "../../components/Checkbox";
-import Frame from "../../components/Frame";
 import Section from "../../components/Section";
 import Select from "../../components/Select";
 import TextEditor from "../../components/TextEditor";
-import {
-  Difficulty,
-  DifficultyMap,
-  SearchArgs,
-  difficulties,
-} from "./useSearchHacks";
+import { SearchArgs } from "./useSearchHacks";
 import { useGlobalSettings } from "../store";
 
 type SectionFiltersProps = {
@@ -44,28 +37,28 @@ const orderDirectionOptions = [
   { label: "Descending", value: "desc" as const },
 ];
 
+const difficultyOptions = [
+  { label: "Newcomer", value: "diff_1" },
+  { label: "Casual", value: "diff_2" },
+  { label: "Skilled", value: "diff_3" },
+  { label: "Advanced", value: "diff_4" },
+  { label: "Expert", value: "diff_5" },
+  { label: "Master", value: "diff_6" },
+  { label: "Grandmaster", value: "diff_7" },
+];
+
 function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
   const [game, setGame] = useState<SearchArgs["game"]>("smwhacks");
   const [moderated, setModerated] = useState<SearchArgs["moderated"]>("0");
   const [name, setName] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
-  const [isDifficultySelected, setIsDifficultySelected] =
-    useState<DifficultyMap>({});
+  const [difficulties, setDifficulties] = useState<string[]>([]);
+
   const [orderField, setOrderField] =
     useState<SearchArgs["orderField"]>("date");
   const [orderDirection, setOrderDirection] =
     useState<SearchArgs["orderDirection"]>("desc");
-
-  const toggleDifficulty = useCallback(
-    (difficulty: Difficulty) => (value: boolean) => {
-      setIsDifficultySelected((prevIsDifficultySelected) => ({
-        ...prevIsDifficultySelected,
-        [difficulty]: value,
-      }));
-    },
-    []
-  );
 
   const [{ cookie }] = useGlobalSettings();
 
@@ -74,8 +67,8 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
       author,
       cookie,
       description,
+      difficulties,
       game,
-      isDifficultySelected,
       moderated,
       name,
       orderField,
@@ -86,7 +79,7 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
     cookie,
     description,
     game,
-    isDifficultySelected,
+    difficulties,
     moderated,
     name,
     orderDirection,
@@ -164,17 +157,17 @@ function SectionFilters({ isSearching, onSearchHacks }: SectionFiltersProps) {
         </Flex>
 
         {game === "smwhacks" && (
-          <Frame minChildWidth={160} placeholder="Difficulty">
-            {difficulties.map((difficulty) => (
-              <Checkbox
-                key={difficulty.label}
-                isDisabled={isSearching}
-                label={difficulty.label}
-                onChange={toggleDifficulty(difficulty.label)}
-                value={!!isDifficultySelected[difficulty.label]}
-              />
-            ))}
-          </Frame>
+          <Flex gap={3}>
+            <Select
+              isDisabled={isSearching}
+              isFullWidth
+              isMultiple
+              onChange={setDifficulties}
+              options={difficultyOptions}
+              placeholder="Difficulties"
+              value={difficulties}
+            />
+          </Flex>
         )}
 
         <Button
