@@ -18,6 +18,7 @@
     "@tauri-apps/plugin-dialog": "^2.4.0",
     "@tauri-apps/plugin-fs": "^2.4.2",
     "@tauri-apps/plugin-http": "^2.5.2",
+    "@tauri-apps/plugin-opener": "^2.5.0",
     "lucide-react": "^0.542.0",
     "next-themes": "^0.4.6",
     "react": "^18.2.0",

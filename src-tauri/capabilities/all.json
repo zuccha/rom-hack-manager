@@ -34,6 +34,17 @@
           "url": "https://www.smwcentral.net/*"
         }
       ]
+    },
+    "opener:default",
+    "opener:allow-open-path",
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        { "url": "https://zuccha.io" },
+        { "url": "https://github.com/*" },
+        { "url": "https://projects.sappharad.com/multipatch" },
+        { "url": "https://www.smwcentral.net/*" }
+      ]
     }
   ]
 }
