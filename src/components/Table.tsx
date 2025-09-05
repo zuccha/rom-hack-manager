@@ -46,7 +46,7 @@ function Table<T>({
           <ChakraTable.Row borderBottomWidth={1}>
             {columns.map((column) => (
               <ChakraTable.ColumnHeader
-                bgColor="bg.subtle"
+                bgColor="bg.muted"
                 borderWidth={0}
                 key={column.header}
                 width={column.width}
@@ -56,7 +56,7 @@ function Table<T>({
             ))}
             {!!actions && actions.length > 0 && (
               <ChakraTable.ColumnHeader
-                bgColor="bg.subtle"
+                bgColor="bg.muted"
                 borderWidth={0}
                 w={110}
               />
@@ -66,6 +66,7 @@ function Table<T>({
         <ChakraTable.Body>
           {data.map((row, rowIndex) => (
             <ChakraTable.Row
+              bgColor="transparent"
               cursor={onClickRow ? "pointer" : "default"}
               key={rowIndex}
               onClick={() => onClickRow?.(row)}
