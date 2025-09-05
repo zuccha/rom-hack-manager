@@ -32,7 +32,7 @@ function Section({ children, isDefaultExpanded, title }: SectionProps) {
           >
             {title}
           </Heading>
-          <Accordion.ItemIndicator />
+          <Accordion.ItemIndicator color="fg" />
         </Accordion.ItemTrigger>
         <Accordion.ItemContent overflow="visible">
           <Accordion.ItemBody borderWidth={0} p={0} pt={2}>
