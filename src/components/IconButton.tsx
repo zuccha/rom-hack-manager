@@ -1,29 +1,27 @@
-import {
-  IconButton as CIconButton,
-  IconButtonProps as CIconButtonProps,
-  Tooltip,
-} from "@chakra-ui/react";
+import { IconButton as ChakraIconButton } from "@chakra-ui/react";
+import { ReactNode } from "react";
+import Tooltip from "./Tooltip";
 
 export type IconButtonProps = {
-  icon: CIconButtonProps["icon"];
+  icon: ReactNode;
   isDisabled?: boolean;
   label: string;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 function IconButton({ icon, isDisabled, label, onClick }: IconButtonProps) {
   return (
-    <Tooltip label={label}>
-      <CIconButton
+    <Tooltip content={label}>
+      <ChakraIconButton
         aria-label={label}
-        color="gray.500"
-        icon={icon}
-        isDisabled={isDisabled}
+        disabled={isDisabled}
         onClick={onClick}
+        outlineColor="blue.focusRing"
         size="xs"
         variant="ghost"
-        _hover={{ color: "black" }}
-      />
+      >
+        {icon}
+      </ChakraIconButton>
     </Tooltip>
   );
 }

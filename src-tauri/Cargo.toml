@@ -1,6 +1,6 @@
 [package]
 name = "rom-hack-manager"
-version = "2.4.0"
+version = "2.5.0"
 description = "Download, unzip, and patch ROM hacks all in one go."
 authors = ["zuccha"]
 license = ""
@@ -10,18 +10,21 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1.2", features = [] }
+tauri-build = { version = "2", features = [] }
 
 [dependencies]
-tauri = { version = "1.2", features = ["dialog-open", "fs-all", "http-request", "path-all", "shell-open", "window-close", "window-create", "window-show"] }
-tauri-plugin-fs-watch = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
-tauri-plugin-window-state = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
+open = "5"
+reqwest = { version = "0.12", features = ["json", "rustls-tls"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-open = "4"
-reqwest = "0.11.16"
-zip-extract = "0.1.2"
 shell-words = "1.1.0"
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = { version = "2.0.0-rc", features = ["watch"] }
+tauri-plugin-http = "2"
+tauri-plugin-opener = "2"
+tauri-plugin-window-state = { version = "2" }
+zip-extract = "0.1.2"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem

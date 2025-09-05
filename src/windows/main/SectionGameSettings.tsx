@@ -3,7 +3,7 @@ import PathBrowser from "../../components/PathBrowser";
 import Section from "../../components/Section";
 import TextEditor from "../../components/TextEditor";
 import useFormValue from "../../hooks/useFormValue";
-import { useGame } from "../store";
+import { useGame } from "../../store/game";
 import { validateDirectoryPath, validateFilePath } from "../validation";
 
 type SectionSettingsProps = {

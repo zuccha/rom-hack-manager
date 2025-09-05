@@ -1,4 +1,4 @@
-import * as Tauri from "@tauri-apps/api/tauri";
+import * as Tauri from "@tauri-apps/api/core";
 import { useCallback, useState } from "react";
 
 const useTauriInvoke = (

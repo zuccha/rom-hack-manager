@@ -1,6 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use tauri::Manager;
 use std::path::{Path, PathBuf};
 use reqwest::header;
 
@@ -209,10 +210,11 @@ async fn download_hack(
   };
 
   let flips_path = match app_handle
-    .path_resolver()
-    .resolve_resource(Path::new("resources").join(flips_command)) {
-    None => return Err("Failed to locate Flips".into()),
-    Some(p) => p
+    .path()
+    .resolve(Path::new("resources").join(flips_command), tauri::path::BaseDirectory::Resource)
+  {
+    Ok(p) => p,
+    Err(_) => return Err("Failed to locate Flips".into()),
   };
 
   if !flips_path.exists() {
@@ -257,7 +259,10 @@ fn main() {
       validate_name,
       validate_url,
       ])
-    .plugin(tauri_plugin_fs_watch::init())
+    .plugin(tauri_plugin_dialog::init())
+    .plugin(tauri_plugin_fs::init())
+    .plugin(tauri_plugin_http::init())
+    .plugin(tauri_plugin_opener::init())
     .plugin(tauri_plugin_window_state::Builder::default().build())
     .run(tauri::generate_context!())
     .expect("error while running tauri application");

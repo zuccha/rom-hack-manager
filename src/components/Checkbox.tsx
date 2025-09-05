@@ -1,4 +1,4 @@
-import { Checkbox as CCheckbox, Text } from "@chakra-ui/react";
+import { Checkbox as ChakraCheckbox } from "@chakra-ui/react";
 import { useCallback } from "react";
 
 export type CheckboxProps = {
@@ -16,17 +16,18 @@ function Checkbox({ isDisabled, label, onChange, value }: CheckboxProps) {
 
   return (
     <div>
-      <CCheckbox
-        type="checkbox"
-        borderColor="gray.500"
+      <ChakraCheckbox.Root
+        colorPalette="blue"
         checked={value}
         defaultChecked={value}
         disabled={isDisabled}
         onChange={handleChange}
         size="sm"
       >
-        <Text>{label}</Text>
-      </CCheckbox>
+        <ChakraCheckbox.HiddenInput />
+        <ChakraCheckbox.Control />
+        <ChakraCheckbox.Label fontWeight="normal">{label}</ChakraCheckbox.Label>
+      </ChakraCheckbox.Root>
     </div>
   );
 }

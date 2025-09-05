@@ -1,4 +1,6 @@
-import { Link, Tooltip } from "@chakra-ui/react";
+import { Link } from "@chakra-ui/react";
+import { openUrl } from "@tauri-apps/plugin-opener";
+import Tooltip from "./Tooltip";
 
 export type WebsiteProps = {
   href: string;
@@ -7,8 +9,13 @@ export type WebsiteProps = {
 
 function Website({ href, label }: WebsiteProps) {
   return (
-    <Tooltip label={href} openDelay={500}>
-      <Link color="blue.600" fontSize="sm" href={href} isExternal>
+    <Tooltip content={href} openDelay={500}>
+      <Link
+        _hover={{ textDecoration: "underline" }}
+        colorPalette="blue"
+        fontSize="sm"
+        onClick={() => openUrl(href)}
+      >
         {label}
       </Link>
     </Tooltip>

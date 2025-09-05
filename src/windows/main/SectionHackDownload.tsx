@@ -1,6 +1,6 @@
-import { SearchIcon } from "@chakra-ui/icons";
 import { Flex } from "@chakra-ui/react";
-import { WebviewWindow } from "@tauri-apps/api/window";
+import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
+import { SearchIcon } from "lucide-react";
 import { useCallback, useMemo } from "react";
 import Alert from "../../components/Alert";
 import Button from "../../components/Button";
@@ -10,7 +10,9 @@ import useFormValue from "../../hooks/useFormValue";
 import useIsValid from "../../hooks/useIsValid";
 import useListenEvent from "../../hooks/useListenEvent";
 import useTauriInvoke from "../../hooks/useTauriInvoke";
-import { useGame, useGameDownloadData, useGlobalSettings } from "../store";
+import { useGame } from "../../store/game";
+import { useGameDownloadData } from "../../store/game-download-data";
+import { useGlobalSettings } from "../../store/global-settings";
 import {
   validateDirectoryPath,
   validateFilePath,
@@ -62,7 +64,7 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
           hackName.handleChangeValue(sanitizeHackName(payload.name));
           hackDownloadUrl.handleChangeValue(payload.downloadUrl);
         } catch (e) {
-          console.log(e);
+          console.error(e);
           // TODO: Set generic error.
         }
       },
@@ -122,6 +124,7 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
       width: 550,
       height: 600,
       url: "src/windows/search/Search.html",
+      useHttpsScheme: true,
     });
   }, [game.name, gameId, globalSettings.keepSearchWindowOnTop]);
 
@@ -130,7 +133,7 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
       <Flex direction="column" gap={3}>
         <TextEditor
           autoFocus
-          error={hackName.isPristine ? undefined : hackName.error}
+          error={hackName.errorIfDirty}
           isDisabled={isDownloading}
           onBlur={hackName.handleBlur}
           onChange={hackName.handleChangeValue}
@@ -139,7 +142,7 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
           value={hackName.value}
         />
         <TextEditor
-          error={hackDownloadUrl.isPristine ? undefined : hackDownloadUrl.error}
+          error={hackDownloadUrl.errorIfDirty}
           isDisabled={isDownloading}
           onBlur={hackDownloadUrl.handleBlur}
           onChange={hackDownloadUrl.handleChangeValue}

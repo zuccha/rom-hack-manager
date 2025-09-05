@@ -1,27 +1,31 @@
 import {
-  AlertDescription,
-  AlertIcon,
-  AlertProps as CAlertProps,
-  AlertTitle,
-  Alert as CAlert,
+  Alert as ChakraAlert,
+  type AlertRootProps as ChakraAlertRootProps,
   Flex,
 } from "@chakra-ui/react";
 
 export type AlertProps = {
   description?: string;
-  status: CAlertProps["status"];
+  status: ChakraAlertRootProps["status"];
   title?: string;
 };
 
 function Alert({ description, status, title }: AlertProps) {
   return (
-    <CAlert status={status} alignItems="flex-start" fontSize="sm" p={2}>
-      <AlertIcon />
+    <ChakraAlert.Root
+      status={status}
+      alignItems="flex-start"
+      fontSize="sm"
+      p={2}
+    >
+      <ChakraAlert.Indicator />
       <Flex direction="column">
-        {title && <AlertTitle>{title}</AlertTitle>}
-        {description && <AlertDescription>{description}</AlertDescription>}
+        {title && <ChakraAlert.Title>{title}</ChakraAlert.Title>}
+        {description && (
+          <ChakraAlert.Description>{description}</ChakraAlert.Description>
+        )}
       </Flex>
-    </CAlert>
+    </ChakraAlert.Root>
   );
 }
 

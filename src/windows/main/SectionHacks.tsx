@@ -1,16 +1,17 @@
 import { Flex, Icon, Text } from "@chakra-ui/react";
 import { UnlistenFn } from "@tauri-apps/api/event";
-import { readDir, removeDir } from "@tauri-apps/api/fs";
-import { invoke, path } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
+import { join } from "@tauri-apps/api/path";
+import { readDir, remove, watch } from "@tauri-apps/plugin-fs";
+import { CirclePlayIcon, FolderIcon, TrashIcon } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { MdDelete, MdPlayCircle, MdFolder } from "react-icons/md";
-import { watch } from "tauri-plugin-fs-watch-api";
 import Dialog from "../../components/Dialog";
 import Section from "../../components/Section";
 import Table from "../../components/Table";
 import TextEditor from "../../components/TextEditor";
 import useItemRemovalDialog from "../../hooks/useItemRemovalDialog";
-import { useGame, useGlobalSettings } from "../store";
+import { useGame } from "../../store/game";
+import { useGlobalSettings } from "../../store/global-settings";
 import { validateDirectoryPath } from "../validation";
 
 type SectionHacksProps = {
@@ -24,33 +25,41 @@ type Hack = {
   sfcPath: string;
 };
 
-const isHack = (maybeHack: Partial<Hack>): maybeHack is Hack => {
-  return (
-    typeof maybeHack.directory === "string" &&
-    typeof maybeHack.name === "string" &&
-    typeof maybeHack.sfcName === "string" &&
-    typeof maybeHack.sfcPath === "string"
-  );
-};
+function notUndefined<T>(value: T | undefined): value is T {
+  return value !== undefined;
+}
 
 const readGameDirectory = async (gameDirectory: string): Promise<Hack[]> => {
-  const hacks = (await readDir(gameDirectory, { recursive: true }))
-    .map((directory) => ({
-      directory: directory.path,
-      name: directory.name ?? "-",
-      sfcName: directory.children?.find((child) => child.name?.endsWith(".sfc"))
-        ?.name,
-      sfcPath: "",
-    }))
-    .filter(isHack)
+  const entries = await readDir(gameDirectory);
+
+  const hacks = (
+    await Promise.all(
+      entries.map(async (entry) => {
+        if (!entry.isDirectory) return undefined;
+
+        const name = entry.name ?? "-";
+
+        const directory = await join(gameDirectory, name);
+        const children = await readDir(directory);
+        const sfc = children.find((c) => (c.name ?? "").endsWith(".sfc"));
+        return sfc
+          ? ({
+              directory,
+              name,
+              sfcName: sfc.name,
+              sfcPath: await join(directory, sfc.name),
+            } as Hack)
+          : undefined;
+      })
+    )
+  )
+    .filter(notUndefined)
     .sort((hack1, hack2) => {
       if (hack1.name < hack2.name) return -1;
       if (hack1.name > hack2.name) return 1;
       return 0;
     });
-  for (const hack of hacks) {
-    hack.sfcPath = await path.join(hack.directory, hack.sfcName!);
-  }
+
   return hacks;
 };
 
@@ -73,7 +82,7 @@ function SectionHacks({ gameId }: SectionHacksProps) {
   const clearNameFilter = useCallback(() => setNameFilter(""), []);
 
   const deleteHack = useCallback((hack: Hack) => {
-    removeDir(hack.directory, { recursive: true });
+    remove(hack.directory, { recursive: true });
   }, []);
 
   const hackDeletionDialog = useItemRemovalDialog(
@@ -84,7 +93,7 @@ function SectionHacks({ gameId }: SectionHacksProps) {
   const hacksTableActions = useMemo(
     () => [
       {
-        icon: <Icon as={MdPlayCircle} />,
+        icon: <Icon as={CirclePlayIcon} />,
         label: "Play",
         onClick: (hack: Hack) => {
           if (globalSettings.emulatorPath) {
@@ -99,13 +108,13 @@ function SectionHacks({ gameId }: SectionHacksProps) {
         },
       },
       {
-        icon: <Icon as={MdFolder} />,
+        icon: <Icon as={FolderIcon} />,
         label: "Open folder",
         onClick: (hack: Hack) =>
           invoke("open_with_default_app", { path: hack.directory }),
       },
       {
-        icon: <Icon as={MdDelete} />,
+        icon: <Icon as={TrashIcon} />,
         label: "Delete",
         onClick: (hack: Hack) => hackDeletionDialog.openOrRemove(hack),
       },
@@ -159,7 +168,6 @@ function SectionHacks({ gameId }: SectionHacksProps) {
               actions={hacksTableActions}
               columns={hacksTableColumns}
               data={filteredHacks}
-              highlightRowOnHover
             />
           ) : (
             <Text fontSize="sm">

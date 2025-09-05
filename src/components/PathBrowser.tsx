@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
-import * as TauriDialog from "@tauri-apps/api/dialog";
+import * as Tauri from "@tauri-apps/api/core";
+import * as TauriDialog from "@tauri-apps/plugin-dialog";
 import * as TauriPath from "@tauri-apps/api/path";
-import * as Tauri from "@tauri-apps/api/tauri";
 import { useCallback } from "react";
 import Button from "./Button";
 import TextEditor, { TextEditorProps } from "./TextEditor";
@@ -39,7 +39,12 @@ function PathBrowser({
         {...props}
       />
 
-      <Button isDisabled={isDisabled} onClick={handleBrowse} text="..." />
+      <Button
+        isDisabled={isDisabled}
+        onClick={handleBrowse}
+        text="..."
+        variant="outline"
+      />
     </Flex>
   );
 }

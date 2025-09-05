@@ -1,16 +1,4 @@
-import {
-  Flex,
-  SystemStyleObject,
-  Table as CTable,
-  TableCaption,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-} from "@chakra-ui/react";
-import { useMemo } from "react";
+import { Flex, Table as ChakraTable } from "@chakra-ui/react";
 import IconButton, { IconButtonProps } from "./IconButton";
 
 export type Column<T> = {
@@ -38,69 +26,55 @@ function Table<T>({
   caption,
   columns,
   data,
-  highlightRowOnHover,
   onClickRow,
 }: TableProps<T>) {
-  const rowOddStyle = useMemo(() => {
-    return {
-      backgroundColor: "gray.100",
-    };
-  }, []);
-
-  const rowHoverStyle = useMemo(() => {
-    const style: SystemStyleObject = { "& .action": { visibility: "visible" } };
-    if (highlightRowOnHover || onClickRow) style.backgroundColor = "blue.100";
-    if (onClickRow) style.cursor = "pointer";
-    return style;
-  }, [onClickRow]);
-
   return (
-    <TableContainer>
-      <CTable
-        bg="white"
-        borderColor="gray.500"
-        borderWidth={1}
-        layout="fixed"
-        size="sm"
-      >
-        {caption && <TableCaption>{caption}</TableCaption>}
-        <Thead>
-          <Tr borderBottomWidth={1} borderColor="gray.500">
+    <ChakraTable.ScrollArea>
+      <ChakraTable.Root borderWidth={1} tableLayout="fixed" size="sm">
+        {caption && <ChakraTable.Caption>{caption}</ChakraTable.Caption>}
+        <ChakraTable.Header>
+          <ChakraTable.Row borderBottomWidth={1}>
             {columns.map((column) => (
-              <Th
+              <ChakraTable.ColumnHeader
+                bgColor="bg.muted"
                 borderWidth={0}
-                isNumeric={column.isNumeric}
                 key={column.header}
                 width={column.width}
               >
                 {column.header}
-              </Th>
+              </ChakraTable.ColumnHeader>
             ))}
-            {!!actions && actions.length > 0 && <Th borderWidth={0} w={110} />}
-          </Tr>
-        </Thead>
-        <Tbody>
+            {!!actions && actions.length > 0 && (
+              <ChakraTable.ColumnHeader
+                bgColor="bg.muted"
+                borderWidth={0}
+                w={110}
+              />
+            )}
+          </ChakraTable.Row>
+        </ChakraTable.Header>
+        <ChakraTable.Body>
           {data.map((row, rowIndex) => (
-            <Tr
+            <ChakraTable.Row
+              _hover={{ bgColor: "bg.emphasized" }}
+              bgColor="transparent"
+              cursor={onClickRow ? "pointer" : "default"}
               key={rowIndex}
               onClick={() => onClickRow?.(row)}
-              _odd={rowOddStyle}
-              _hover={rowHoverStyle}
             >
               {columns.map((column, columnIndex) => (
-                <Td
+                <ChakraTable.Cell
                   borderWidth={0}
-                  isNumeric={column.isNumeric}
                   key={`${rowIndex}-${columnIndex}`}
                   overflow="hidden"
                   whiteSpace="normal"
                   width={column.width}
                 >
                   {"key" in column ? `${row[column.key]}` : column.format(row)}
-                </Td>
+                </ChakraTable.Cell>
               ))}
               {!!actions && actions.length > 0 && (
-                <Td borderWidth={0}>
+                <ChakraTable.Cell borderWidth={0}>
                   <Flex className="action" gap={1} justifyContent="flex-end">
                     {actions.map((action) => (
                       <IconButton
@@ -112,13 +86,13 @@ function Table<T>({
                       />
                     ))}
                   </Flex>
-                </Td>
+                </ChakraTable.Cell>
               )}
-            </Tr>
+            </ChakraTable.Row>
           ))}
-        </Tbody>
-      </CTable>
-    </TableContainer>
+        </ChakraTable.Body>
+      </ChakraTable.Root>
+    </ChakraTable.ScrollArea>
   );
 }
 

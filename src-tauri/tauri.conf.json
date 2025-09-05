@@ -2,59 +2,32 @@
   "build": {
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist",
-    "withGlobalTauri": false
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
   },
-  "package": {
-    "productName": "ROM Hack Manager",
-    "version": "2.4.0"
+  "bundle": {
+    "active": true,
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "targets": ["app", "nsis"],
+    "resources": ["resources/*"]
   },
-  "tauri": {
-    "allowlist": {
-      "all": false,
-      "dialog": {
-        "open": true
-      },
-      "fs": {
-        "all": true,
-        "scope": ["**"]
-      },
-      "http": {
-        "request": true,
-        "scope": ["https://dl.smwcentral.net/*", "https://www.smwcentral.net/*"]
-      },
-      "path": {
-        "all": true
-      },
-      "shell": {
-        "open": true
-      },
-      "window": {
-        "close": true,
-        "create": true,
-        "show": true
-      }
-    },
-    "bundle": {
-      "active": true,
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
-      "identifier": "io.zuccha.rom-hack-manager",
-      "resources": ["resources/*"],
-      "targets": ["app", "nsis"]
-    },
-    "security": {
-      "csp": null
-    },
-    "updater": {
-      "active": false
-    },
+  "productName": "ROM Hack Manager",
+  "mainBinaryName": "ROM Hack Manager",
+  "version": "2.5.0",
+  "identifier": "io.zuccha.rom-hack-manager",
+  "plugins": {
+    "fs": {
+      "requireLiteralLeadingDot": false
+    }
+  },
+  "app": {
+    "withGlobalTauri": false,
     "windows": [
       {
         "label": "main",
@@ -63,8 +36,12 @@
         "title": "ROM Hack Manager",
         "width": 600,
         "height": 700,
-        "url": "src/windows/main/Main.html"
+        "url": "src/windows/main/Main.html",
+        "useHttpsScheme": true
       }
-    ]
+    ],
+    "security": {
+      "csp": null
+    }
   }
 }

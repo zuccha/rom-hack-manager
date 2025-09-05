@@ -1,28 +1,11 @@
-import { ResponseType, getClient } from "@tauri-apps/api/http";
+import { fetch } from "@tauri-apps/plugin-http";
 import { useCallback, useState } from "react";
 import { z } from "zod";
-
-export const difficulties = [
-  { label: "Standard: Easy", short: "easy" },
-  { label: "Standard: Normal", short: "normal" },
-  { label: "Standard: Hard", short: "hard" },
-  { label: "Standard: Very Hard", short: "very_hard" },
-  { label: "Kaizo: Beginner", short: "kaizo_beginner" },
-  { label: "Kaizo: Intermediate", short: "kaizo_light" },
-  { label: "Kaizo: Expert", short: "kaizo_expert" },
-  { label: "Tool Assisted: Kaizo", short: "kaizo_hard" },
-  { label: "Tool Assisted: Pit", short: "pit" },
-  { label: "Misc.: Troll", short: "troll" },
-  { label: "Misc.: Puzzle", short: "puzzle" },
-] as const;
-
-export type Difficulty = (typeof difficulties)[number]["label"];
-
-export type DifficultyMap = { [D in Difficulty]?: boolean | undefined };
 
 export const HackSchema = z.object({
   authors: z.array(z.string()),
   date: z.union([z.date(), z.undefined()]),
+  difficulty: z.union([z.string(), z.undefined()]),
   downloadUrl: z.string().transform((value) => `https:${value}`),
   downloads: z.union([z.number(), z.undefined()]),
   length: z.union([z.string(), z.undefined()]),
@@ -38,8 +21,8 @@ export type SearchArgs = {
   author: string;
   cookie?: string;
   description: string;
+  difficulties: string[];
   game: "smwhacks" | "yihacks";
-  isDifficultySelected: DifficultyMap;
   moderated: "0" | "1";
   name: string;
   orderDirection: "asc" | "desc";
@@ -51,10 +34,16 @@ export type SearchArgs = {
     | "rating"
     | "filesize"
     | "downloads";
+  types: string[];
 };
 
 export type SearchResults =
-  | { hacks: Hack[]; hasMore: boolean; showType: boolean }
+  | {
+      hacks: Hack[];
+      hasMore: boolean;
+      showDifficulty: boolean;
+      showType: boolean;
+    }
   | string
   | undefined;
 
@@ -75,25 +64,28 @@ const SuperMarioWorldResponseSchema = z
           fields: z.object({
             difficulty: z.string(),
             length: z.string(),
+            type: z.string(),
           }),
           size: z.number(),
         })
         .transform((value) => ({
           authors: value.authors,
           date: undefined,
+          difficulty: value.fields.difficulty,
           downloadUrl: value.download_url,
           downloads: value.downloads,
           length: value.fields.length,
           name: value.name,
           rating: value.rating,
-          type: value.fields.difficulty,
           size: value.size,
+          type: value.fields.type,
         }))
     ),
   })
   .transform((value) => ({
     hacks: value.data,
     hasMore: value.current_page < value.last_page,
+    showDifficulty: true,
     showType: true,
   }));
 
@@ -119,19 +111,21 @@ const YoshiIslandResponseSchema = z
         .transform((value) => ({
           authors: value.authors,
           date: undefined,
+          difficulty: "",
           downloadUrl: value.download_url,
           downloads: value.downloads,
           length: value.fields.length,
           name: value.name,
           rating: value.rating,
-          type: "",
           size: value.size,
+          type: "",
         }))
     ),
   })
   .transform((value) => ({
     hacks: value.data,
     hasMore: value.current_page < value.last_page,
+    showDifficulty: false,
     showType: false,
   }));
 
@@ -148,12 +142,13 @@ const useSearchHacks = (): [
       author,
       cookie,
       description,
+      difficulties,
       game,
-      isDifficultySelected,
       moderated,
       name,
       orderDirection,
       orderField,
+      types,
     }: SearchArgs) => {
       if (isSearching) return;
 
@@ -174,31 +169,26 @@ const useSearchHacks = (): [
       if (author) url.searchParams.set("f[author]", author); // Author
       if (description) url.searchParams.set("f[description]", description); // Description
 
-      if (game === "smwhacks")
+      if (game === "smwhacks") {
+        for (const type of types) url.searchParams.append("f[type][]", type);
+
         for (const difficulty of difficulties)
-          if (isDifficultySelected[difficulty.label])
-            url.searchParams.append("f[difficulty][]", difficulty.short);
+          url.searchParams.append("f[difficulty][]", difficulty);
+      }
 
       try {
-        // Send request.
-        const client = await getClient();
-        const responseType = ResponseType.Text;
-        console.log(url.toString());
-        const { data } = await client.get(url.toString(), {
-          responseType,
+        const response = await fetch(url.toString(), {
           ...(cookie && { headers: { Cookie: cookie } }),
         });
-
-        // Parse response to find the hacks table.
-        if (typeof data !== "string") throw new Error("Data is not a string");
+        const json = await response.json();
         setResults(
           game === "smwhacks"
-            ? SuperMarioWorldResponseSchema.parse(JSON.parse(data))
-            : YoshiIslandResponseSchema.parse(JSON.parse(data))
+            ? SuperMarioWorldResponseSchema.parse(json)
+            : YoshiIslandResponseSchema.parse(json)
         );
       } catch (e) {
         setResults("An error occurred");
-        console.log(e);
+        console.error(e);
       } finally {
         setIsSearching(false);
       }

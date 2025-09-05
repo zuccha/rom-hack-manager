@@ -1,17 +1,18 @@
 import { useCallback } from "react";
+import { Flex } from "@chakra-ui/react";
 import Button from "../../components/Button";
 import Panel from "../../components/Panel";
 import PathBrowser from "../../components/PathBrowser";
+import Section from "../../components/Section";
 import TextEditor from "../../components/TextEditor";
 import useFormValue from "../../hooks/useFormValue";
-import { Game, useGameCreationData } from "../store";
+import { Game } from "../../store/game";
+import { useGameCreationData } from "../../store/game-creation-data";
 import {
   validateDirectoryPath,
   validateFilePath,
   validateNotEmpty,
 } from "../validation";
-import { Flex } from "@chakra-ui/react";
-import Section from "../../components/Section";
 
 type PanelGameCreationProps = {
   onCreateGame: (gameWithoutId: Omit<Game, "id">) => void;

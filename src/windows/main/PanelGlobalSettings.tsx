@@ -4,7 +4,7 @@ import Panel from "../../components/Panel";
 import PathBrowser from "../../components/PathBrowser";
 import Section from "../../components/Section";
 import TextEditor from "../../components/TextEditor";
-import { useGlobalSettings } from "../store";
+import { useGlobalSettings } from "../../store/global-settings";
 
 function PanelGlobalSettings() {
   const [globalSettings, globalSettingsMethods] = useGlobalSettings();
@@ -37,6 +37,13 @@ function PanelGlobalSettings() {
             onChange={globalSettingsMethods.setKeepSearchWindowOnTop}
             value={globalSettings.keepSearchWindowOnTop}
           />
+          <Checkbox
+            label="Dark theme"
+            onChange={(dark) =>
+              globalSettingsMethods.setTheme(dark ? "dark" : "light")
+            }
+            value={globalSettings.theme === "dark"}
+          />
         </Flex>
       </Section>
 
@@ -48,13 +55,13 @@ function PanelGlobalSettings() {
             operating system for SFC files will be used. In the command line
             arguments <b>%1</b> will be replaced with the ROM path.
           </Text>
-          <PathBrowser
-            mode="file"
-            onChange={globalSettingsMethods.setEmulatorPath}
-            value={globalSettings.emulatorPath}
-            placeholder="Emulator path"
-          />
-          <Flex gap={2}>
+          <Flex direction="column" gap={3}>
+            <PathBrowser
+              mode="file"
+              onChange={globalSettingsMethods.setEmulatorPath}
+              value={globalSettings.emulatorPath}
+              placeholder="Emulator path"
+            />
             <TextEditor
               value={globalSettings.emulatorArgs}
               onChange={globalSettingsMethods.setEmulatorArgs}

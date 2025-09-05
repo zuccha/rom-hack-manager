@@ -1,4 +1,4 @@
-VERSION=$(cat src-tauri/tauri.conf.json | jq -r '.package.version')
+VERSION=$(cat src-tauri/tauri.conf.json | jq -r '.version')
 APPNAME="ROM Hack Manager.app"
 DIRPATH="./rom-hack-manager_${VERSION}_macos"
 

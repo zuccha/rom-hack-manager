@@ -1,13 +1,14 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { emit } from "@tauri-apps/api/event";
-import { getCurrent } from "@tauri-apps/api/window";
-import { useCallback, useMemo, useState } from "react";
+import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
+import { useCallback, useMemo } from "react";
 import Alert from "../../components/Alert";
 import Checkbox from "../../components/Checkbox";
 import Frame from "../../components/Frame";
 import Section from "../../components/Section";
 import Table, { Column } from "../../components/Table";
-import { useSearchResultsOptions, useSelectedGameId } from "../store";
+import { useSelectedGameId } from "../../store/configuration";
+import { useSearchResultsOptions } from "../../store/search-results-options";
 import { Hack, SearchResults } from "./useSearchHacks";
 
 type SectionResultsProps = {
@@ -23,7 +24,7 @@ const formatDownloads = (hack: Hack): string =>
         minimumFractionDigits: 0,
       })}`;
 
-const formatType = (hack: Hack): string => hack.type ?? "-";
+const formatDifficulty = (hack: Hack): string => hack.difficulty ?? "-";
 
 const formatLength = (hack: Hack): string => hack.length ?? "-";
 
@@ -40,6 +41,8 @@ function formatSize(hack: Hack) {
   return `${parseFloat((hack.size / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
 }
 
+const formatType = (hack: Hack): string => hack.type ?? "-";
+
 function SectionResults({ results }: SectionResultsProps) {
   const [selectedGameId] = useSelectedGameId();
 
@@ -49,10 +52,10 @@ function SectionResults({ results }: SectionResultsProps) {
     async (hack: Hack) => {
       try {
         await emit("select-hack", { ...hack, gameId: selectedGameId });
-        const searchWindow = getCurrent();
+        const searchWindow = getCurrentWebviewWindow();
         if (!options.keepWindowOpen) searchWindow.close();
       } catch (e) {
-        console.log(e);
+        console.error(e);
         // TODO: Do what?
       }
     },
@@ -60,14 +63,22 @@ function SectionResults({ results }: SectionResultsProps) {
   );
 
   const resultsTableColumns = useMemo(() => {
-    const showTypeColumn =
-      results && typeof results !== "string" && results.showType;
     const columns: Column<Hack>[] = [];
     if (options.showNameColumn) columns.push({ header: "Name", key: "name" });
     if (options.showAuthorsColumn)
       columns.push({ header: "Authors", format: formatAuthors });
-    if (options.showTypeColumn && showTypeColumn)
-      columns.push({ header: "Type", format: formatType, width: "14em" });
+    if (options.showTypeColumn)
+      columns.push({
+        header: "Type",
+        format: formatType,
+        width: "14em",
+      });
+    if (options.showDifficultyColumn)
+      columns.push({
+        header: "Difficulty",
+        format: formatDifficulty,
+        width: "14em",
+      });
     if (options.showLengthColumn)
       columns.push({ header: "Length", format: formatLength, width: "9em" });
     if (options.showRatingColumn)
@@ -80,6 +91,7 @@ function SectionResults({ results }: SectionResultsProps) {
   }, [
     results,
     options.showAuthorsColumn,
+    options.showDifficultyColumn,
     options.showDownloadsColumn,
     options.showLengthColumn,
     options.showNameColumn,
@@ -136,6 +148,13 @@ function SectionResults({ results }: SectionResultsProps) {
                       label="Type"
                       onChange={optionsMethods.setShowTypeColumn}
                       value={options.showTypeColumn}
+                    />
+                  )}
+                  {results.showDifficulty && (
+                    <Checkbox
+                      label="Difficulty"
+                      onChange={optionsMethods.setShowDifficultyColumn}
+                      value={options.showDifficultyColumn}
                     />
                   )}
                   <Checkbox

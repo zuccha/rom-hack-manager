@@ -1,14 +1,9 @@
-import {
-  Input,
-  InputGroup,
-  InputProps,
-  InputRightElement,
-  Tooltip,
-} from "@chakra-ui/react";
-import { CloseIcon, WarningIcon } from "@chakra-ui/icons";
+import { Box, Icon, Input, InputGroup, InputProps } from "@chakra-ui/react";
+import { CircleAlertIcon, XIcon } from "lucide-react";
 import { KeyboardEvent, useCallback } from "react";
 import IconButton from "./IconButton";
 import Placeholder from "./Placeholder";
+import Tooltip from "./Tooltip";
 
 export type TextEditorProps = {
   autoFocus?: boolean;
@@ -54,44 +49,50 @@ function TextEditor({
   );
 
   return (
-    <InputGroup bg="white" borderColor="gray.500" size="sm">
+    <Box position="relative" w="full">
+      <InputGroup
+        endElement={
+          error ? (
+            <Tooltip content={error}>
+              <Icon color="fg.error" size="sm">
+                <CircleAlertIcon />
+              </Icon>
+            </Tooltip>
+          ) : onClear && value ? (
+            <IconButton
+              icon={<XIcon />}
+              isDisabled={!value}
+              label="Clear"
+              onClick={onClear}
+            />
+          ) : undefined
+        }
+      >
+        <Input
+          _focusVisible={{
+            borderColor: error ? "border.error" : "blue.focusRing",
+          }}
+          autoFocus={autoFocus}
+          borderColor={error ? "border.error" : "border"}
+          borderRadius={0}
+          colorPalette="blue"
+          disabled={isDisabled}
+          onBlur={onBlur}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder}
+          outlineColor={error ? "border.error" : "blue.focusRing"}
+          type={type}
+          value={value}
+          readOnly={isReadOnly}
+          size="sm"
+        />
+      </InputGroup>
+
       {placeholder && value.length > 0 && (
         <Placeholder placeholder={placeholder} />
       )}
-
-      <Input
-        autoFocus={autoFocus}
-        borderRadius={0}
-        isDisabled={isDisabled}
-        isInvalid={!!error}
-        onBlur={onBlur}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholder}
-        type={type}
-        value={value}
-        isReadOnly={isReadOnly}
-      />
-
-      {error && (
-        <InputRightElement>
-          <Tooltip label={error}>
-            <WarningIcon color="red.600" />
-          </Tooltip>
-        </InputRightElement>
-      )}
-
-      {!error && onClear && (
-        <InputRightElement>
-          <IconButton
-            icon={<CloseIcon />}
-            isDisabled={!value}
-            label="Clear"
-            onClick={onClear}
-          />
-        </InputRightElement>
-      )}
-    </InputGroup>
+    </Box>
   );
 }
 

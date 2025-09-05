@@ -1,0 +1,31 @@
+{
+  "GameIds": ["game_1757055356965"],
+  "Game__\"game_1757055356965\"": {
+    "directory": "/Users/zuccha/Sync/games/smw/hacks",
+    "id": "game_1757055356965",
+    "name": "SMW",
+    "originalCopy": "/Users/zuccha/Sync/games/smw/hacks/smw-vanilla.sfc"
+  },
+  "SelectedGameIndex": 0,
+  "GlobalSettings": {
+    "askForConfirmationBeforeDeletingHack": true,
+    "askForConfirmationBeforeRemovingGame": true,
+    "openHackFolderAfterDownload": false,
+    "keepSearchWindowOnTop": true,
+    "cookie": "",
+    "emulatorPath": "",
+    "emulatorArgs": "%1",
+    "theme": "light"
+  },
+  "SearchResultsOptions": {
+    "keepWindowOpen": false,
+    "showAuthorsColumn": true,
+    "showDifficultyColumn": true,
+    "showDownloadsColumn": false,
+    "showLengthColumn": true,
+    "showNameColumn": true,
+    "showRatingColumn": false,
+    "showSizeColumn": false,
+    "showTypeColumn": true
+  }
+}

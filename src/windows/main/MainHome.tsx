@@ -1,18 +1,13 @@
-import { AddIcon, CloseIcon } from "@chakra-ui/icons";
-import { Center, Icon, Tooltip } from "@chakra-ui/react";
-import { useMemo } from "react";
-import { BsInfoLg } from "react-icons/bs";
-import { MdSettings } from "react-icons/md";
+import { Center, Icon } from "@chakra-ui/react";
+import { InfoIcon, PlusIcon, SettingsIcon, XIcon } from "lucide-react";
+import { useCallback, useMemo } from "react";
 import Dialog from "../../components/Dialog";
 import IconButton from "../../components/IconButton";
 import Tabs from "../../components/Tabs";
 import useItemRemovalDialog from "../../hooks/useItemRemovalDialog";
-import {
-  useGame,
-  useGameIds,
-  useGlobalSettings,
-  useSelectedGameIndex,
-} from "../store";
+import { useGameIds, useSelectedGameIndex } from "../../store/configuration";
+import { useGame } from "../../store/game";
+import { useGlobalSettings } from "../../store/global-settings";
 import PanelAbout from "./PanelAbout";
 import PanelGame from "./PanelGame";
 import PanelGameCreation from "./PanelGameCreation";
@@ -25,22 +20,25 @@ type GameTabProps = {
 
 function GameTab({ gameId, onRemoveGame }: GameTabProps) {
   const [game] = useGame(gameId);
+  const remove = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      onRemoveGame();
+    },
+    [onRemoveGame]
+  );
+
   return (
     <Center gap={1}>
       {game.name}
-      <IconButton
-        icon={<CloseIcon />}
-        label="Remove game"
-        onClick={onRemoveGame}
-      />
+      <IconButton icon={<XIcon />} label="Remove game" onClick={remove} />
     </Center>
   );
 }
 
 function MainHome() {
   const [globalSettings] = useGlobalSettings();
-  const [selectedGameIndex, { set: setSelectedGameIndex }] =
-    useSelectedGameIndex();
+  const [selectedGameIndex, setSelectedGameIndex] = useSelectedGameIndex();
 
   const [gameIds, { create: createGame, remove: removeGame }] = useGameIds();
 
@@ -62,7 +60,7 @@ function MainHome() {
       })),
       {
         body: <PanelGameCreation onCreateGame={createGame} />,
-        header: <AddIcon />,
+        header: <Icon as={PlusIcon} size="sm" />,
       },
     ],
     [createGame, gameIds, gameRemovalDialog.openOrRemove]
@@ -72,11 +70,11 @@ function MainHome() {
     () => [
       {
         body: <PanelGlobalSettings />,
-        header: <Icon as={MdSettings} />,
+        header: <Icon as={SettingsIcon} size="sm" />,
       },
       {
         body: <PanelAbout />,
-        header: <Icon as={BsInfoLg} />,
+        header: <Icon as={InfoIcon} size="sm" />,
       },
     ],
     []

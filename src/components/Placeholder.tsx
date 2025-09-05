@@ -8,7 +8,7 @@ type PlaceholderProps = {
 function Placeholder({ isError, placeholder }: PlaceholderProps) {
   return (
     <Flex
-      color={isError ? "red.500" : "gray.500"}
+      color={isError ? "fg.error" : "fg.muted"}
       left={2}
       position="absolute"
       top={-2}
@@ -19,7 +19,7 @@ function Placeholder({ isError, placeholder }: PlaceholderProps) {
       </Text>
       <Flex
         borderBottomWidth={2}
-        borderColor="white"
+        borderColor="bg"
         h="50%"
         pos="absolute"
         w="100%"
