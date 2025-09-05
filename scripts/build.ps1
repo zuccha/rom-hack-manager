@@ -14,7 +14,7 @@ $ZIPPATH_BUNDLE = "${DIRPATH_BUNDLE}.zip"
 $APPPATH_BUNDLE = "${DIRPATH_BUNDLE}\ROM Hack Manager.exe"
 
 # Run build
-Invoke-Expression "npm run tauri build"
+Invoke-Expression "npm run tauri build -- --runner cargo-xwin --target x86_64-pc-windows-msvc"
 
 # Create releases directory if it doesn't exist
 if (-not (Test-Path $DIRPATH_RELEASES)) {  New-Item -ItemType Directory -Path $DIRPATH_RELEASES }
