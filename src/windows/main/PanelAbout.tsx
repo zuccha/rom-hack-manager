@@ -1,4 +1,4 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import Panel from "../../components/Panel";
 import Section from "../../components/Section";
 import Website from "../../components/Website";

@@ -1,5 +1,5 @@
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
-import { Center, Icon, Tooltip } from "@chakra-ui/react";
+import { Center, Icon } from "@chakra-ui/react";
 import { useMemo } from "react";
 import { BsInfoLg } from "react-icons/bs";
 import { MdSettings } from "react-icons/md";

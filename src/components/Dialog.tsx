@@ -5,8 +5,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
-  AlertDialogProps,
-  Flex,
 } from "@chakra-ui/react";
 import Button from "./Button";
 import { useRef } from "react";

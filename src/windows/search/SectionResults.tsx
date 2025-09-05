@@ -1,7 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { emit } from "@tauri-apps/api/event";
 import { getCurrent } from "@tauri-apps/api/window";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import Alert from "../../components/Alert";
 import Checkbox from "../../components/Checkbox";
 import Frame from "../../components/Frame";
