@@ -62,7 +62,7 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
           hackName.handleChangeValue(sanitizeHackName(payload.name));
           hackDownloadUrl.handleChangeValue(payload.downloadUrl);
         } catch (e) {
-          console.log(e);
+          console.error(e);
           // TODO: Set generic error.
         }
       },

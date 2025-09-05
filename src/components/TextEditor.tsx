@@ -48,8 +48,6 @@ function TextEditor({
     [onSubmit]
   );
 
-  console.log(placeholder, error);
-
   return (
     <Box position="relative" w="full">
       <InputGroup

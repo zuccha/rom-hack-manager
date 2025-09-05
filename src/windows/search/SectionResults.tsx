@@ -52,7 +52,7 @@ function SectionResults({ results }: SectionResultsProps) {
         const searchWindow = getCurrentWebviewWindow();
         if (!options.keepWindowOpen) searchWindow.close();
       } catch (e) {
-        console.log(e);
+        console.error(e);
         // TODO: Do what?
       }
     },

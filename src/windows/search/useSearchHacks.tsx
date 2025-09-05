@@ -195,7 +195,7 @@ const useSearchHacks = (): [
         );
       } catch (e) {
         setResults("An error occurred");
-        console.log(e);
+        console.error(e);
       } finally {
         setIsSearching(false);
       }
