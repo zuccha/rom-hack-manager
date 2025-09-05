@@ -55,13 +55,13 @@ function PanelGlobalSettings() {
             operating system for SFC files will be used. In the command line
             arguments <b>%1</b> will be replaced with the ROM path.
           </Text>
-          <PathBrowser
-            mode="file"
-            onChange={globalSettingsMethods.setEmulatorPath}
-            value={globalSettings.emulatorPath}
-            placeholder="Emulator path"
-          />
-          <Flex gap={2}>
+          <Flex direction="column" gap={3}>
+            <PathBrowser
+              mode="file"
+              onChange={globalSettingsMethods.setEmulatorPath}
+              value={globalSettings.emulatorPath}
+              placeholder="Emulator path"
+            />
             <TextEditor
               value={globalSettings.emulatorArgs}
               onChange={globalSettingsMethods.setEmulatorArgs}
