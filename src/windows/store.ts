@@ -21,6 +21,7 @@ const GlobalSettingsSchema = z.object({
   cookie: z.string(),
   emulatorPath: z.string(),
   emulatorArgs: z.string(),
+  theme: z.enum(["light", "dark"]),
 });
 
 const SearchResultsOptionsSchema = z.object({
@@ -77,7 +78,8 @@ const defaultGlobalSettings = {
   cookie: "",
   emulatorPath: "",
   emulatorArgs: "%1",
-};
+  theme: "light",
+} as const;
 
 const defaultSearchResultsOptions = {
   keepWindowOpen: false,
@@ -158,6 +160,7 @@ export const useGlobalSettings = (): [
     setCookie: (value: string) => void;
     setEmulatorPath: (value: string) => void;
     setEmulatorArgs: (value: string) => void;
+    setTheme: (value: "light" | "dark") => void;
   }
 ] => {
   const [globalSettings, setGlobalSettings] =
@@ -226,6 +229,15 @@ export const useGlobalSettings = (): [
     [setGlobalSettings]
   );
 
+  const setTheme = useCallback(
+    (theme: "light" | "dark") =>
+      setGlobalSettings((oldGlobalSettings) => ({
+        ...oldGlobalSettings,
+        theme,
+      })),
+    [setGlobalSettings]
+  );
+
   return [
     globalSettings,
     {
@@ -236,6 +248,7 @@ export const useGlobalSettings = (): [
       setCookie,
       setEmulatorPath,
       setEmulatorArgs,
+      setTheme,
     },
   ];
 };

@@ -1,12 +1,4 @@
-import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Flex,
-  Heading,
-} from "@chakra-ui/react";
+import { Accordion, Heading } from "@chakra-ui/react";
 
 export type SectionProps = {
   children: React.ReactNode;
@@ -16,15 +8,16 @@ export type SectionProps = {
 
 function Section({ children, isDefaultExpanded, title }: SectionProps) {
   return (
-    <Accordion
-      allowMultiple
+    <Accordion.Root
       borderWidth={0}
-      defaultIndex={isDefaultExpanded ? [0] : []}
+      defaultValue={isDefaultExpanded ? ["item"] : []}
+      multiple
     >
-      <AccordionItem border="none">
-        <AccordionButton borderWidth={0} px={0}>
+      <Accordion.Item border="none" value="item">
+        <Accordion.ItemTrigger borderWidth={0} px={0}>
           <Heading
             color="gray.700"
+            flex={1}
             fontSize="sm"
             size="xs"
             textTransform="uppercase"
@@ -32,14 +25,15 @@ function Section({ children, isDefaultExpanded, title }: SectionProps) {
           >
             {title}
           </Heading>
-          <Flex flex={1} />
-          <AccordionIcon color="gray.700" />
-        </AccordionButton>
-        <AccordionPanel borderWidth={0} p={0} pt={2}>
-          {children}
-        </AccordionPanel>
-      </AccordionItem>
-    </Accordion>
+          <Accordion.ItemIndicator />
+        </Accordion.ItemTrigger>
+        <Accordion.ItemContent>
+          <Accordion.ItemBody borderWidth={0} p={0} pt={2}>
+            {children}
+          </Accordion.ItemBody>
+        </Accordion.ItemContent>
+      </Accordion.Item>
+    </Accordion.Root>
   );
 }
 

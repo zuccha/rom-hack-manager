@@ -39,7 +39,12 @@ function PathBrowser({
         {...props}
       />
 
-      <Button isDisabled={isDisabled} onClick={handleBrowse} text="..." />
+      <Button
+        isDisabled={isDisabled}
+        onClick={handleBrowse}
+        text="..."
+        variant="outline"
+      />
     </Flex>
   );
 }

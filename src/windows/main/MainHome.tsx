@@ -1,5 +1,5 @@
-import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import { Center, Icon } from "@chakra-ui/react";
+import { PlusIcon, XIcon } from "lucide-react";
 import { useMemo } from "react";
 import { BsInfoLg } from "react-icons/bs";
 import { MdSettings } from "react-icons/md";
@@ -28,11 +28,7 @@ function GameTab({ gameId, onRemoveGame }: GameTabProps) {
   return (
     <Center gap={1}>
       {game.name}
-      <IconButton
-        icon={<CloseIcon />}
-        label="Remove game"
-        onClick={onRemoveGame}
-      />
+      <IconButton icon={<XIcon />} label="Remove game" onClick={onRemoveGame} />
     </Center>
   );
 }
@@ -62,7 +58,7 @@ function MainHome() {
       })),
       {
         body: <PanelGameCreation onCreateGame={createGame} />,
-        header: <AddIcon />,
+        header: <PlusIcon />,
       },
     ],
     [createGame, gameIds, gameRemovalDialog.openOrRemove]

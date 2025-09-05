@@ -9,14 +9,7 @@ type FrameProps = {
 
 function Frame({ children, minChildWidth, placeholder }: FrameProps) {
   return (
-    <Flex
-      bgColor="white"
-      borderColor="gray.500"
-      borderWidth={1}
-      flex={1}
-      p={2}
-      position="relative"
-    >
+    <Flex borderWidth={1} flex={1} p={2} position="relative">
       <Placeholder placeholder={placeholder} />
 
       <SimpleGrid columnGap={1} flex={1} minChildWidth={minChildWidth}>

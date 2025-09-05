@@ -37,6 +37,13 @@ function PanelGlobalSettings() {
             onChange={globalSettingsMethods.setKeepSearchWindowOnTop}
             value={globalSettings.keepSearchWindowOnTop}
           />
+          <Checkbox
+            label="Dark theme"
+            onChange={(dark) =>
+              globalSettingsMethods.setTheme(dark ? "dark" : "light")
+            }
+            value={globalSettings.theme === "dark"}
+          />
         </Flex>
       </Section>
 

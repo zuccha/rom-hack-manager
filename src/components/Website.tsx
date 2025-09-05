@@ -1,4 +1,5 @@
-import { Link, Tooltip } from "@chakra-ui/react";
+import { Link } from "@chakra-ui/react";
+import Tooltip from "./Tooltip";
 
 export type WebsiteProps = {
   href: string;
@@ -7,8 +8,8 @@ export type WebsiteProps = {
 
 function Website({ href, label }: WebsiteProps) {
   return (
-    <Tooltip label={href} openDelay={500}>
-      <Link color="blue.600" fontSize="sm" href={href} isExternal>
+    <Tooltip content={href} openDelay={500}>
+      <Link fontSize="sm" href={href} target="_blank">
         {label}
       </Link>
     </Tooltip>

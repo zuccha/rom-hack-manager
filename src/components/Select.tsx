@@ -1,29 +1,42 @@
-import { Flex, Select as CSelect } from "@chakra-ui/react";
-import { useCallback } from "react";
+import {
+  Flex,
+  Select as ChakraSelect,
+  Portal,
+  createListCollection,
+} from "@chakra-ui/react";
+import { useMemo } from "react";
 import Placeholder from "./Placeholder";
 
 export type SelectProps<Option extends string> = {
   isDisabled?: boolean;
   isFullWidth?: boolean;
-  onChange: (value: Option) => void;
   options: { value: Option; label: string }[];
   placeholder: string;
-  value: string;
-};
+} & (
+  | {
+      isMultiple?: false;
+      value: string;
+      onChange: (value: Option) => void;
+    }
+  | {
+      isMultiple: true;
+      value: string[];
+      onChange: (value: Option[]) => void;
+    }
+);
 
 function Select<Option extends string>({
   isDisabled,
   isFullWidth,
+  isMultiple,
   onChange,
   options,
   placeholder,
   value,
 }: SelectProps<Option>) {
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      onChange(e.target.value as Option);
-    },
-    [onChange]
+  const collection = useMemo(
+    () => createListCollection({ items: options }),
+    []
   );
 
   return (
@@ -32,21 +45,41 @@ function Select<Option extends string>({
         <Placeholder placeholder={placeholder} />
       )}
 
-      <CSelect
-        bg="white"
-        borderColor="gray.500"
+      <ChakraSelect.Root
         borderRadius={0}
-        isDisabled={isDisabled}
-        onChange={handleChange}
+        collection={collection}
+        disabled={isDisabled}
+        multiple={isMultiple}
+        onValueChange={(e) => {
+          isMultiple
+            ? onChange(e.value as Option[])
+            : onChange(e.value[0] as Option);
+        }}
         size="sm"
-        value={value}
+        value={isMultiple ? value : [value]}
       >
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </CSelect>
+        <ChakraSelect.HiddenSelect aria-labelledby="" />
+        <ChakraSelect.Control>
+          <ChakraSelect.Trigger>
+            <ChakraSelect.ValueText placeholder={placeholder} />
+          </ChakraSelect.Trigger>
+          <ChakraSelect.IndicatorGroup>
+            <ChakraSelect.Indicator />
+          </ChakraSelect.IndicatorGroup>
+        </ChakraSelect.Control>
+        <Portal>
+          <ChakraSelect.Positioner>
+            <ChakraSelect.Content>
+              {options.map((option) => (
+                <ChakraSelect.Item item={option.value} key={option.value}>
+                  {option.label}
+                  <ChakraSelect.ItemIndicator />
+                </ChakraSelect.Item>
+              ))}
+            </ChakraSelect.Content>
+          </ChakraSelect.Positioner>
+        </Portal>
+      </ChakraSelect.Root>
     </Flex>
   );
 }

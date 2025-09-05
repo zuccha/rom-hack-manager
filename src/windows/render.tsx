@@ -1,18 +1,9 @@
-import { Box, ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RecoilRoot } from "recoil";
 import useTheme from "../hooks/useTheme";
-
-const styles = {
-  global: {
-    ":not(.chakra-dont-set-collapse) > .chakra-collapse": {
-      overflow: "initial !important",
-    },
-  },
-};
-
-const chakraTheme = extendTheme({ styles });
+import { ThemeProvider } from "../components/ThemeProvider";
 
 function BorderWrapper({ children }: { children: React.ReactNode }) {
   const theme = useTheme();
@@ -28,9 +19,9 @@ const render = (root: React.ReactNode) => {
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
       <RecoilRoot>
-        <ChakraProvider theme={chakraTheme}>
+        <ThemeProvider>
           <BorderWrapper>{root}</BorderWrapper>
-        </ChakraProvider>
+        </ThemeProvider>
       </RecoilRoot>
     </React.StrictMode>
   );

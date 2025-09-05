@@ -1,18 +1,18 @@
 import {
-  Button as CButton,
-  ButtonProps as CButtonProps,
+  Button as ChakraButton,
+  ButtonProps as ChakraButtonProps,
 } from "@chakra-ui/react";
+import { ReactNode } from "react";
 
 export type ButtonProps = {
   isDisabled?: boolean;
   isFullWidth?: boolean;
   isLoading?: boolean;
-  leftIcon?: CButtonProps["leftIcon"];
+  leftIcon?: ReactNode;
   onClick: () => void;
-  rightIcon?: CButtonProps["rightIcon"];
+  rightIcon?: ReactNode;
   text: string;
-  variant?: CButtonProps["variant"];
-  colorScheme?: CButtonProps["colorScheme"];
+  variant?: ChakraButtonProps["variant"];
 };
 
 function Button({
@@ -24,23 +24,21 @@ function Button({
   rightIcon,
   text,
   variant,
-  colorScheme = "blue",
 }: ButtonProps) {
   return (
-    <CButton
+    <ChakraButton
       borderRadius={0}
-      colorScheme={colorScheme}
       flex={isFullWidth ? 1 : undefined}
-      leftIcon={leftIcon}
-      isDisabled={isDisabled}
-      isLoading={isLoading}
-      rightIcon={rightIcon}
+      disabled={isDisabled}
+      loading={isLoading}
       onClick={onClick}
       size="sm"
       variant={variant}
     >
+      {leftIcon}
       {text}
-    </CButton>
+      {rightIcon}
+    </ChakraButton>
   );
 }
 
