@@ -35,7 +35,7 @@ function TabHeader({
   return (
     <Center
       _hover={{ color: "fg" }}
-      bgColor={isSelected ? "bg" : undefined}
+      bgColor={isSelected ? "bg.subtle" : undefined}
       borderBottomColor={isSelected ? "transparent" : BORDER_COLOR_SELECTED}
       borderBottomWidth={1}
       borderRightColor={
