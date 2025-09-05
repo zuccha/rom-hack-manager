@@ -19,7 +19,7 @@
   },
   "productName": "ROM Hack Manager",
   "mainBinaryName": "ROM Hack Manager",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "identifier": "io.zuccha.rom-hack-manager",
   "plugins": {
     "fs": {
