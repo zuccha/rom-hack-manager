@@ -124,6 +124,7 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
       width: 550,
       height: 600,
       url: "src/windows/search/Search.html",
+      useHttpsScheme: true,
     });
   }, [game.name, gameId, globalSettings.keepSearchWindowOnTop]);
 
