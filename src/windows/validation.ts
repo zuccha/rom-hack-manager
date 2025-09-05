@@ -1,4 +1,4 @@
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 
 export const validateNotEmpty = (str: string): string | undefined => {
   return str === "" ? "Value cannot be empty" : undefined;

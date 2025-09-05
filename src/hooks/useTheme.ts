@@ -1,5 +1,9 @@
-import { appWindow, Theme } from "@tauri-apps/api/window";
+import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { useEffect, useState } from "react";
+
+const appWindow = getCurrentWebviewWindow();
+
+type Theme = "light" | "dark";
 
 const useTheme = (): Theme => {
   const [theme, setTheme] = useState<Theme>("light");

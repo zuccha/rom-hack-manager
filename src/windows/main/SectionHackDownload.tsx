@@ -1,6 +1,6 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import { Flex } from "@chakra-ui/react";
-import { WebviewWindow } from "@tauri-apps/api/window";
+import { WebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { useCallback, useMemo } from "react";
 import Alert from "../../components/Alert";
 import Button from "../../components/Button";

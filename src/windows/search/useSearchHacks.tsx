@@ -1,4 +1,4 @@
-import { ResponseType, getClient } from "@tauri-apps/api/http";
+import { fetch } from "@tauri-apps/plugin-http";
 import { useCallback, useState } from "react";
 import { z } from "zod";
 
@@ -181,20 +181,17 @@ const useSearchHacks = (): [
 
       try {
         // Send request.
-        const client = await getClient();
-        const responseType = ResponseType.Text;
         console.log(url.toString());
-        const { data } = await client.get(url.toString(), {
-          responseType,
+        const response = await fetch(url.toString(), {
           ...(cookie && { headers: { Cookie: cookie } }),
         });
+        const json = await response.json();
 
         // Parse response to find the hacks table.
-        if (typeof data !== "string") throw new Error("Data is not a string");
         setResults(
           game === "smwhacks"
-            ? SuperMarioWorldResponseSchema.parse(JSON.parse(data))
-            : YoshiIslandResponseSchema.parse(JSON.parse(data))
+            ? SuperMarioWorldResponseSchema.parse(json)
+            : YoshiIslandResponseSchema.parse(json)
         );
       } catch (e) {
         setResults("An error occurred");
