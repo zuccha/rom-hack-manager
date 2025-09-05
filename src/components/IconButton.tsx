@@ -14,12 +14,11 @@ function IconButton({ icon, isDisabled, label, onClick }: IconButtonProps) {
     <Tooltip content={label}>
       <ChakraIconButton
         aria-label={label}
-        color="gray.500"
         disabled={isDisabled}
         onClick={onClick}
+        outlineColor="blue.focusRing"
         size="xs"
         variant="ghost"
-        _hover={{ color: "black" }}
       >
         {icon}
       </ChakraIconButton>

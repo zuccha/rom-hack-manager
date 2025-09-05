@@ -1,8 +1,6 @@
 import { Center, Icon } from "@chakra-ui/react";
-import { PlusIcon, XIcon } from "lucide-react";
+import { InfoIcon, PlusIcon, SettingsIcon, XIcon } from "lucide-react";
 import { useMemo } from "react";
-import { BsInfoLg } from "react-icons/bs";
-import { MdSettings } from "react-icons/md";
 import Dialog from "../../components/Dialog";
 import IconButton from "../../components/IconButton";
 import Tabs from "../../components/Tabs";
@@ -58,7 +56,7 @@ function MainHome() {
       })),
       {
         body: <PanelGameCreation onCreateGame={createGame} />,
-        header: <PlusIcon />,
+        header: <Icon as={PlusIcon} size="sm" />,
       },
     ],
     [createGame, gameIds, gameRemovalDialog.openOrRemove]
@@ -68,11 +66,11 @@ function MainHome() {
     () => [
       {
         body: <PanelGlobalSettings />,
-        header: <Icon as={MdSettings} />,
+        header: <Icon as={SettingsIcon} size="sm" />,
       },
       {
         body: <PanelAbout />,
-        header: <Icon as={BsInfoLg} />,
+        header: <Icon as={InfoIcon} size="sm" />,
       },
     ],
     []

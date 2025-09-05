@@ -25,13 +25,18 @@ function Button({
   text,
   variant,
 }: ButtonProps) {
+  const solid = !variant || variant === "solid";
+
   return (
     <ChakraButton
+      _focusVisible={{ borderColor: "blue.focusRing", outlineWidth: 1 }}
       borderRadius={0}
+      colorPalette="blue"
       flex={isFullWidth ? 1 : undefined}
       disabled={isDisabled}
       loading={isLoading}
       onClick={onClick}
+      outlineOffset={0}
       size="sm"
       variant={variant}
     >

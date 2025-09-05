@@ -1,4 +1,4 @@
-import { Box, Input, InputGroup, InputProps } from "@chakra-ui/react";
+import { Box, Icon, Input, InputGroup, InputProps } from "@chakra-ui/react";
 import { CircleAlertIcon, XIcon } from "lucide-react";
 import { KeyboardEvent, useCallback } from "react";
 import IconButton from "./IconButton";
@@ -48,16 +48,19 @@ function TextEditor({
     [onSubmit]
   );
 
+  console.log(placeholder, error);
+
   return (
     <Box position="relative" w="full">
       <InputGroup
-        borderColor={error ? "border.error" : "border"}
         endElement={
           error ? (
             <Tooltip content={error}>
-              <CircleAlertIcon color="fg.error" />
+              <Icon color="fg.error" size="sm">
+                <CircleAlertIcon />
+              </Icon>
             </Tooltip>
-          ) : onClear ? (
+          ) : onClear && value ? (
             <IconButton
               icon={<XIcon />}
               isDisabled={!value}
@@ -68,13 +71,19 @@ function TextEditor({
         }
       >
         <Input
+          _focusVisible={{
+            borderColor: error ? "border.error" : "blue.focusRing",
+          }}
           autoFocus={autoFocus}
+          borderColor={error ? "border.error" : "border"}
           borderRadius={0}
+          colorPalette="blue"
           disabled={isDisabled}
           onBlur={onBlur}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
+          outlineColor={error ? "border.error" : "blue.focusRing"}
           type={type}
           value={value}
           readOnly={isReadOnly}

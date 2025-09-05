@@ -17,7 +17,7 @@ function Checkbox({ isDisabled, label, onChange, value }: CheckboxProps) {
   return (
     <div>
       <ChakraCheckbox.Root
-        borderColor="gray.500"
+        colorPalette="blue"
         checked={value}
         defaultChecked={value}
         disabled={isDisabled}
@@ -26,7 +26,7 @@ function Checkbox({ isDisabled, label, onChange, value }: CheckboxProps) {
       >
         <ChakraCheckbox.HiddenInput />
         <ChakraCheckbox.Control />
-        <ChakraCheckbox.Label>{label}</ChakraCheckbox.Label>
+        <ChakraCheckbox.Label fontWeight="normal">{label}</ChakraCheckbox.Label>
       </ChakraCheckbox.Root>
     </div>
   );

@@ -15,9 +15,15 @@ function Section({ children, isDefaultExpanded, title }: SectionProps) {
       outline="none"
     >
       <Accordion.Item border="none" value="item">
-        <Accordion.ItemTrigger borderWidth={0} px={0}>
+        <Accordion.ItemTrigger
+          _hover={{ bgColor: "bg.muted" }}
+          borderWidth={0}
+          cursor="pointer"
+          rounded={0}
+          px={0}
+          colorPalette="blue"
+        >
           <Heading
-            color="gray.700"
             flex={1}
             fontSize="sm"
             size="xs"

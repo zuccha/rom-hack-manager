@@ -31,7 +31,9 @@ function Dialog({
       <Portal>
         <ChakraDialog.Positioner>
           <ChakraDialog.Content borderRadius={0} mx={4}>
-            <ChakraDialog.Header>{title}</ChakraDialog.Header>
+            <ChakraDialog.Header>
+              <ChakraDialog.Title>{title}</ChakraDialog.Title>
+            </ChakraDialog.Header>
 
             <ChakraDialog.Body>{description}</ChakraDialog.Body>
 

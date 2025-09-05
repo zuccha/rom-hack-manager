@@ -48,6 +48,7 @@ function Select<Option extends string>({
       <ChakraSelect.Root
         borderRadius={0}
         collection={collection}
+        colorPalette="blue"
         disabled={isDisabled}
         multiple={isMultiple}
         onValueChange={(e) => {
@@ -55,12 +56,13 @@ function Select<Option extends string>({
             ? onChange(e.value as Option[])
             : onChange(e.value[0] as Option);
         }}
+        outlineColor="blue.focusRing"
         size="sm"
         value={isMultiple ? value : [value]}
       >
         <ChakraSelect.HiddenSelect aria-labelledby="" />
         <ChakraSelect.Control>
-          <ChakraSelect.Trigger>
+          <ChakraSelect.Trigger borderRadius={0}>
             <ChakraSelect.ValueText placeholder={placeholder} />
           </ChakraSelect.Trigger>
           <ChakraSelect.IndicatorGroup>

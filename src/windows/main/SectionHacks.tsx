@@ -3,8 +3,8 @@ import { UnlistenFn } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api/core";
 import { join } from "@tauri-apps/api/path";
 import { readDir, remove, watch } from "@tauri-apps/plugin-fs";
+import { CirclePlayIcon, FolderIcon, TrashIcon } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { MdDelete, MdPlayCircle, MdFolder } from "react-icons/md";
 import Dialog from "../../components/Dialog";
 import Section from "../../components/Section";
 import Table from "../../components/Table";
@@ -92,7 +92,7 @@ function SectionHacks({ gameId }: SectionHacksProps) {
   const hacksTableActions = useMemo(
     () => [
       {
-        icon: <Icon as={MdPlayCircle} />,
+        icon: <Icon as={CirclePlayIcon} />,
         label: "Play",
         onClick: (hack: Hack) => {
           if (globalSettings.emulatorPath) {
@@ -107,13 +107,13 @@ function SectionHacks({ gameId }: SectionHacksProps) {
         },
       },
       {
-        icon: <Icon as={MdFolder} />,
+        icon: <Icon as={FolderIcon} />,
         label: "Open folder",
         onClick: (hack: Hack) =>
           invoke("open_with_default_app", { path: hack.directory }),
       },
       {
-        icon: <Icon as={MdDelete} />,
+        icon: <Icon as={TrashIcon} />,
         label: "Delete",
         onClick: (hack: Hack) => hackDeletionDialog.openOrRemove(hack),
       },
@@ -167,7 +167,6 @@ function SectionHacks({ gameId }: SectionHacksProps) {
               actions={hacksTableActions}
               columns={hacksTableColumns}
               data={filteredHacks}
-              highlightRowOnHover
             />
           ) : (
             <Text fontSize="sm">

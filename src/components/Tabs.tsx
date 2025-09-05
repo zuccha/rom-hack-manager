@@ -34,6 +34,8 @@ function TabHeader({
 }: TabHeaderProps) {
   return (
     <Center
+      _hover={{ color: "fg" }}
+      bgColor={isSelected ? "bg" : undefined}
       borderBottomColor={isSelected ? "transparent" : BORDER_COLOR_SELECTED}
       borderBottomWidth={1}
       borderRightColor={
@@ -71,7 +73,7 @@ function Tabs({ index, onChange, tabsLeft, tabsRight }: TabsProps) {
 
   return (
     <Flex direction="column">
-      <Flex overflow="scroll" css={hideScrollBarCss}>
+      <Flex bgColor="bg.muted" overflow="scroll" css={hideScrollBarCss}>
         {tabsLeft.map((tab, tabIndex) => (
           <TabHeader
             isLast={tabIndex === tabsLeft.length - 1 && tabsRight.length === 0}

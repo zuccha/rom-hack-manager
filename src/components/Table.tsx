@@ -31,30 +31,22 @@ function Table<T>({
   caption,
   columns,
   data,
-  highlightRowOnHover,
   onClickRow,
 }: TableProps<T>) {
-  // const rowOddStyle = useMemo(() => {
-  //   return {
-  //     // backgroundColor: "gray.100",
-  //   };
-  // }, []);
-
-  // const rowHoverStyle = useMemo(() => {
-  //   const style: SystemStyleObject = { "& .action": { visibility: "visible" } };
-  //   if (highlightRowOnHover || onClickRow) style.backgroundColor = "blue.100";
-  //   if (onClickRow) style.cursor = "pointer";
-  //   return style;
-  // }, [onClickRow]);
-
   return (
     <ChakraTable.ScrollArea>
-      <ChakraTable.Root borderWidth={1} tableLayout="fixed" size="sm">
+      <ChakraTable.Root
+        borderWidth={1}
+        interactive
+        tableLayout="fixed"
+        size="sm"
+      >
         {caption && <ChakraTable.Caption>{caption}</ChakraTable.Caption>}
         <ChakraTable.Header>
           <ChakraTable.Row borderBottomWidth={1}>
             {columns.map((column) => (
               <ChakraTable.ColumnHeader
+                bgColor="bg.subtle"
                 borderWidth={0}
                 key={column.header}
                 width={column.width}
@@ -63,13 +55,21 @@ function Table<T>({
               </ChakraTable.ColumnHeader>
             ))}
             {!!actions && actions.length > 0 && (
-              <ChakraTable.ColumnHeader borderWidth={0} w={110} />
+              <ChakraTable.ColumnHeader
+                bgColor="bg.subtle"
+                borderWidth={0}
+                w={110}
+              />
             )}
           </ChakraTable.Row>
         </ChakraTable.Header>
         <ChakraTable.Body>
           {data.map((row, rowIndex) => (
-            <ChakraTable.Row key={rowIndex} onClick={() => onClickRow?.(row)}>
+            <ChakraTable.Row
+              cursor={onClickRow ? "pointer" : "default"}
+              key={rowIndex}
+              onClick={() => onClickRow?.(row)}
+            >
               {columns.map((column, columnIndex) => (
                 <ChakraTable.Cell
                   borderWidth={0}

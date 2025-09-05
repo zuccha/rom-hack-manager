@@ -130,7 +130,7 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
       <Flex direction="column" gap={3}>
         <TextEditor
           autoFocus
-          error={hackName.isPristine ? undefined : hackName.error}
+          error={hackName.errorIfDirty}
           isDisabled={isDownloading}
           onBlur={hackName.handleBlur}
           onChange={hackName.handleChangeValue}
@@ -139,7 +139,7 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
           value={hackName.value}
         />
         <TextEditor
-          error={hackDownloadUrl.isPristine ? undefined : hackDownloadUrl.error}
+          error={hackDownloadUrl.errorIfDirty}
           isDisabled={isDownloading}
           onBlur={hackDownloadUrl.handleBlur}
           onChange={hackDownloadUrl.handleChangeValue}
