@@ -1,6 +1,6 @@
 # Load version
 $TAURI_CONFIG = Get-Content "src-tauri/tauri.conf.json" | ConvertFrom-Json
-$VERSION = $TAURI_CONFIG.package.version
+$VERSION = $TAURI_CONFIG.version
 
 # Define variables
 $DIRPATH_RELEASES = ".\releases"
