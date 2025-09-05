@@ -12,6 +12,7 @@ function Section({ children, isDefaultExpanded, title }: SectionProps) {
       borderWidth={0}
       defaultValue={isDefaultExpanded ? ["item"] : []}
       multiple
+      outline="none"
     >
       <Accordion.Item border="none" value="item">
         <Accordion.ItemTrigger borderWidth={0} px={0}>
@@ -27,7 +28,7 @@ function Section({ children, isDefaultExpanded, title }: SectionProps) {
           </Heading>
           <Accordion.ItemIndicator />
         </Accordion.ItemTrigger>
-        <Accordion.ItemContent>
+        <Accordion.ItemContent overflow="visible">
           <Accordion.ItemBody borderWidth={0} p={0} pt={2}>
             {children}
           </Accordion.ItemBody>
