@@ -225,7 +225,7 @@ async fn download_hack(
   hack_directory_path.read_dir().unwrap()
     .filter_map(|res| res.ok())
     .map(|dir_entry| dir_entry.path())
-    .filter(|path| path.extension().map_or(false, |ext| ext == "bps"))
+    .filter(|path| path.extension().map_or(false, |ext| ext == "bps" || ext == "ips"))
     .for_each(|bps_path| {
       let mut sfc_path = PathBuf::from(&bps_path);
       sfc_path.set_extension("sfc");
