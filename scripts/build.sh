@@ -4,6 +4,7 @@ DIRPATH="./rom-hack-manager_${VERSION}_macos"
 
 npm run tauri build -- --target=universal-apple-darwin
 
+mkdir -p "./releases"
 cd "./releases"
 
 if [ -d $DIRPATH ]; then rm -rf $DIRPATH; fi
