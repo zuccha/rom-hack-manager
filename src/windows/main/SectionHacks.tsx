@@ -23,6 +23,7 @@ type Hack = {
   name: string;
   sfcName: string;
   sfcPath: string;
+  isFirstSfc: boolean;
 };
 
 function notUndefined<T>(value: T | undefined): value is T {
@@ -35,25 +36,33 @@ const readGameDirectory = async (gameDirectory: string): Promise<Hack[]> => {
   const hacks = (
     await Promise.all(
       entries.map(async (entry) => {
-        if (!entry.isDirectory) return undefined;
+        if (!entry.isDirectory) return [] as Hack[];
 
         const name = entry.name ?? "-";
 
         const directory = await join(gameDirectory, name);
         const children = await readDir(directory);
-        const sfc = children.find((c) => (c.name ?? "").endsWith(".sfc"));
-        return sfc
-          ? ({
-              directory,
-              name,
-              sfcName: sfc.name,
-              sfcPath: await join(directory, sfc.name),
-            } as Hack)
-          : undefined;
+        const sfcFiles = children.filter((c) =>
+          (c.name ?? "").endsWith(".sfc")
+        );
+
+        if (sfcFiles.length === 0) return [] as Hack[];
+
+        const hacksForDirectory = await Promise.all(
+          sfcFiles.map(async (sfc, index) => ({
+            directory,
+            name,
+            sfcName: sfc.name ?? "-",
+            sfcPath: await join(directory, sfc.name ?? ""),
+            isFirstSfc: index === 0,
+          }))
+        );
+
+        return hacksForDirectory;
       })
     )
   )
-    .filter(notUndefined)
+    .flat()
     .sort((hack1, hack2) => {
       if (hack1.name < hack2.name) return -1;
       if (hack1.name > hack2.name) return 1;
@@ -66,7 +75,7 @@ const readGameDirectory = async (gameDirectory: string): Promise<Hack[]> => {
 const hacksTableColumns = [
   {
     header: "Name",
-    key: "name" as const,
+    format: (hack: Hack) => (hack.isFirstSfc ? hack.name : ""),
   },
   {
     header: "SFC",
@@ -82,7 +91,22 @@ function SectionHacks({ gameId }: SectionHacksProps) {
   const clearNameFilter = useCallback(() => setNameFilter(""), []);
 
   const deleteHack = useCallback((hack: Hack) => {
-    remove(hack.directory, { recursive: true });
+    (async () => {
+      try {
+        await remove(hack.sfcPath);
+
+        const children = await readDir(hack.directory);
+        const remainingSfcFiles = children.filter((c) =>
+          (c.name ?? "").endsWith(".sfc")
+        );
+
+        if (remainingSfcFiles.length === 0) {
+          await remove(hack.directory, { recursive: true });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    })();
   }, []);
 
   const hackDeletionDialog = useItemRemovalDialog(
@@ -92,35 +116,48 @@ function SectionHacks({ gameId }: SectionHacksProps) {
 
   const { openOrRemove } = hackDeletionDialog;
 
-  const hacksTableActions = useMemo(
-    () => [
-      {
-        icon: <Icon as={CirclePlayIcon} />,
-        label: "Play",
-        onClick: (hack: Hack) => {
-          if (globalSettings.emulatorPath) {
-            invoke("open_with_selected_app", {
-              emulatorArgs: globalSettings.emulatorArgs,
-              emulatorPath: globalSettings.emulatorPath,
-              filePath: hack.sfcPath,
-            });
-          } else {
-            invoke("open_with_default_app", { path: hack.sfcPath });
-          }
+  const getHacksTableActions = useCallback(
+    (hack: Hack) => {
+      const actions = [
+        {
+          icon: <Icon as={CirclePlayIcon} />,
+          label: "Play",
+          onClick: (selectedHack: Hack) => {
+            if (globalSettings.emulatorPath) {
+              invoke("open_with_selected_app", {
+                emulatorArgs: globalSettings.emulatorArgs,
+                emulatorPath: globalSettings.emulatorPath,
+                filePath: selectedHack.sfcPath,
+              });
+            } else {
+              invoke("open_with_default_app", { path: selectedHack.sfcPath });
+            }
+          },
         },
-      },
-      {
-        icon: <Icon as={FolderIcon} />,
-        label: "Open folder",
-        onClick: (hack: Hack) =>
-          invoke("open_with_default_app", { path: hack.directory }),
-      },
-      {
-        icon: <Icon as={TrashIcon} />,
-        label: "Delete",
-        onClick: (hack: Hack) => openOrRemove(hack),
-      },
-    ],
+        hack.isFirstSfc
+          ? {
+              icon: <Icon as={FolderIcon} />,
+              label: "Open folder",
+              onClick: (selectedHack: Hack) =>
+                invoke("open_with_default_app", {
+                  path: selectedHack.directory,
+                }),
+            }
+          : {
+              icon: <></>,
+              isDisabled: true,
+              label: "",
+              onClick: () => {},
+            },
+        {
+          icon: <Icon as={TrashIcon} />,
+          label: "Delete",
+          onClick: (selectedHack: Hack) => openOrRemove(selectedHack),
+        },
+      ];
+
+      return actions;
+    },
     [globalSettings.emulatorArgs, globalSettings.emulatorPath, openOrRemove]
   );
 
@@ -167,9 +204,9 @@ function SectionHacks({ gameId }: SectionHacksProps) {
 
           {filteredHacks.length > 0 ? (
             <Table
-              actions={hacksTableActions}
               columns={hacksTableColumns}
               data={filteredHacks}
+              getRowActions={getHacksTableActions}
             />
           ) : (
             <Text fontSize="sm">
@@ -180,7 +217,7 @@ function SectionHacks({ gameId }: SectionHacksProps) {
       </Section>
 
       <Dialog
-        description="Caution: Deleting the hack will delete the folder! This cannot be undone."
+        description="Caution: Deleting the hack will remove the selected .sfc file. If no .sfc files remain, the folder will be deleted. This cannot be undone."
         isOpen={hackDeletionDialog.isOpen}
         onCancel={hackDeletionDialog.close}
         onConfirm={hackDeletionDialog.closeAndRemove}

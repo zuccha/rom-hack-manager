@@ -8,6 +8,7 @@ export const searchResultsOptionsSchema = z.object({
   showDifficultyColumn: z.boolean().default(false),
   showDownloadsColumn: z.boolean().default(false),
   showLengthColumn: z.boolean().default(true),
+  showLinkColumn: z.boolean().default(true),
   showNameColumn: z.boolean().default(true),
   showRatingColumn: z.boolean().default(true),
   showSizeColumn: z.boolean().default(false),
@@ -30,6 +31,7 @@ export const useSearchResultsOptions = (): [
     setShowDifficultyColumn: (value: boolean) => void;
     setShowDownloadsColumn: (value: boolean) => void;
     setShowLengthColumn: (value: boolean) => void;
+    setShowLinkColumn: (value: boolean) => void;
     setShowNameColumn: (value: boolean) => void;
     setShowRatingColumn: (value: boolean) => void;
     setShowSizeColumn: (value: boolean) => void;
@@ -84,6 +86,15 @@ export const useSearchResultsOptions = (): [
     [setSearchResultsOptions]
   );
 
+  const setShowLinkColumn = useCallback(
+    (showLinkColumn: boolean) =>
+      setSearchResultsOptions((oldSearchResultsOptions) => ({
+        ...oldSearchResultsOptions,
+        showLinkColumn,
+      })),
+    [setSearchResultsOptions]
+  );
+
   const setShowNameColumn = useCallback(
     (showNameColumn: boolean) =>
       setSearchResultsOptions((oldSearchResultsOptions) => ({
@@ -128,6 +139,7 @@ export const useSearchResultsOptions = (): [
       setShowDifficultyColumn,
       setShowDownloadsColumn,
       setShowLengthColumn,
+      setShowLinkColumn,
       setShowNameColumn,
       setShowRatingColumn,
       setShowSizeColumn,

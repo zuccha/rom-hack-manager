@@ -18,7 +18,8 @@ import {
   validateDirectoryPath,
   validateFilePath,
   validateName,
-  validateURL,
+  validateHackDownloadSource,
+  validateHackNameOrEmpty,
 } from "../validation";
 
 type SectionHackDownloadProps = {
@@ -48,13 +49,13 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
   const hackName = useFormValue(gameId, gameDownloadData.name, {
     isDirty: gameDownloadData.name !== "",
     onChange: gameDownloadDataMethods.setName,
-    validate: validateName,
+    validate: validateHackNameOrEmpty,
   });
 
   const hackDownloadUrl = useFormValue(gameId, gameDownloadData.downloadUrl, {
     isDirty: gameDownloadData.downloadUrl !== "",
     onChange: gameDownloadDataMethods.setDownloadUrl,
-    validate: validateURL,
+    validate: validateHackDownloadSource,
   });
 
   const handleHackNameChangeValue = hackName.handleChangeValue;
@@ -162,7 +163,7 @@ function SectionHackDownload({ gameId }: SectionHackDownloadProps) {
           onBlur={hackDownloadUrl.handleBlur}
           onChange={hackDownloadUrl.handleChangeValue}
           onSubmit={downloadHackIfIsValid}
-          placeholder="Hack Download URL"
+          placeholder="Hack Download URL or local .zip path"
           value={hackDownloadUrl.value}
         />
         <Flex gap={3}>

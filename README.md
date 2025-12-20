@@ -47,9 +47,9 @@ Do this only if you trust me :)
 With _ROM Hack Manager_ you can:
 
 - **Manage hacks:** The tool will list SNES ROM hacks for selected games.
-- **Download hacks:** Download, unzip, and patch hacks automatically. You can
-  search _Super Mario World_ and _Yoshi Island_ hacks on SMWCentral's catalogue
-  directly from within the tool.
+- **Download hacks:** Download, unzip, and patch hacks automatically from
+  remote URLs or local zip files. You can search _Super Mario World_ and
+  _Yoshi Island_ hacks on SMWCentral's catalogue directly from within the tool.
 
 You can check the [changelog](./CHANGELOG.txt) for an exhaustive list of changes
 for every version.
@@ -91,10 +91,14 @@ itself (under the _Settings_ section, collapsed by default).
 
 To download (and patch) a hack, you have to specify:
 
-- _Name_: A name of your choosing (usually the name of the hack). This will be
-  the name of the folder created by the tool inside the game folder.
-- _Download URL_: URL for downloading the zip file. For example, you can find
-  this URL on SMWCentral.
+- _Name_ (optional): A name of your choosing (usually the name of the hack).
+  This will be the name of the folder created by the tool inside the game
+  folder. If left empty, the tool will use the zip file name (without
+  extension).
+- _Download URL or local zip path_: Either a URL for downloading the zip file
+  (for example, from SMWCentral) or a path to a local .zip file. On macOS and
+  Linux you can use `~` as a shortcut for your home directory (for example:
+  `~/Downloads/hack.zip`).
 
 | <img src="./docs/images/download_hack.gif" alt="Download a hack manually" width="400px" max-width="100%" style="border: 1px solid black; border-radius: 10px;" /> |
 | :---------------------------------------------------------------------------------------------------------------------------------------------------------------: |
@@ -108,9 +112,10 @@ You can also look for a game present on SMWCentral directly from within the tool
 
 You can look for _Super Mario World_ and _Yoshi Island_ hacks.
 
-The tool will download the zip file from the given URL, extract it inside a
-folder of the chosen name (`<game_folder>/<hack_name>`), and it will patch the
-first `.bps` file it finds.
+The tool will download the zip file from the given URL or use the specified
+local zip file, extract it inside a folder of the chosen or derived name
+(`<game_folder>/<hack_name>`), and it will patch the first `.bps` or `.ips`
+file it finds.
 
 If the URL doesn't download a zip, or if the zip doesn't contain a `.bps` file,
 the operation will fail.
@@ -128,11 +133,13 @@ The tool provides the following operations on hacks
 
 - **Play:** The tool opens the `.sfc` file of the hack with its default
   application (it should be an emulator). You can specify the default app on you
-  operating system. If the hack has more than one `.sfc` file, the tool will
-  play the one that you see in the table (you cannot control which one).
-- **Open folder:** Open the folder containing the hack.
-- **Delete:** Delete the hack. This deletes the folder of the hack and all its
-  contents.
+  operating system. If the hack has more than one `.sfc` file, each of them will
+  appear as a separate row in the list, and **Play** will open the selected
+  `.sfc` file.
+- **Open folder:** Open the folder containing the hack. This action is shown
+  once per hack.
+- **Delete:** Delete the selected `.sfc` file. If there are no `.sfc` files left
+  in the folder, the tool will delete the folder and all its remaining contents.
 
 | <img src="./docs/images/play_hack.gif" alt="Hack list" width="400px" max-width="100%" /> |
 | :--------------------------------------------------------------------------------------: |

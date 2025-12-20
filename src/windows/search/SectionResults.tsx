@@ -1,6 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { emit } from "@tauri-apps/api/event";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
+import { openUrl } from "@tauri-apps/plugin-opener";
 import { useCallback, useMemo } from "react";
 import Alert from "../../components/Alert";
 import Checkbox from "../../components/Checkbox";
@@ -43,6 +44,18 @@ function formatSize(hack: Hack) {
 
 const formatType = (hack: Hack): string => hack.type ?? "-";
 
+function getHackDetailsUrl(hack: Hack): string | undefined {
+  try {
+    const url = new URL(hack.downloadUrl);
+    const parts = url.pathname.split("/").filter(Boolean);
+    const id = parts.find((p) => /^\d+$/.test(p));
+    if (!id) return undefined;
+    return `https://www.smwcentral.net/?p=section&a=details&id=${id}`;
+  } catch {
+    return undefined;
+  }
+}
+
 function SectionResults({ results }: SectionResultsProps) {
   const [selectedGameId] = useSelectedGameId();
 
@@ -61,6 +74,20 @@ function SectionResults({ results }: SectionResultsProps) {
     },
     [options.keepWindowOpen, selectedGameId]
   );
+
+  const getResultsRowActions = useCallback((hack: Hack) => {
+    const detailsUrl = getHackDetailsUrl(hack);
+    return [
+      {
+        icon: <span>🔗</span>,
+        isDisabled: !detailsUrl,
+        label: "Open in browser",
+        onClick: () => {
+          if (detailsUrl) openUrl(detailsUrl);
+        },
+      },
+    ];
+  }, []);
 
   const resultsTableColumns = useMemo(() => {
     const columns: Column<Hack>[] = [];
@@ -176,6 +203,11 @@ function SectionResults({ results }: SectionResultsProps) {
                     onChange={optionsMethods.setShowDownloadsColumn}
                     value={options.showDownloadsColumn}
                   />
+                  <Checkbox
+                    label="Link"
+                    onChange={optionsMethods.setShowLinkColumn}
+                    value={options.showLinkColumn}
+                  />
                 </Flex>
                 <Checkbox
                   label="Keep window open after selection"
@@ -190,8 +222,12 @@ function SectionResults({ results }: SectionResultsProps) {
                   ? "There are more than 50 results, please refine your search."
                   : undefined
               }
+              actionColumnWidth={options.showLinkColumn ? 50 : undefined}
               columns={resultsTableColumns}
               data={results.hacks}
+              getRowActions={
+                options.showLinkColumn ? getResultsRowActions : undefined
+              }
               onClickRow={selectHack}
             />
           </>

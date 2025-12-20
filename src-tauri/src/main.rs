@@ -5,6 +5,30 @@ use tauri::Manager;
 use std::path::{Path, PathBuf};
 use reqwest::header;
 
+fn decode_url_component(component: &str) -> String {
+  let replaced = component.replace('+', " ");
+  urlencoding::decode(&replaced)
+    .map(|cow| cow.into_owned())
+    .unwrap_or_else(|_| replaced)
+}
+
+fn expand_tilde(path: &str) -> String {
+  if let Some(rest) = path.strip_prefix("~") {
+    if let Ok(home) = std::env::var("HOME") {
+      if rest.is_empty() {
+        return home;
+      }
+      let mut buf = PathBuf::from(home);
+      let trimmed_rest = rest.trim_start_matches(&['/', '\\'][..]);
+      if !trimmed_rest.is_empty() {
+        buf.push(trimmed_rest);
+      }
+      return buf.to_string_lossy().into_owned();
+    }
+  }
+  path.to_string()
+}
+
 fn flatten_directory(dir_path: &Path) -> Result<(), String> {
   let mut dir = match dir_path.read_dir() {
     Err(_) => return Err("Failed to read directory".into()),
@@ -51,7 +75,8 @@ fn flatten_directory(dir_path: &Path) -> Result<(), String> {
 
 #[tauri::command]
 fn path_exists(path: &str) -> bool {
-  Path::new(path).exists()
+  let expanded = expand_tilde(path);
+  Path::new(&expanded).exists()
 }
 
 #[tauri::command]
@@ -76,9 +101,10 @@ fn validate_name(name: &str) -> Result<(), String> {
 
 #[tauri::command]
 fn validate_directory_path(path: &str) -> Result<(), String> {
-  if path.is_empty() { return Err("No directory has been specified".into()) }
-  if !Path::new(path).exists() { return Err("Directory doesn't exist".into()) }
-  let metadata = match std::fs::metadata(path) {
+  let expanded = expand_tilde(path);
+  if expanded.is_empty() { return Err("No directory has been specified".into()) }
+  if !Path::new(&expanded).exists() { return Err("Directory doesn't exist".into()) }
+  let metadata = match std::fs::metadata(&expanded) {
     Err(_) => return Err("This is not a valid path".into()),
     Ok(m) => m
   };
@@ -88,9 +114,10 @@ fn validate_directory_path(path: &str) -> Result<(), String> {
 
 #[tauri::command]
 fn validate_file_path(path: &str) -> Result<(), String> {
-  if path.is_empty() { return Err("No file has been specified".into()) }
-  if !Path::new(path).exists() { return Err("File doesn't exist".into()) }
-  let metadata = match std::fs::metadata(path) {
+  let expanded = expand_tilde(path);
+  if expanded.is_empty() { return Err("No file has been specified".into()) }
+  if !Path::new(&expanded).exists() { return Err("File doesn't exist".into()) }
+  let metadata = match std::fs::metadata(&expanded) {
     Err(_) => return Err("This is not a valid path".into()),
     Ok(m) => m
   };
@@ -151,50 +178,116 @@ async fn download_hack(
     _ => (),
   }
 
-  // Validate URL
-  match validate_url(hack_download_url) {
-    Err(e) => return Err(e),
-    _ => (),
-  }
-
   // Build paths
-  let hack_directory_path = PathBuf::from(game_directory).join(hack_name);
+  let expanded_game_directory = expand_tilde(game_directory);
+  let expanded_game_original_copy = expand_tilde(game_original_copy);
 
-  // Create a reqwest client with custom cookie
-  let client = reqwest::Client::builder()
-    .default_headers({
-      let mut headers = header::HeaderMap::new();
-      headers.insert(header::COOKIE, header::HeaderValue::from_str(cookie).unwrap());
-      headers
-    })
-    .build()
-    .unwrap();
+  let is_remote = hack_download_url.starts_with("http://") || hack_download_url.starts_with("https://");
 
-  // Issue a GET request with the custom client
-  let response = match client.get(hack_download_url).send().await {
-    Err(_) => return Err("Failed to download zip".into()),
-    Ok(r) => r,
+  let effective_hack_name = if hack_name.trim().is_empty() {
+    if is_remote {
+      let without_query = hack_download_url.split('?').next().unwrap_or(hack_download_url);
+      let last_segment = without_query.rsplit('/').next().unwrap_or("hack");
+      let decoded_segment = decode_url_component(last_segment);
+      let stem = Path::new(&decoded_segment)
+        .file_stem()
+        .and_then(|s| s.to_str())
+        .unwrap_or("hack");
+      if stem.is_empty() {
+        "hack".to_string()
+      } else {
+        stem.to_string()
+      }
+    } else {
+      let expanded_hack_download_url = expand_tilde(hack_download_url);
+      let local_path = Path::new(&expanded_hack_download_url);
+      let stem = local_path
+        .file_stem()
+        .and_then(|s| s.to_str())
+        .unwrap_or("hack");
+      let decoded_stem = decode_url_component(stem);
+      if decoded_stem.is_empty() {
+        "hack".to_string()
+      } else {
+        decoded_stem
+      }
+    }
+  } else {
+    hack_name.to_string()
   };
 
-  // Log error if response is not 200
-  if response.status() != 200 {
-    println!("Failed to download zip: {}", response.status());
-    return Err("Failed to download zip".into())
+  let hack_directory_path = PathBuf::from(&expanded_game_directory).join(&effective_hack_name);
+
+  if is_remote {
+    // Validate URL
+    match validate_url(hack_download_url) {
+      Err(e) => return Err(e),
+      _ => (),
+    }
+
+    // Create a reqwest client with custom cookie
+    let client = reqwest::Client::builder()
+      .default_headers({
+        let mut headers = header::HeaderMap::new();
+        headers.insert(header::COOKIE, header::HeaderValue::from_str(cookie).unwrap());
+        headers
+      })
+      .build()
+      .unwrap();
+
+    // Issue a GET request with the custom client
+    let response = match client.get(hack_download_url).send().await {
+      Err(_) => return Err("Failed to download zip".into()),
+      Ok(r) => r,
+    };
+
+    // Log error if response is not 200
+    if response.status() != 200 {
+      println!("Failed to download zip: {}", response.status());
+      return Err("Failed to download zip".into())
+    }
+
+    let content = match response.bytes().await {
+      Err(_) => return Err("Failed to download zip".into()),
+      Ok(r) => std::io::Cursor::new(r)
+    };
+
+    println!("Dowloaded zip");
+    println!("Zip size: {}", content.get_ref().len());
+
+    // Unzip
+    match zip_extract::extract(content, hack_directory_path.as_path(), false) {
+      Err(_) => return Err("Failed to extract zip".into()),
+      _ => ()
+    };
+  } else {
+    // Validate local zip file path
+    match validate_file_path(hack_download_url) {
+      Err(e) => return Err(e),
+      _ => (),
+    }
+
+    let expanded_hack_download_url = expand_tilde(hack_download_url);
+    let local_zip_path = Path::new(&expanded_hack_download_url);
+
+    match local_zip_path.extension().and_then(|ext| ext.to_str()) {
+      Some(ext) if ext.eq_ignore_ascii_case("zip") => (),
+      _ => return Err("This is not a zip file".into()),
+    }
+
+    let file = match std::fs::File::open(local_zip_path) {
+      Err(_) => return Err("Failed to open zip".into()),
+      Ok(f) => f,
+    };
+
+    println!("Using local zip: {}", hack_download_url);
+
+    // Unzip
+    match zip_extract::extract(std::io::BufReader::new(file), hack_directory_path.as_path(), false) {
+      Err(_) => return Err("Failed to extract zip".into()),
+      _ => ()
+    };
   }
-
-  let content = match response.bytes().await {
-    Err(_) => return Err("Failed to download zip".into()),
-    Ok(r) => std::io::Cursor::new(r)
-  };
-
-  println!("Dowloaded zip");
-  println!("Zip size: {}", content.get_ref().len());
-
-  // Unzip
-  match zip_extract::extract(content, hack_directory_path.as_path(), false) {
-    Err(_) => return Err("Failed to extract zip".into()),
-    _ => ()
-  };
 
   // Flatten directory if necessary
   match flatten_directory(&hack_directory_path) {
@@ -225,14 +318,18 @@ async fn download_hack(
   hack_directory_path.read_dir().unwrap()
     .filter_map(|res| res.ok())
     .map(|dir_entry| dir_entry.path())
-    .filter(|path| path.extension().map_or(false, |ext| ext == "bps"))
+    .filter(|path| {
+      path
+        .extension()
+        .map_or(false, |ext| ext == "bps" || ext == "ips")
+    })
     .for_each(|bps_path| {
       let mut sfc_path = PathBuf::from(&bps_path);
       sfc_path.set_extension("sfc");
       std::process::Command::new(&flips_path)
         .arg("--apply")
         .arg(&bps_path)
-        .arg(&game_original_copy)
+        .arg(&expanded_game_original_copy)
         .arg(&sfc_path)
         .spawn()
         .unwrap();
