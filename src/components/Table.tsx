@@ -7,16 +7,19 @@ export type Column<T> = {
   width?: number | string;
 } & ({ key: keyof T } | { format: (data: T) => string });
 
+type RowAction<T> = {
+  icon: IconButtonProps["icon"];
+  isDisabled?: boolean;
+  label: string;
+  onClick: (data: T) => void;
+};
+
 export type TableProps<T> = {
-  actions?: {
-    icon: IconButtonProps["icon"];
-    isDisabled?: boolean;
-    label: string;
-    onClick: (data: T) => void;
-  }[];
+  actions?: RowAction<T>[];
   caption?: string;
   columns: Column<T>[];
   data: T[];
+  getRowActions?: (row: T) => RowAction<T>[];
   highlightRowOnHover?: boolean;
   onClickRow?: (row: T) => void | Promise<void>;
 };
@@ -26,6 +29,7 @@ function Table<T>({
   caption,
   columns,
   data,
+  getRowActions,
   onClickRow,
 }: TableProps<T>) {
   return (
@@ -44,7 +48,7 @@ function Table<T>({
                 {column.header}
               </ChakraTable.ColumnHeader>
             ))}
-            {!!actions && actions.length > 0 && (
+            {((!!actions && actions.length > 0) || !!getRowActions) && (
               <ChakraTable.ColumnHeader
                 bgColor="bg.muted"
                 borderWidth={0}
@@ -54,42 +58,46 @@ function Table<T>({
           </ChakraTable.Row>
         </ChakraTable.Header>
         <ChakraTable.Body>
-          {data.map((row, rowIndex) => (
-            <ChakraTable.Row
-              _hover={{ bgColor: "bg.emphasized" }}
-              bgColor="transparent"
-              cursor={onClickRow ? "pointer" : "default"}
-              key={rowIndex}
-              onClick={() => onClickRow?.(row)}
-            >
-              {columns.map((column, columnIndex) => (
-                <ChakraTable.Cell
-                  borderWidth={0}
-                  key={`${rowIndex}-${columnIndex}`}
-                  overflow="hidden"
-                  whiteSpace="normal"
-                  width={column.width}
-                >
-                  {"key" in column ? `${row[column.key]}` : column.format(row)}
-                </ChakraTable.Cell>
-              ))}
-              {!!actions && actions.length > 0 && (
-                <ChakraTable.Cell borderWidth={0}>
-                  <Flex className="action" gap={1} justifyContent="flex-end">
-                    {actions.map((action) => (
-                      <IconButton
-                        icon={action.icon}
-                        isDisabled={action.isDisabled}
-                        key={action.label}
-                        label={action.label}
-                        onClick={() => action.onClick(row)}
-                      />
-                    ))}
-                  </Flex>
-                </ChakraTable.Cell>
-              )}
-            </ChakraTable.Row>
-          ))}
+          {data.map((row, rowIndex) => {
+            const rowActions = getRowActions ? getRowActions(row) : actions;
+
+            return (
+              <ChakraTable.Row
+                _hover={{ bgColor: "bg.emphasized" }}
+                bgColor="transparent"
+                cursor={onClickRow ? "pointer" : "default"}
+                key={rowIndex}
+                onClick={() => onClickRow?.(row)}
+              >
+                {columns.map((column, columnIndex) => (
+                  <ChakraTable.Cell
+                    borderWidth={0}
+                    key={`${rowIndex}-${columnIndex}`}
+                    overflow="hidden"
+                    whiteSpace="normal"
+                    width={column.width}
+                  >
+                    {"key" in column ? `${row[column.key]}` : column.format(row)}
+                  </ChakraTable.Cell>
+                ))}
+                {!!rowActions && rowActions.length > 0 && (
+                  <ChakraTable.Cell borderWidth={0}>
+                    <Flex className="action" gap={1} justifyContent="flex-end">
+                      {rowActions.map((action) => (
+                        <IconButton
+                          icon={action.icon}
+                          isDisabled={action.isDisabled}
+                          key={action.label}
+                          label={action.label}
+                          onClick={() => action.onClick(row)}
+                        />
+                      ))}
+                    </Flex>
+                  </ChakraTable.Cell>
+                )}
+              </ChakraTable.Row>
+            );
+          })}
         </ChakraTable.Body>
       </ChakraTable.Root>
     </ChakraTable.ScrollArea>

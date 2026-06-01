@@ -109,10 +109,9 @@ You can also look for a game present on SMWCentral directly from within the tool
 You can look for _Super Mario World_ and _Yoshi Island_ hacks.
 
 The tool will download the zip file from the given URL, extract it inside a
-folder of the chosen name (`<game_folder>/<hack_name>`), and it will patch the
-first `.bps` file it finds.
+folder of the chosen name (`<game_folder>/<hack_name>`), and it will patch each `.bps` file it finds.
 
-If the URL doesn't download a zip, or if the zip doesn't contain a `.bps` file,
+If the URL doesn't download a zip, or if the zip doesn't contain any `.bps` files,
 the operation will fail.
 
 After you download a hack, you'll have to wait a few seconds for it to appear in
@@ -128,11 +127,13 @@ The tool provides the following operations on hacks
 
 - **Play:** The tool opens the `.sfc` file of the hack with its default
   application (it should be an emulator). You can specify the default app on you
-  operating system. If the hack has more than one `.sfc` file, the tool will
-  play the one that you see in the table (you cannot control which one).
-- **Open folder:** Open the folder containing the hack.
-- **Delete:** Delete the hack. This deletes the folder of the hack and all its
-  contents.
+  operating system. If the hack has more than one `.sfc` file, each of them will
+  appear as a separate row in the list, and **Play** will open the selected
+  `.sfc` file.
+- **Open folder:** Open the folder containing the hack. This action is shown
+  once per hack.
+- **Delete:** Delete the selected `.sfc` file. If there are no `.sfc` files left
+  in the folder, the tool will delete the folder and all its remaining contents.
 
 | <img src="./docs/images/play_hack.gif" alt="Hack list" width="400px" max-width="100%" /> |
 | :--------------------------------------------------------------------------------------: |
